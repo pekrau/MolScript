@@ -1,0 +1,156 @@
+# Makefile
+#
+# MolScript v2.1.1, the complete implementation: all output modes enabled.
+#
+# If your computer system lacks one or more of the required libraries,
+# then you will have to comment out the relevant symbol definitions
+# below. If none of them are installed, use Makefile.basic instead.
+# For more information, see the 'doc/installation.html' file.
+#
+# Per Kraulis
+#   1-Dec-1996  first attempts
+#  13-Sep-1997  rearranged optional implementations
+#  22-Oct-1997  modified for distribution
+#  19-Nov-1997  checked for distribution
+#  15-Aug-1998  reorganized for v2.1
+
+# Command execution shell.
+SHELL = /bin/sh
+
+# Global external software directory.
+# If not set in your .cshrc, then set it here. <---
+#FREEWAREDIR = /usr/local
+
+# OpenGL and GLUT for X (UNIX).
+# Must be modified for Windows 95/NT. <---
+GLUTDIR = $(FREEWAREDIR)/glut
+GLUTLINK = $(GLUTDIR)/lib/glut/libglut.a -lGLU -lGL -lXmu -lXext -lX11
+OPENGLFLAG = -DOPENGL_SUPPORT -I$(GLUTDIR)/include
+OPENGLOBJ = opengl.o
+OPENGLCLIBOBJ = ogl_utils.o ogl_body.o ogl_bitmap_character.o
+
+# Image file formats which require only OpenGL, GLUT and X (UNIX).
+IMAGEFLAG = -DIMAGE_SUPPORT
+IMAGEOBJ =  image.o eps_img.o sgi_img.o
+
+# JPEG image file format; requires the JPEG library.
+# Comment out these lines if the JPEG library is not available. <---
+JPEGDIR = $(FREEWAREDIR)/jpeg
+JPEGLINK = $(JPEGDIR)/libjpeg.a
+JPEGFLAG = -DJPEG_SUPPORT -I$(JPEGDIR)
+JPEGOBJ = jpeg_img.o
+
+# PNG image file format; requires the PNG library and the zlib library.
+# Comment out these lines if the PNG and zlib libraries are not available. <---
+ZLIBDIR = $(FREEWAREDIR)/zlib
+ZLIBLINK = $(ZLIBDIR)/libz.a
+PNGDIR = $(FREEWAREDIR)/libpng
+PNGLINK = $(PNGDIR)/libpng.a
+PNGFLAG = -DPNG_SUPPORT -I$(PNGDIR) -I$(ZLIBDIR)
+PNGOBJ = png_img.o
+
+# GIF image file format; requires the gd 1.3 library.
+# Comment out these lines if the gd 1.3 library is not available. <---
+GIFDIR = $(FREEWAREDIR)/gd
+GIFLINK = $(GIFDIR)/libgd.a
+GIFFLAG = -DGIF_SUPPORT -I$(GIFDIR)
+GIFOBJ = gif_img.o
+
+# SGI IRIX's C compiler.
+CC = cc -32
+#  Optimization flags:
+COPT = -O1
+#  Correctness flags:
+#CCHECK = -ansi -fullwarn -g -DSELECT_DEBUG
+CCHECK = -ansi -fullwarn
+#CCHECK = -ansi -fullwarn -DNDEBUG
+
+# General cc compile flags.
+CFLAGS = $(COPT) $(CCHECK) -Iclib $(OPENGLFLAG) $(IMAGEFLAG) $(JPEGFLAG) \
+         $(PNGFLAG) $(GIFFLAG)
+
+# GNU's bison; required instead of the ordinary yacc.
+YACC = bison
+YFLAGS = -d
+YLIB = 
+
+#------------------------------------------------------------
+OBJ = molscript.tab.o global.o lex.o col.o select.o \
+      state.o graphics.o segment.o coord.o xform.o \
+      postscript.o raster3d.o vrml.o regex.o \
+      $(OPENGLOBJ) $(IMAGEOBJ) $(JPEGOBJ) $(PNGOBJ) $(GIFOBJ)
+
+#------------------------------------------------------------
+all: molscript molauto
+
+#------------------------------------------------------------
+clean:
+	(rm -f molscript molauto *.o core *~)
+	(cd clib; make clean)
+	(cd examples; make clean)
+
+#------------------------------------------------------------
+molscript: $(OBJ) clib/clib.a
+	$(CC) -o molscript $(COPT) $(OBJ) $(YLIB) clib/clib.a \
+              $(GLUTLINK) $(JPEGLINK) $(PNGLINK) $(GIFLINK) $(ZLIBLINK) -lm
+
+molscript.tab.o: molscript.tab.c molscript.tab.h
+
+molscript.tab.c molscript.tab.h: molscript.y 
+	$(YACC) $(YFLAGS) molscript.y
+
+global.o: global.c global.h lex.h state.h graphics.h xform.h \
+	  postscript.h raster3d.h vrml.h
+
+lex.o: lex.c lex.h global.h molscript.tab.h
+
+col.o: col.c col.h global.h lex.h state.h
+
+select.o: select.c select.h coord.h global.h state.h lex.h
+
+state.o: state.c state.h col.h global.h select.h
+
+graphics.o: graphics.c graphics.h coord.h state.h global.h lex.h \
+            select.h xform.h segment.h postscript.h raster3d.h vrml.h
+
+segment.o: segment.c segment.h
+
+coord.o: coord.c coord.h global.h lex.h select.h
+
+xform.o: xform.c xform.h global.h select.h
+
+postscript.o: postscript.c postscript.h coord.h global.h \
+              graphics.h segment.h state.h
+
+raster3d.o: raster3d.c raster3d.h coord.h global.h graphics.h \
+            segment.h state.h
+
+vrml.o: vrml.c vrml.h col.h coord.h global.h graphics.h segment.h state.h
+
+regex.o: other/regex.c
+	$(CC) $(CFLAGS) -c -o ./regex.o other/regex.c
+
+opengl.o: opengl.c opengl.h col.h coord.h global.h graphics.h \
+          segment.h state.h lex.h select.h
+
+image.o: image.c image.h global.h graphics.h opengl.h
+
+eps_img.o: eps_img.c eps_img.h global.h graphics.h opengl.h
+
+sgi_img.o: sgi_img.c sgi_img.h global.h graphics.h image.h opengl.h
+
+jpeg_img.o: jpeg_img.c jpeg_img.h global.h graphics.h image.h opengl.h
+
+png_img.o: png_img.c png_img.h global.h graphics.h image.h opengl.h
+
+gif_img.o: gif_img.c gif_img.h global.h graphics.h image.h opengl.h
+
+#------------------------------------------------------------
+molauto: molauto.o clib/clib.a
+	$(CC) -o molauto molauto.o clib/clib.a -lm
+
+molauto.o: molauto.c
+
+#------------------------------------------------------------
+clib/clib.a:
+	cd clib; make clib.a CFLAGS="-I. $(CFLAGS)" OPENGLCLIBOBJ="$(OPENGLCLIBOBJ)"

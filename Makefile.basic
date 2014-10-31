@@ -1,0 +1,102 @@
+# Makefile
+#
+# MolScript v2.1.1, basic implementation.
+#
+# This Makefile is for the most basic MolScript implementation.
+# It should compile on any computer system having an ANSI C compliant
+# compiler and system. No external libraries or systems apart from
+# those present in the clib directory (which is part of the MolScript
+# distribution) are needed.
+#
+# If you wish to compile a more complete MolScript implementation,
+# then look at the Makefile.complete file instead.
+#
+# See the documentation for more information.
+#
+# Copyright (C) 1997-1998 Per Kraulis
+#   1-Dec-1996  first attempts
+#  13-Sep-1997  rearranged optional implementations
+#  22-Oct-1997  modified for distribution
+#  19-Nov-1997  checked for distribution
+#  15-Aug-1998  reorganized for v2.1
+
+# Command execution shell.
+SHELL = /bin/sh
+
+# GNU's cc compiler.
+CC = gcc
+# optimization flags:
+COPT = -O
+# correctness flags:
+#CCHECK = -DNDEBUG
+
+# General cc compile flags.
+CFLAGS = $(COPT) $(CCHECK) -Iclib
+
+# GNU's bison; required instead of the ordinary yacc.
+YACC = bison
+YFLAGS = -d
+YLIB = 
+
+#------------------------------------------------------------
+OBJ = molscript.tab.o global.o lex.o col.o select.o \
+      state.o graphics.o segment.o coord.o xform.o \
+      postscript.o raster3d.o vrml.o regex.o
+
+#------------------------------------------------------------
+all: molscript molauto
+
+#------------------------------------------------------------
+clean:
+	(rm -f molscript molauto *.o core *~)
+	(cd examples; make clean)
+	(cd clib; make clean)
+
+#------------------------------------------------------------
+molscript: $(OBJ) clib/clib.a
+	$(CC) $(OPT) -o molscript $(OBJ) $(YLIB) clib/clib.a -lm
+
+molscript.tab.o: molscript.tab.c molscript.tab.h
+
+molscript.tab.c molscript.tab.h: molscript.y 
+	$(YACC) $(YFLAGS) molscript.y
+
+global.o: global.c global.h lex.h state.h graphics.h xform.h \
+	  postscript.h raster3d.h vrml.h
+
+lex.o: lex.c lex.h global.h molscript.tab.h
+
+col.o: col.c col.h global.h lex.h state.h
+
+select.o: select.c select.h coord.h global.h state.h lex.h
+
+state.o: state.c state.h col.h global.h select.h
+
+graphics.o: graphics.c graphics.h coord.h state.h global.h lex.h \
+            select.h xform.h segment.h postscript.h raster3d.h vrml.h
+
+segment.o: segment.c segment.h
+
+coord.o: coord.c coord.h global.h lex.h select.h
+
+xform.o: xform.c xform.h global.h select.h
+
+postscript.o: postscript.c postscript.h coord.h global.h \
+              graphics.h segment.h state.h
+
+raster3d.o: raster3d.c raster3d.h coord.h global.h graphics.h segment.h state.h
+
+vrml.o: vrml.c vrml.h col.h coord.h global.h graphics.h segment.h state.h
+
+regex.o: other/regex.c
+	$(CC) $(CFLAGS) -c -o ./regex.o other/regex.c
+
+#------------------------------------------------------------
+molauto: molauto.o clib/clib.a
+	$(CC) -o molauto molauto.o clib/clib.a -lm
+
+molauto.o: molauto.c
+
+#------------------------------------------------------------
+clib/clib.a:
+	cd clib; make clib.a CFLAGS="-I. $(CFLAGS)"

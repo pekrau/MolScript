@@ -1,0 +1,26 @@
+! MolScript v2.1 input file
+
+! GDP using bonds.
+
+title "GDP bonds"
+
+plot
+
+  window 16;
+
+  read mol "ras.pdb";
+
+  transform atom *
+    by centre position in residue 200
+    by rotation
+      -0.746436 -0.361124 0.558947
+       0.235416 0.64233 0.729378
+      -0.622425 0.676019 -0.394444
+    ;
+
+  set colourparts on,
+      linewidth 2;
+
+  bonds in residue 200;
+
+end_plot
