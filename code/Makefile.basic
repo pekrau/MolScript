@@ -1,6 +1,6 @@
 # Makefile
 #
-# MolScript v2.1.1, basic implementation.
+# MolScript v2.1.2, basic implementation.
 #
 # This Makefile is for the most basic MolScript implementation.
 # It should compile on any computer system having an ANSI C compliant
@@ -19,6 +19,11 @@
 #  22-Oct-1997  modified for distribution
 #  19-Nov-1997  checked for distribution
 #  15-Aug-1998  reorganized for v2.1
+#   1-Nov-2014  rearranged directories for GitHub
+
+# Executables
+MOLSCRIPT = ../molscript
+MOLAUTO   = ../molauto
 
 # Command execution shell.
 SHELL = /bin/sh
@@ -44,17 +49,16 @@ OBJ = molscript.tab.o global.o lex.o col.o select.o \
       postscript.o raster3d.o vrml.o regex.o
 
 #------------------------------------------------------------
-all: molscript molauto
+all: $(MOLSCRIPT) $(MOLAUTO)
 
 #------------------------------------------------------------
 clean:
-	(rm -f molscript molauto *.o core *~)
-	(cd examples; make clean)
+	(rm -f $(MOLSCRIPT) $(MOLAUTO) *.o core *~)
 	(cd clib; make clean)
 
 #------------------------------------------------------------
-molscript: $(OBJ) clib/clib.a
-	$(CC) $(OPT) -o molscript $(OBJ) $(YLIB) clib/clib.a -lm
+$(MOLSCRIPT): $(OBJ) clib/clib.a
+	$(CC) $(OPT) -o $(MOLSCRIPT) $(OBJ) $(YLIB) clib/clib.a -lm
 
 molscript.tab.o: molscript.tab.c molscript.tab.h
 
@@ -92,8 +96,8 @@ regex.o: other/regex.c
 	$(CC) $(CFLAGS) -c -o ./regex.o other/regex.c
 
 #------------------------------------------------------------
-molauto: molauto.o clib/clib.a
-	$(CC) -o molauto molauto.o clib/clib.a -lm
+$(MOLAUTO): molauto.o clib/clib.a
+	$(CC) -o $(MOLAUTO) molauto.o clib/clib.a -lm
 
 molauto.o: molauto.c
 

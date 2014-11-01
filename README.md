@@ -76,5 +76,6 @@ Unfortunately, this paper is not Open Access, so I cannot include a
 PDF or a link to the text itself.
 
 [DOI:10.1107/S0021889891004399](http://dx.doi.org/10.1107/S0021889891004399)
+
 [Entry at J. Appl. Cryst. web site](http://scripts.iucr.org/cgi-bin/paper?S0021889891004399)
 

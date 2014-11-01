@@ -1,6 +1,6 @@
 # Makefile
 #
-# MolScript v2.1.1, the complete implementation: all output modes enabled.
+# MolScript v2.1.2, the complete implementation: all output modes enabled.
 #
 # If your computer system lacks one or more of the required libraries,
 # then you will have to comment out the relevant symbol definitions
@@ -13,6 +13,11 @@
 #  22-Oct-1997  modified for distribution
 #  19-Nov-1997  checked for distribution
 #  15-Aug-1998  reorganized for v2.1
+#   1-Nov-2014  rearranged directories for GitHub
+
+# Executables
+MOLSCRIPT = ../molscript
+MOLAUTO   = ../molauto
 
 # Command execution shell.
 SHELL = /bin/sh
@@ -81,17 +86,16 @@ OBJ = molscript.tab.o global.o lex.o col.o select.o \
       $(OPENGLOBJ) $(IMAGEOBJ) $(JPEGOBJ) $(PNGOBJ) $(GIFOBJ)
 
 #------------------------------------------------------------
-all: molscript molauto
+all: $(MOLSCRIPT) $(MOLAUTO)
 
 #------------------------------------------------------------
 clean:
-	(rm -f molscript molauto *.o core *~)
+	(rm -f $(MOLSCRIPT) $(MOLAUTO) *.o core *~)
 	(cd clib; make clean)
-	(cd examples; make clean)
 
 #------------------------------------------------------------
-molscript: $(OBJ) clib/clib.a
-	$(CC) -o molscript $(COPT) $(OBJ) $(YLIB) clib/clib.a \
+$(MOLSCRIPT): $(OBJ) clib/clib.a
+	$(CC) -o $(MOLSCRIPT) $(COPT) $(OBJ) $(YLIB) clib/clib.a \
               $(GLUTLINK) $(JPEGLINK) $(PNGLINK) $(GIFLINK) $(ZLIBLINK) -lm
 
 molscript.tab.o: molscript.tab.c molscript.tab.h
@@ -146,8 +150,8 @@ png_img.o: png_img.c png_img.h global.h graphics.h image.h opengl.h
 gif_img.o: gif_img.c gif_img.h global.h graphics.h image.h opengl.h
 
 #------------------------------------------------------------
-molauto: molauto.o clib/clib.a
-	$(CC) -o molauto molauto.o clib/clib.a -lm
+$(MOLAUTO): molauto.o clib/clib.a
+	$(CC) -o $(MOLAUTO) molauto.o clib/clib.a -lm
 
 molauto.o: molauto.c
 
