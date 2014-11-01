@@ -22,7 +22,7 @@ macromolecular 3D structures.
 
 MolScript has for a long time been a standard tool in the biomolecular
 structural sciences. This is reflected by the fact that the paper
-describing it appears as number 82 in the list of the feature article
+describing it appears as number 82 in the list of the Nature feature article
 ["The Top 100 Papers. Nature explores the most-cited research of all
 time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
 Richard Van Noorden, Brendan Maher & Regina Nuzzo published [30 Oct
