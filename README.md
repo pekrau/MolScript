@@ -84,8 +84,8 @@ Reference
 ---------
 
     Per J. Kraulis
-    MOLSCRIPT: a program to produce both detailed and schematic plots
-    of protein structures.
+    MOLSCRIPT: a program to produce both detailed and schematic plots of
+    protein structures.
     J. Appl. Cryst. (1991) 24, 946-950
 
 Unfortunately, this paper is not Open Access, so I cannot include a
