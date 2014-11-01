@@ -50,7 +50,8 @@ Please be aware that no changes have been made to the code since
 support is not up to scratch. It needs updating. If anyone is willing to
 help, I would much appreciate it.
 
-I have tested the so-called Makefile.basic. It works, at least on
+I have tested the `Makefile.basic` file, which builds an executable
+with support for PostScript, Raster3D and VRML. It works, at least on
 Ubuntu 12.04. I have also verified that the [Raster3D software
 (v3.0)](http://skuld.bmsc.washington.edu/raster3d/html/raster3d.html)
 still works with MolScript.
