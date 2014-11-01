@@ -6,7 +6,19 @@ MolScript v2.1.2
 The MolScript program produces publication-quality images of
 macromolecular 3D structures.
 
-![Ras p21](doc/images/ras_std.jpg)
+<table>
+  <tr>
+    <td>
+      <img src="doc/images/ras_std.jpg" title="ras_std">
+    </td>
+    <td>
+      <img src="doc/images/ras_cyl.jpg" title="ras_cyl">
+    </td>
+    <td>
+      <img src="doc/images/ras_gdp_balls.jpg" title="ras_gdp_balls">
+    </td>
+  </tr>
+</table>
 
 MolScript has for a long time been a standard tool in the biomolecular
 structural sciences. This is reflected by the fact that the paper
@@ -15,6 +27,9 @@ describing it appears as number 82 in the list of the feature article
 time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
 Richard Van Noorden, Brendan Maher & Regina Nuzzo published [30 Oct
 2014](http://www.nature.com/nature/journal/v514/n7524/index.html).
+
+The official MolScript web site at [http://www.avatar.se/molscript/](http://www.avatar.se/molscript/) has not yet (1 Nov 2014) been updated to reflect
+the change in licensing conditions. I will try to do this ASAP.
 
 Open Source
 -----------
