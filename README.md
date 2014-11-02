@@ -28,9 +28,6 @@ time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
 Richard Van Noorden, Brendan Maher & Regina Nuzzo published [30 Oct
 2014](http://www.nature.com/nature/journal/v514/n7524/index.html).
 
-The official MolScript web site at [http://www.avatar.se/molscript/](http://www.avatar.se/molscript/) has not yet (1 Nov 2014) been updated to reflect
-the change in licensing conditions. I will try to do this ASAP.
-
 Open Source
 -----------
 
