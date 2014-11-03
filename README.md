@@ -28,6 +28,10 @@ time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
 Richard Van Noorden, Brendan Maher & Regina Nuzzo published [30 Oct
 2014](http://www.nature.com/nature/journal/v514/n7524/index.html).
 
+I have written a blog post [MolScript: A story of success and
+failure](http://kraulis.wordpress.com/2014/11/03/molscript-a-story-of-success-and-failure/),
+describing the history to how it became so popular.
+
 Open Source
 -----------
 
