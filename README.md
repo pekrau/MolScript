@@ -20,25 +20,25 @@ macromolecular 3D structures.
   </tr>
 </table>
 
-MolScript has for a long time been a standard tool in the biomolecular
-structural sciences. This is reflected by the fact that the paper
-describing it appears as number 82 in the list of the Nature feature article
-["The Top 100 Papers. Nature explores the most-cited research of all
-time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
+MolScript has for a long time been a standard tool in the science of
+macromolecuular structures. This is reflected by the fact that the
+paper describing it appears as number 82 in the list of the Nature
+feature article ["The Top 100 Papers. Nature explores the most-cited
+research of all time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
 Richard Van Noorden, Brendan Maher & Regina Nuzzo published [30 Oct
 2014](http://www.nature.com/nature/journal/v514/n7524/index.html).
 
 I have written a blog post [MolScript: A story of success and
 failure](http://kraulis.wordpress.com/2014/11/03/molscript-a-story-of-success-and-failure/),
-describing the history to how it became so popular.
+describing the history behind its rise and fall.
 
 Open Source
 -----------
 
-I have for a long time intended to make MolScript Open Source, but
-never got around to it. The Nature Top-100-list did the trick of
-pushing me into action. MolScript is now available under the MIT
-license from this GitHub repository.
+MolScript is now available under the MIT license from this GitHub
+repository. I have for a long time intended to make MolScript Open
+Source, but never got around to it. The Nature Top-100-list did the
+trick of pushing me into action.
 
 Version 2.1.2
 -------------
@@ -60,8 +60,8 @@ still works with MolScript.
 Future plans
 ------------
 
-I have very little time to work on this currently. Other projects are
-more pressing. But here are some possible items for a roadmap for
+I have very little time to work on MolScript currently. Other projects
+are more pressing. But here are some possible items for a roadmap for
 future development of MolScript:
 
 * Fix the OpenGL implementation, with a working Makefile.
