@@ -21,9 +21,11 @@ MolScript is a program for displaying molecular 3D structures, such as
 proteins, in both schematic and detailed representations.
 
 MolScript has for a long time been a standard tool in the science of
-macromolecular structures. The paper describing it appears as number
-82 in the list of the Nature feature article ["The Top 100
-Papers. Nature explores the most-cited research of all
+macromolecular structures. [The paper describing
+it](http://dx.doi.org/10.1107/S0021889891004399 "MOLSCRIPT: a program
+to produce both detailed and schematic plots of protein structures")
+appears as number 82 in the list of the Nature feature article ["The
+Top 100 Papers. Nature explores the most-cited research of all
 time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
 Richard Van Noorden, Brendan Maher & Regina Nuzzo published [30 Oct
 2014](http://www.nature.com/nature/journal/v514/n7524/index.html).
