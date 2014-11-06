@@ -23,7 +23,7 @@ proteins, in both schematic and detailed representations.
 MolScript has for a long time been a standard tool in the science of
 macromolecular structures. [The paper describing
 it](http://dx.doi.org/10.1107/S0021889891004399 "MOLSCRIPT: a program
-to produce both detailed and schematic plots of protein structures")
+to produce both detailed and schematic plots of protein structures.")
 appears as number 82 in the list of the Nature feature article ["The
 Top 100 Papers. Nature explores the most-cited research of all
 time"](http://www.nature.com/news/the-top-100-papers-1.16224) by
@@ -63,8 +63,10 @@ Future plans
 ------------
 
 I have very little time to work on MolScript currently. Other projects
-are more pressing. But here are some possible items for a roadmap for
-future development of MolScript:
+are more pressing. If anyone is willing to "take over" (i.e. fork) and
+continue developing MolScript, I would be very pleased.
+
+Here are some possible items for a roadmap for future development of MolScript:
 
 * Fix the OpenGL implementation, with a working Makefile.
 
