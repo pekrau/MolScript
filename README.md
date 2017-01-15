@@ -20,6 +20,11 @@ MolScript v2.1.2
 MolScript is a program for displaying molecular 3D structures, such as
 proteins, in both schematic and detailed representations.
 
+The documentation is at [http://pekrau.github.io/MolScript/](http://pekrau.github.io/MolScript/).
+
+Background
+----------
+
 MolScript has for a long time been a standard tool in the science of
 macromolecular structures. [The paper describing
 it](http://dx.doi.org/10.1107/S0021889891004399 "MOLSCRIPT: a program
