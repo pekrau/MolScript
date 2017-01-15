@@ -1,234 +1,194 @@
 <html>
 <head>
-<title>MolScript v2.1: Related Web Sites</title>
+<title>MolScript v2.1: Related Websites</title>
+  <link href="style.css" type="text/css" rel="stylesheet"></link>
 </head>
 
-<body bgcolor="#FFFFFF">
+<body>
 
-<h1 align=center>Related Web Sites</h1>
+<a href="index.html">Top page</a>
 
+<h1 align="center">Related Websites</h1>
+
+<table  style="font-size: small; ">
+<tr>
+<td>
 <ul>
-<li><a href="#libraries">Software libraries used in MolScript</a>
+  <li><a href="#libraries">Software libraries used in MolScript</a>
+  <ul>
+  <li><a href="#GLUT">GLUT library</a>
+  <li><a href="#JPEG">JPEG library</a>
+  <li><a href="#PNG">PNG library</a>
+  <li><a href="#GIF">GIF library</a>
+  </ul>
+</ul>
+</td>
+
+<td>
 <ul>
-<li><a href="#GLUT">GLUT library</a>
-<li><a href="#JPEG">JPEG library</a>
-<li><a href="#PNG">PNG library</a>
-<li><a href="#GIF">GIF library</a>
+  <li><a href="#other">Other relevant sites</a>
+  <ul>
+  <li><a href="#Raster3D">Raster3D</a>
+  <li><a href="#OpenGL">OpenGL</a>
+  <li><a href="#PostScript">PostScript</a>
+  <li><a href="#VRML">VRML 2.0</a>
+  <li><a href="#SGI">SGI (aka RGB) image file</a>
+  <li><a href="#GNU">GNU software</a>
+  <li><a href="#protein">Protein 3D structure data</a>
+  </ul>
 </ul>
+</td>
+</tr>
+</table>
 
-<p>
-<li><a href="#other">Other relevant sites</a>
-<ul>
-<li><a href="#Raster3D">Raster3D</a>
-<li><a href="#OpenGL">OpenGL</a>
-<li><a href="#VRML">VRML 2.0</a>
-<li><a href="#PostScript">PostScript</a>
-<li><a href="#SGI">SGI (aka RGB) image file</a>
-<li><a href="#GNU">GNU software</a>
-<li><a href="#protein">Protein 3D structure data</a>
-<li><a href="#various">Various relevant links</a>
-</ul>
-</ul>
-
-Links to MolScript images on the Web are listed in the
-<a href="http://www.avatar.se/molscript/">Official MolScript Web Site</a>.
-<p>
-
-The links given here were tested in September 1998. If you find that
-some links have changed or are invalid, please send an email to
-<a href="mailto:pjk@avatar.se">pjk@avatar.se</a>. 
-<p>
-
-<hr>
 <h2 align=center><a name="libraries">Software libraries used in MolScript</a></h2>
 
-<h3><a name="GLUT">GLUT</a></h3>
+<h3><a name="GLUT">GLUT library</a></h3>
 
 <ul>
-<li><a href="http://reality.sgi.com/opengl/glut3/glut3.html">
-http://reality.sgi.com/opengl/glut3/glut3.html</a> contains the
-distribution for the <strong>GLUT library</strong> written by Mark
-Kilgard. Version 3.5 or later is required.
-<li>See also <a href="references.html#Kilgard-1996">the book</a> Mark
-Kilgard has written about OpenGL and the X window system.
-<li><a href="http://www.opengl.org/Documentation/GLUT.html">
-The GLUT page</a> in the OpenGL organisation web site.
-</ul>
-
-<h3><a name="JPEG">JPEG</a></h3>
-
-<ul>
-<li><a href="ftp://ftp.uu.net/graphics/jpeg">ftp://ftp.uu.net/graphics/jpeg</a>
-is the official archive site for the <strong>JPEG library</strong>
-from the Independent JPEG Group (IJG). Version 6a or later is
+<li><a href="http://www.opengl.org/resources/libraries/glut/">
+http://www.opengl.org/resources/libraries/glut/</a> provides the
+distribution for the <strong>GLUT library</strong> (The OpenGL Utility
+Toolkit) originally written by Mark Kilgard. Version 3.5 or later is
 required.
+<li>See also <a href="references.html#Kilgard-1996">"OpenGL Programming
+for the X Window System"</a>, the book Mark Kilgard has written about
+OpenGL and the X window system. 
 </ul>
 
-<h3><a name="PNG">PNG</a></h3>
+<h3><a name="JPEG">JPEG library</a></h3>
+
 <ul>
-<li><a href="ftp://ftp.uu.net/graphics/png">ftp://ftp.uu.net/graphics/png</a>
-is one location where the <strong>PNG library</strong> may be
-obtained. Version 0.96 or later is required. The <strong>zlib
-library</strong> may also be obtained at this location. Version 1.0.4
-of zlib is requried. 
-<li><a href="ftp://ftp.uu.net/pub/archiving/zip/zlib">
-ftp://ftp.uu.net/pub/archiving/zip/zlib</a>,
-another location where the <strong>zlib library</strong> may be
-obtained. Version 1.0.4 is required.
+<li><a href="http://www.ijg.org/">http://www.ijg.org/</a>
+is the official website for the <strong>JPEG library</strong>
+from the Independent JPEG Group (IJG). Version 6a or later is required.
 </ul>
 
-<h3><a name="GIF">GIF</a></h3>
+<h3><a name="PNG">PNG library</a></h3>
 <ul>
-<li><a href="http://www.boutell.com/gd/">http://www.boutell.com/gd/</a>
-is the original site for the <strong>gd 1.3 library</strong> (a C API
-for GIF creation), written by Thomas Boutell. This version of gd does 
-<strong>not</strong> use LZW compression, so it avoids the legal
-problems with the Unisys patent on that algorithm.
-<li>Version 1.2 of gd can be also be used with MolScript without
+<li><a href="http://www.libpng.org/pub/png/">http://www.libpng.org/pub/png/</a> 
+is the website for the <strong>PNG library</strong>.
+Version 0.96 or later is required. The <strong>zlib library</strong>
+may also be obtained at this location.
+</ul>
+
+<h3><a name="GIF">GIF library</a></h3>
+<ul>
+<li><a href="http://www.libgd.org/">http://www.libgd.org/</a>
+is the current site for the <strong>gd library</strong> (a C API
+for GIF creation), originally written by Thomas Boutell. Version 1.3
+or later should be used. This version does <strong>not</strong> use
+LZW compression, so it avoids the legal problems with the Unisys
+patent on that algorithm.
+<li>Version 1.2 of gd can be also be used with MolScript without 
 modification, but since this version of gd uses LZW compression, it is
 not recommended for legal reasons.
 </ul>
 
-<hr>
 <h2 align=center><a name="other">Other relevant sites</a></h2>
 
-<a href="http://www.bmsc.washington.edu/raster3d/raster3d.html">
-<img src="images/raster3d.gif" width=102 height=92 align=right
-     hspace=10 border=0>
-</a>
-<h3><a name="Raster3D">Raster3D</a></h3>
+<table width="100%" style="font-size: small;">
+<tr>
+  <td>
+    <h3><a name="Raster3D">Raster3D</a></h3>
+    <ul>
+    <li><a href="http://www.bmsc.washington.edu/raster3d/">
+        The Raster3D Website</a>, with distribution
+        information. Version 2.4b or later is required for use with
+        MolScript v2.1. 
+    <li><a href="http://www.bmsc.washington.edu/people/merritt/">
+        Ethan A. Merritt</a>, author (with others) and maintainer of Raster3D.
+    </ul>
+  </td>
+  <td align=right>
+    <a href="http://www.bmsc.washington.edu/raster3d/">
+      <img src="images/raster3d.gif" width="102" height="92" border="0">
+    </a>
+  </td>
+</tr>
+</table>
 
-<ul>
-<li><a href="http://www.bmsc.washington.edu/raster3d/raster3d.html">
-The Raster3D Web Site</a>, with distribution information. Version
-2.4b or later is required for use with MolScript v2.1.
-<li><a href="http://www.bmsc.washington.edu/people/merritt/">
-Ethan A. Merritt</a>, author (with others) and maintainer of Raster3D.
-</ul>
-<br clear=all>
-
-<a href="http://www.opengl.org">
-<img src="images/opengl.gif" width=220 height=97 align=right
-     hspace=10 border=0>
-</a>
-<h3><a name="OpenGL">OpenGL</a></h3>
-
-<ul>
-<li><a href="http://www.opengl.org">The OpenGL Organization web
-site</a>, with information on implementations, general stuff and the
-governing OpenGL Architechture Review Board (ARB).
-<li><a href="http://www.sgi.com/Technology/openGL/">
-The OpenGL WWW Center</a> at SGI.
-<li><a href="http://reality.sgi.com/opengl/">
-The OpenGL Web Site</a> at SGI.
-<li><a href="http://www.ssec.wisc.edu/~brianp/Mesa.html">Mesa</a>, by
-Brian Paul: the OpenGL look-alike 3D-rendering software library.
-</ul>
-<br clear=all>
-
-<h3><a name="VRML">VRML 2.0</a></h3>
-
-
-<a href="http://www.vrml.org/">
-<img src="images/vrml.gif" width=182 height=25 align=right
-     hspace=10 border=0>
-</a>
-<ul>
-<li><a href="http://www.vrml.org/">The VRML Consortium</a>.
-<li><a href="http://www.sdsc.edu/vrml/">The VRML Repository</a>.
-<li><a href="http://www.vrml.org/Specifications/VRML97/">The VRML97
-specification</a>, the ISO codification of VRML 2.0.
-<li><a href="http://cosmosoftware.com/">Cosmo Software</a>, download
-CosmoPlayer, a VRML viewer.
-<br clear=all>
-<p>
-<li>Some applications of VRML in chemistry and biology:
-<ul>
-<li><a href="http://www.imb-jena.de/IMAGE.html">Image Library
-of Biological Macromolecules</a>, IMB Jena.
-<li><a href="http://www.pc.chemie.tu-darmstadt.de/vrml/">
-VRML in Chemistry</a>, from Technische Hochschule Darmstadt, Germany.
-<li><a href="http://193.49.43.3/dif/3D_crystals.html">
-VRML 3D crystal structures</a> by Marcus Hewat at ILL Grenoble, France.
-<li><a href="http://www.nyu.edu/pages/mathmol/library/">Library of 3D
-Molecular Structures</a> from the
-<a href="http://www.nyu.edu/pages/scivis/">NYU/ACF Scientific
-Visualization Laboratory</a>.
-</ul>
-</ul>
+<table width="100%" style="font-size: small;">
+<tr>
+  <td>
+    <h3><a name="OpenGL">OpenGL</a></h3>
+    <ul>
+      <li><a href="http://www.opengl.org">The OpenGL Organization website</a>.
+      <li><a href="http://www.sgi.com/Technology/openGL/">
+          The OpenGL Center</a> at SGI.
+      <li><a href="http://www.mesa3d.org/">The Mesa 3D Graphics Library</a>,
+          originally by Brian Paul: the OpenGL look-alike 3D-rendering
+          software library. 
+    </ul>
+  </td>
+  <td align=right>
+    <a href="http://www.opengl.org">
+      <img src="images/opengl.gif" width="220" height="97" border="0">
+    </a>
+  </td>
+</tr>
+</table>
 
 <h3><a name="PostScript">PostScript</a></h3>
 <ul>
-<li><a href="http://www.adobe.com/print/main.html">PostScript</a>, at
-the official Adobe Inc. web site.
+  <li><a href="http://www.adobe.com/products/postscript/">PostScript</a>,
+      at the official Adobe Inc. website.
+  <li><a href="http://www.cs.wisc.edu/~ghost/index.html">Ghostscript,
+      Ghostview and GSview</a>, PostScript interpreter software.
+</ul>
 
-<a href="http://www.cs.wisc.edu/~ghost/index.html">
-<img src="images/ghostscript.gif" width=32 height=32 align=right
-     hspace=10 border=0>
-</a>
-<li><a href="http://www.cs.wisc.edu/~ghost/index.html">Ghostscript,
-Ghostview and GSview</a>, PostScript interpreter software.
-<br clear=all>
+<h3><a name="VRML">VRML 2.0</a></h3>
+<ul>
+  <li><a href="http://www.w3.org/MarkUp/VRML">VRML Virtual Reality
+  Modeling Language</a>.
+  <li><a href="http://www.web3d.org/content/vrml97-functional-specification-and-vrml97-external-authoring-interface-eai">The
+      VRML97 specification</a>, the ISO codification of VRML 2.0.
 </ul>
 
 <h3><a name="SGI">SGI (aka RGB) image file</a></h3>
 <ul>
-
-<a href="http://reality.sgi.com/grafica/sgiimage.html">
-<img src="images/sgi.gif" width=152 height=52 align=right
-     hspace=10 border=0>
-</a>
-<li><a href="http://reality.sgi.com/grafica/sgiimage.html">
-The specification of the SGI image file format</a>
-<br clear=all>
+  <li><a href="http://local.wasp.uwa.edu.au/~pbourke/dataformats/sgirgb/sgiversion.html">
+      The specification of the SGI image file format</a>
 </ul>
 
-<h3><a name ="GNU">GNU software</a></h3>
+<table width="100%" style="font-size: small;">
+<tr>
+  <td>
+    <h3><a name ="GNU">GNU software</a></h3>
+    <ul>
+      <li><a href="http://www.gnu.org/">The GNU Project.</a>
+    </ul>
+  </td>
+  <td align="right">
+    <a href="http://www.gnu.org/">
+      <img src="images/gnu_head.gif" width="90" height="85" border="0">
+    </a>
+  </td>
+</tr>
+</table>
 
-<a href="http://www.gnu.org/">
-<img src="images/gnu_head.gif" width=90 height=85 align=right
-     hspace=10 border=0>
-</a>
-<ul>
-<li><a href="http://www.gnu.org/">The GNU Project's Web Site.</a>
-</ul>
-<br clear=all>
+<table width="100%" style="font-size: small;">
+<tr>
+  <td>
+    <h3><a name="protein">Protein 3D structure data</a></h3>
+    <ul>
+      <li><a href="http://www.rcsb.org/">The Protein Data Bank
+    (PDB)</a> at RSCB. This is the scientific data bank where
+    published protein 3D coordinate data sets are deposited by the
+    scientists and from where the data sets can be retrieved by
+    anyone. The specification of the PDB coordinate file format is
+    available. The 3D data sets can be searched in different ways.
+    </ul>
+  </td>
+  <td align="right">
+    <a href="http://www.rcsb.org/">
+      <img src="images/pdblogo.gif" width="198" height="57" border="0">
+    </a>
+  </td>
+</tr>
+</table>
 
-<h3><a name="protein">Protein 3D structure data</a></h3>
-<ul>
+<a href="index.html">Top page</a>
 
-<a href="http://www.pdb.bnl.gov/">
-<img src="images/pdb.gif" width=142 height=83 align=right
-     hspace=10 border=0>
-</a>
-<li><a href="http://www.pdb.bnl.gov/">The Protein Data Bank
-(PDB)</a> at Brookhaven National Lab, USA. This is the scientific data
-bank where published protein 3D coordinate data sets are deposited by
-the scientists and from where the data sets can be retrieved by
-anyone. The specification of the PDB coordinate file format is
-available. The 3D data sets can be searched in different ways.
-<br clear=all>
-</ul>
-
-<h3><a name="various">Various relevant links</a></h3>
-
-<a href="http://biomedlink.com/">
-<img src="images/biomedlink.gif" width=96 height=34 hspace=10
-     align=left border=0>
-BioMedLink
-</a>
-is an evaluated, annotated database of relevant biology sites on the
-Web. It has 
-<a href="http://biomednet.com/db/biomedlink/BMLK.13406">reviewed</a>
-the MolScript Web Site (rating: <em>exceptional</em>).
-<br clear=all>
-
-<p>
-<hr>
-If you get fed up by all this serious stuff, 
-<a href="http://www.dilbert.com">try this.</a>
-
-<hr>
-<a href="molscript.html">Top page</a>
 </body>
 </html>
