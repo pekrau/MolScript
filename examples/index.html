@@ -1,0 +1,359 @@
+<html>
+<head>
+  <title>MolScript v2.1: Gallery</title>
+  <link href="/molscript/style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<a href="/molscript/index.html">Top page</a>
+
+<h1 align="center">Gallery</h1>
+
+<p>
+The example images are all based on the structure of the
+<a href="#Ras-protein">Ras p21 protein</a> (Ras, for short)
+determined by NMR spectroscopy 
+(<a href="#reference">Kraulis <i>et al</i> 1994</a>). For simplicity,
+the hydrogen atoms have been stripped from the coordinate file
+<strong>ras.pdb</strong>, which is used  in all example input files.
+The example input files are available in the distribution directory
+<strong>molscript/examples</strong>. 
+</p>
+
+<ul>
+<li><a href="#general">General example images</a>
+<li><a href="#VRML">VRML example images</a>
+<li><a href="#MolAuto">MolAuto example images</a>
+<li><a href="#Ras-protein">The Ras p21 protein</a>
+<li><a href="#reference">The Ras p21 structure</a>
+</ul>
+
+<h2><a name="general">General example images</a></h2>
+
+<table border cellpadding="5" style="font-size: small;">
+
+  <tr>
+    <th>Image (small JPEG)</th>
+    <th>In other formats</th>
+    <th>Input file</th>
+  </tr>
+
+<tr>
+  <td>
+    <img src="/molscript/examples/ras_std_small.jpg"
+         alt="ras_std" width="180" height="180">
+  </td>
+  <td nowrap>
+    <a href="/molscript/examples/ras_std.ps">PostScript</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.rgb">Raster3D (SGI)</a>
+    <br/>
+    <a href="/molscript/examples/ras_std_r3d.jpg">Raster3D (JPEG)</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.wrl" target="vrml">VRML 2.0</a>
+    <br/>
+    <a href="/molscript/examples/ras_std_gz.wrl" target="vrml">VRML 2.0 gzipped</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.eps">EPS</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.sgi">SGI</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.jpg">JPEG (large)</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.png">PNG</a>
+    <br/>
+    <a href="/molscript/examples/ras_std.gif">GIF</a>
+  </td>
+<td>
+<p align="center">
+<a href="/molscript/examples/ras_std.in">ras_std.in</a>
+</p>
+<p>
+The secondary structure colouring is the default from
+<a href="/molscript/doc/molauto.html">MolAuto</a>.
+</p>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="/molscript/examples/ras_rmsd_small.jpg"
+     alt="ras_rmsd" width="180" height="180">
+</td>
+<td nowrap>
+<a href="/molscript/examples/ras_rmsd.ps">PostScript</a>
+<br/>
+<a href="/molscript/examples/ras_rmsd.rgb">Raster3D (SGI)</a>
+<br/>
+<a href="/molscript/examples/ras_rmsd_r3d.jpg">Raster3D (JPEG)</a>
+<br/>
+<a href="/molscript/examples/ras_rmsd.wrl" target="vrml">VRML 2.0</a>
+<br/>
+<a href="/molscript/examples/ras_rmsd.sgi">SGI</a>
+<br/>
+<a href="/molscript/examples/ras_rmsd.jpg">JPEG (large)</a>
+</td>
+<td>
+<p align="center">
+<a href="/molscript/examples/ras_rmsd.in">ras_rmsd.in</a>
+</p>
+<p>
+The same as above, but with colouring according to RMSD of the
+atoms, by setting the
+<a href="/molscript/doc/state.html#residuecolour">residuecolour... b-factor</a>
+and <a href="/molscript/doc/state.html#colourparts">colourparts</a>
+parameters. Notice that the colours vary over the secondary structure
+elements. 
+</p>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="/molscript/examples/ras_shiny_small.jpg"
+     alt="ras_shiny" width="180" height="180">
+</td>
+<td nowrap>
+<a href="/molscript/examples/ras_shiny.wrl" target="vrml">VRML 2.0</a>
+<br/>
+<a href="/molscript/examples/ras_shiny.sgi">SGI</a>
+<br/>
+<a href="/molscript/examples/ras_shiny.jpg">JPEG (large)</a>
+<br/>
+<a href="/molscript/examples/ras_shiny.png">PNG</a>
+</td>
+<td>
+<p align="center">
+<a href="/molscript/examples/ras_shiny.in">ras_shiny.in</a>
+</p>
+<p>
+The secondary structure colouring is the default from
+<a href="/molscript/doc/molauto.html">MolAuto</a>.
+The <a href="/molscript/doc/state.html#specularcolour">specularcolour</a>
+parameter has been set to white, and the
+<a href="/molscript/doc/state.html#shininess">shininess</a> of the
+atoms increased to 0.6. 
+</p>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="/molscript/examples/ras_cyl_small.jpg"
+     alt="ras_cyl" width="180" height="180">
+</td>
+<td nowrap>
+<a href="/molscript/examples/ras_cyl.ps">PostScript</a>
+<br/>
+<a href="/molscript/examples/ras_cyl.wrl" target="vrml">VRML 2.0</a>
+<br/>
+<a href="/molscript/examples/ras_cyl_gz.wrl" target="vrml">VRML 2.0 gzipped</a>
+<br/>
+<a href="/molscript/examples/ras_cyl.jpg">JPEG (large)</a>
+<br/>
+<a href="/molscript/examples/ras_cyl.gif">GIF</a>
+</td>
+<td>
+<p align="center">
+<a href="/molscript/examples/ras_cyl.in">ras_cyl.in</a>
+</p>
+<p>
+Cylinders for helices, and colouring according to secondary structure
+type; highlighting loops involved in ligand binding and conformational
+variability.
+</p>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="/molscript/examples/ras_gdp_small.jpg"
+     alt="ras_gdp" width="180" height="180">
+</td>
+<td nowrap>
+<a href="/molscript/examples/ras_gdp.rgb">Raster3D (SGI)</a>
+<br/>
+<a href="/molscript/examples/ras_gdp_r3d.jpg">Raster3D (JPEG)</a>
+<br/>
+<a href="/molscript/examples/ras_gdp.wrl" target="vrml">VRML 2.0</a>
+<br/>
+<a href="/molscript/examples/ras_gdp_gz.wrl" target="vrml">VRML 2.0 gzipped</a>
+<br/>
+<a href="/molscript/examples/ras_gdp.jpg">JPEG (large)</a>
+</td>
+<td>
+<p align="center">
+<a href="/molscript/examples/ras_gdp.in">ras_gdp.in</a>
+</p>
+<p>
+Closeup of the GDP molecule and some interacting residues.
+Some labels are shown and some interactions are shown schematically.
+</p>
+</td>
+</tr>
+
+</table>
+
+<p>
+
+<h2><a name="VRML">VRML example images</a></h2>
+
+A set of VRML files and HTML text organized into frames show some
+possibilities of how to use VRML for description of protein
+structures, involving anchors. Also an example showing the use of the
+level-of-detail (LOD) construct.
+
+<ul>
+<li>Ras <a href="/molscript/examples/ras_frames.html">VRML files organized in 
+<strong>frames</strong></a>.
+<li>Ras <a href="/molscript/examples/ras_top_text.html" target="text">VRML
+files in <strong>non-frames</strong> organization</a>.
+<p>
+<li>Ras <a href="/molscript/examples/ras_vrml_lod.wrl" target="vrml">VRML
+level-of-detail (LOD) example</a> 
+(<a href="/molscript/examples/ras_vrml_lod_gz.wrl" target="vrml">gzipped</a>)
+showing the use of the
+<a href="/molscript/doc/commands.html#level-of-detail">level-of-detail</a> command.
+</ul>
+
+<h2><a name="MolAuto">MolAuto example images</a></h2>
+
+<p>
+These images were generated directly from the PDB data set via the
+<a href="/molscript/doc/molauto.html">MolAuto</a> program, which produces
+first-approximation input files from a PDB file. It should be noted
+that the view orientation is not very good; MolAuto does not transform
+the coordinates in any way. 
+</p>
+
+<table border cellpadding="5" style="font-size: small;">
+
+<tr>
+  <th>Command-line options</th>
+  <th>Image (small JPEG)</th>
+  <th>Files</th>
+</tr>
+
+<tr>
+  <td nowrap>[none: default]</td>
+  <td>
+    <img src="/molscript/examples/ras_molauto_small.jpg"
+         alt="molauto" align=left width="180" height="180">
+  </td>
+  <td nowrap>
+    <a href="/molscript/examples/ras_molauto.ps">PostScript</a>
+    <br/>
+    <a href="/molscript/examples/ras_molauto.wrl">VRML 2.0</a>
+    <br/>
+    <a href="/molscript/examples/ras_molauto_gz.wrl">VRML 2.0 gzipped</a>
+    <br/>
+    <a href="/molscript/examples/ras_molauto.jpg">JPEG (large)</a>
+  </td>
+</tr>
+
+<tr>
+  <td nowrap>-nice -cpk</td>
+  <td nowrap>
+    <img src="/molscript/examples/ras_molauto_nice_small.jpg"
+         alt="molauto nice" align=left width="180" height="180">
+  </td>
+  <td>
+    <a href="/molscript/examples/ras_molauto_nice.ps">PostScript</a>
+    <br/>
+    <a href="/molscript/examples/ras_molauto_nice.wrl">VRML 2.0</a>
+    <br/>
+    <a href="/molscript/examples/ras_molauto_nice_gz.wrl">VRML 2.0 gzipped</a>
+    <br/>
+    <a href="/molscript/examples/ras_molauto_nice.jpg">JPEG (large)</a>
+    </td>
+  </tr>
+
+</table>
+
+<h2><a name="Ras-protein">The Ras p21 protein</a></h2>
+
+<p>
+The Ras p21 protein is a central component in the
+<strong>cell-signalling system</strong> that transmits extra-cellular
+growth signals via cell membrane receptors, via a cascade of
+signalling molecules into the nucleus. It is present in many cell
+types, and several forms of <strong>cancer</strong> are associated
+with a mutated form of the protein, where it is locked in a
+growth-promoting state.
+</p>
+<p>
+Ras p21 is an enzyme; it hydrolyzes GTP (guanosine triphosphate) to
+GDP (guanosine diphosphate); it is a <strong>GTPase</strong>. The
+protein exists <i>in vivo</i> as a ternary complex with one magnesium
+ion (Mg) and GDP (or GTP).
+</p>
+<p>
+The function of Ras is to act as a <strong>molecular switch</strong>
+with two possible states, on or off. In the GTP-bound form it is
+active, and binds to certain other proteins called effectors. The
+effectors transmit the growth signal further down the signal
+transduction cascade. This is how Ras p21 transmits the growth signal
+to the rest of the molecular machinery in the cell.
+</p>
+<p>
+The signal is switched off by hydrolysis of the GTP to GDP. Ras is
+fairly inefficient as an enzyme in itself, but its catalytic rate is  
+considerably enhanced by interaction with certain other proteins, such
+as Ras-GAP (GTPase Activating Protein). Other molecules are
+responsible for activating Ras by promoting exchange of the GDP
+molecule for a GTP molecule, as a response to extra-cellular signals.
+</p>
+<p>
+In many of the cancer-associated mutants of the Ras p21 protein, the
+ability to hydrolyse GTP is impaired. The active GTP form of the
+protein is therefore not converted into the inactive GDP form as fast
+as it should, so the growth signal is transmitted for too long. This 
+contributes to the uncontrolled cellular growth which is
+characteristic of tumours.
+</p>
+<p>
+The Ras p21 protein is also the prototypical representative for a
+large class of signalling proteins called the small GTPases. Other
+proteins in this family are Rho and Rab.
+</p>
+
+<h2><a name="reference">The Ras p21 structure</a></h2>
+
+<p>
+The 3D structure of Ras p21 used in these example images was
+determined by heteronuclear multidimensional NMR spectroscopy, as
+described in:
+</p>
+<blockquote>
+<strong>
+Kraulis P.J., Domaille P.J., Campbell-Burk S.L., Van Aken T., &amp; Laue E.D.
+</strong>
+<br/>
+Solution structure and dynamics of Ras p21.GDP determined by
+heteronuclear three- and four-dimensional NMR spectroscopy.
+<br/>
+<strong>
+Biochemistry (1994) vol 33, pp 3515-3531.
+</strong>
+<a href="http://www.ncbi.nlm.nih.gov/sites/entrez?db=PubMed&cmd=search&term=8142349">PubMed PMID:8142349</a>
+</blockquote>
+
+<p>
+The <a href="http://www.rcsb.org/">RSCB Protein Data Bank
+(PDB)</a> code for the coordinate set used in these example images is
+<a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1CRQ">1CRQ</a>,
+which contains the minimized average structure. All hydrogen atoms
+were stripped from the coordinate file before use, for simplicity.
+</p>
+<p>
+The 40 individual structures are available in two separate
+PDB data sets with 20 structures each:
+<a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1CRR">1CRR</a> and
+<a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=1CRP">1CRP</a>.
+</p>
+
+<a href="/molscript/index.html">Top page</a>
+
+</body>
+</html>
