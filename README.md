@@ -78,9 +78,9 @@ Here are some possible items for a roadmap for future development of MolScript:
 
 * Write an implementation to produce
   [X3D](http://www.web3d.org/x3d/what-x3d), the successor to the VRML
-  format for 3D objects on the web..
+  format for 3D objects on the web.
 
-* Write a [WebGL](http://en.wikipedia.org/wiki/WebGL) implementation
+* Write a [WebGL](http://en.wikipedia.org/wiki/WebGL) implementation.
 
 * Set up a web service producing images from input scripts using MolScript.
 
