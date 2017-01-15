@@ -93,8 +93,7 @@ Reference
     protein structures.
     J. Appl. Cryst. (1991) 24, 946-950
 
-Unfortunately, this paper is not Open Access, so I cannot include a
-PDF or a link to the text itself.
+This paper is now available under Open Access: [PDF](docs/kraulis_1991_molscript_j_appl_cryst.pdf)
 
 [DOI:10.1107/S0021889891004399](http://dx.doi.org/10.1107/S0021889891004399)
 

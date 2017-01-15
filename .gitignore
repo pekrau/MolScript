@@ -1,3 +1,9 @@
 papers
+misc
 *.o
+*.a
 *~
+*.ps
+*.wrl
+molscript
+molauto
