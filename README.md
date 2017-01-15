@@ -6,13 +6,13 @@ MolScript v2.1.2
 <table>
   <tr>
     <td>
-      <img src="doc/images/ras_std.jpg" title="ras_std">
+      <img src="docs/images/ras_std.jpg" title="ras_std">
     </td>
     <td>
-      <img src="doc/images/ras_cyl.jpg" title="ras_cyl">
+      <img src="docs/images/ras_cyl.jpg" title="ras_cyl">
     </td>
     <td>
-      <img src="doc/images/ras_gdp_balls.jpg" title="ras_gdp_balls">
+      <img src="docs/images/ras_gdp_balls.jpg" title="ras_gdp_balls">
     </td>
   </tr>
 </table>
