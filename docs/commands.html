@@ -1,0 +1,600 @@
+<html>
+<head>
+<title>MolScript v2.1: Commands</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Commands</h1>
+
+The graphics commands create graphical objects that are rendered
+according to the <a href="state.html">graphics state</a> at the point
+in the input file where the command is given. The commands need
+different arguments, usually an atom or residue 
+<a href="selection.html">selection</a>, and sometimes also some
+<a href="values.html">explicit values</a>.
+
+<p>
+<table cellpadding=5>
+<tr>
+
+<td>
+<ul>
+
+<li><a href="atom_commands.html">Atom graphics commands</a>
+<ul>
+<li><a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<li><a href="atom_commands.html#bonds">bonds</a>
+<li><a href="atom_commands.html#cpk">cpk</a>
+</ul>
+
+<p>
+<li><a href="residue_commands.html">Residue graphics commands</a>
+<ul>
+<li><a href="residue_commands.html#coil">coil</a>
+<li><a href="residue_commands.html#cylinder">cylinder</a>
+<li><a href="residue_commands.html#double-helix">double-helix</a>
+<li><a href="residue_commands.html#helix">helix</a>
+<li><a href="residue_commands.html#strand">strand</a>
+<li><a href="residue_commands.html#trace">trace</a>
+<li><a href="residue_commands.html#turn">turn</a>
+</ul>
+
+</ul>
+</td>
+
+<td>
+<ul>
+
+<li>Lighting commands
+<ul>
+<li><a href="#directionallight">directionallight</a>
+<li><a href="#pointlight">pointlight</a>
+<li><a href="#spotlight">spotlight</a>
+</ul>
+
+<p>
+<li>Other graphics commands
+<ul>
+<li><a href="#anchor">anchor</a>
+<li><a href="#level-of-detail">level-of-detail</a>
+<li><a href="#label">label</a>
+<li><a href="#line">line</a>
+<li><a href="#object">object</a>
+<li><a href="#viewpoint">viewpoint</a>
+</ul>
+
+<p>
+<li>Utility commands
+<ul>
+<li><a href="#comment">comment</a>
+<li><a href="#debug">debug</a>
+</ul>
+
+</ul>
+</td>
+
+</tr>
+</table>
+
+<hr>
+<h2>
+<a name="directionallight">directionallight</a>
+<a href="values.html#vector"><i>vector</i></a> ;
+<br>
+<a name="directionallight">directionallight</a>
+from <a href="values.html#vector"><i>vector</i></a>
+to <a href="values.html#vector"><i>vector</i></a> ;
+</h2>
+
+Define a directional light source shining in the direction given by
+the vector, which is either given explicitly, or in the 'from, to'
+form. The light source has the colour defined by the
+<a href="state.html#lightcolour">lightcolour</a> parameter, and the
+intensity given by the
+<a href="state.html#lightintensity">lightintensity</a> parameter.
+<p>
+See the <a href="lighting.html">lighting and appearance overview</a>
+for more information about lighting.
+<p>
+<b>Parameters:</b>
+<a href="state.html#lightcolour">lightcolour</a>,
+<a href="state.html#lightambientintensity">lightambientintensity</a>,
+<a href="state.html#lightintensity">lightintensity</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="pointlight">pointlight</a>
+<a href="values.html#vector"><i>vector</i></a> ;
+</h2>
+
+Define a light source with a position, given by the vector, in the
+coordinate system. The light source has the colour defined by the 
+<a href="state.html#lightcolour">lightcolour</a> parameter, and the
+intensity given by the
+<a href="state.html#lightintensity">lightintensity</a> parameter. The
+attenuation function of the light source is determined by the
+<a href="state.html#lightattenuation">lightattenuation</a> parameter.
+<p>
+See the <a href="lighting.html">lighting and appearance overview</a>
+for more information about lighting.
+<p>
+<b>Parameters:</b>
+<a href="state.html#lightambientintensity">lightambientintensity</a>,
+<a href="state.html#lightattenuation">lightattenuation</a>,
+<a href="state.html#lightcolour">lightcolour</a>,
+<a href="state.html#lightintensity">lightintensity</a>,
+<a href="state.html#lightradius">lightradius</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="spotlight">spotlight</a>
+<a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#number"><i>number</i></a> ;
+<br>
+<a name="spotlight">spotlight</a>
+<a href="values.html#vector"><i>vector</i></a>
+from <a href="values.html#vector"><i>vector</i></a>
+to <a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#number"><i>number</i></a> ;
+</h2>
+
+Define a light source, a spotlight, with a position and a direction in
+the coordinate system, emitting a cone of light. The position of the
+light source is given by the first vector in both forms of the
+command.
+<p>
+In <strong>the first form</strong> of the command, the
+direction of the light is given by an explicit direction vector.
+In <strong>the second form</strong> of the command, the direction is
+given by a 'from, to' specification. The angle of the cone of light is
+given by the final number, in units of degrees. This must a value in
+the range 0 to 180. 
+<p>
+The light source has the colour defined by the  
+<a href="state.html#lightcolour">lightcolour</a> parameter, and the
+intensity given by the
+<a href="state.html#lightintensity">lightintensity</a> parameter. The
+attenuation function of the light source is given by the
+<a href="state.html#lightattenuation">lightattenuation</a> parameter.
+<p>
+See the <a href="lighting.html">lighting and appearance overview</a>
+for more information about lighting.
+<p>
+<b>Parameters:</b>
+<a href="state.html#lightambientintensity">lightambientintensity</a>,
+<a href="state.html#lightattenuation">lightattenuation</a>,
+<a href="state.html#lightcolour">lightcolour</a>,
+<a href="state.html#lightintensity">lightintensity</a>,
+<a href="state.html#lightradius">lightradius</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="anchor">anchor</a>
+<a href="values.html#string"><i>string</i></a> 
+[ description <a href="values.html#string"><i>string</i></a> ]
+[ parameter <a href="values.html#string"><i>string</i></a> ]
+<br>
+'{' <i>basic-commands</i> '}' ;
+</h2>
+
+The anchor command is useful only for the 
+<a href="output.html#VRML">VRML 2.0 output mode</a>. It specifies that
+all the graphics objects created within the curly brackets '{' '}'
+constitute a Web link for the VRML browser to act upon when the user
+clicks on it.
+<p>
+The first string after the <strong>anchor</strong> keyword is the URL
+of the Web link. The optional description item is a string that is 
+supposed to be presented in some way by the VRML browser when the user
+points to, but does not click on, the Web link object. The optional
+parameter item is a string that contains additional information for
+the browser, such as the name of a frame (a target) for the link
+contents to be displayed in. 
+<p>
+The graphics objects that constitute the Web link are given by the
+commands within the curly brackets '{' '}'. This is just a way to
+allow specifying more than one graphical object to form one single Web
+link. The grouping within the curly brackets '{' '}' in the anchor
+command has no deeper implication.
+<p>
+In all other (non-VRML) output modes, the commands within the curly
+brackets '{' '}' are executed as usual; the <strong>anchor</strong>
+keyword and its attendant string values are just ignored.
+<p>
+The commands that are allowed within the anchor commands group
+(<i>basic-commands</i>) include all
+<a href="atom_commands.html">atom graphics commands</a>, all
+<a href="residue_commands.html">residue graphics commands</a>, the
+<a href="state.html">graphics state commands</a>
+(<a href="state.html#set">set</a>,
+<a href="state.html#push-pop">push and pop</a>) and
+the utility commands <a href="#comment">comment</a> and
+<a href="#debug">debug</a>.
+<p>
+<strong>Note:</strong> currently the
+<a href="#level-of-detail">level-of-detail</a> command cannot be used
+within the <strong>level-of-detail</strong> command.
+<p>
+<strong>Note:</strong> this is a more restricted set of commands than
+<a href="new.html#anchor-commands">was allowed in v2.0</a>.
+<p>
+<b>Parameters:</b> none
+
+<p>
+<hr>
+<h2>
+<a name="level-of-detail">level-of-detail</a>
+<nobr>{ <a href="values.html#number">number</a>
+'{' <i>basic-commands</i> '}' }</nobr>
+<nobr>'{' <i>basic-commands</i> '}'</nobr> ;
+</h2>
+
+The level-of-detail command is useful only for the
+<a href="output.html#VRML">VRML 2.0 output mode</a>. With this
+command, it is possible to create representations at different degrees
+of complexity for the same molecule. Depending on the current distance
+of the viewer to the graphical objects, the browser chooses the appropriate
+representation. Thus, it is possible to show simplified
+representations when the viewer is at a far distance (when the detail
+isn't visible anyway), and let the browser handle when to switch for the
+increasingly detailed representations as the viewer moves closer to
+the object.
+<p>
+The representation for each level is created by the group of basic
+commands given within the curly brackets '{' '}'. The number given
+before all such groups (except the last) is the distance value within
+which that particular representation is to be used. The values must in
+ascending order for each representation. This means that the most
+detailed representation is given first, and the less detailed ones
+after that. The last group of commands has no distance range, and
+gives the representation at infinite distance. Any number of such
+distance-and-commands constructs may be used. Note that the last group
+of commands, having no specified distance value, must be
+present. However, a group of commands may be empty. 
+<p>
+In all other (non-VRML) output modes, the commands within the curly
+brackets '{' '}' are executed as usual; the
+<strong>level-of-detail</strong> keyword and its attendant numbers are
+just ignored. This means that all the different representations are
+created; this is <a href="bugs.html#general">a bug</a>, and may change
+in future versions of MolScript. 
+<p>
+The commands that are allowed within the
+<strong>level-of-detail</strong> commands groups
+(<i>basic-commands</i>) include all 
+<a href="atom_commands.html">atom graphics commands</a>, all
+<a href="residue_commands.html">residue graphics commands</a>, the
+<a href="state.html">graphics state commands</a>
+(<a href="state.html#set">set</a>,
+<a href="state.html#push-pop">push and pop</a>) and
+the utility commands <a href="#comment">comment</a> and
+<a href="#debug">debug</a>.
+<p>
+<strong>Note:</strong> currently the <a href="#anchor">anchor</a>
+command cannot be used within the <strong>level-of-detail</strong>
+command. 
+<p>
+<b>Parameters:</b> none
+
+<p>
+<hr>
+<h2>
+<a name="label">label</a>
+<a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#string"><i>string</i></a> ;
+<br>
+label <a href="selection.html#atom"><i>atom-selection</i></a>
+<a href="values.html#string"><i>string</i></a> ;
+</h2>
+
+<strong>The first form</strong> of the label command outputs a single
+label to the given position. <strong>The second form</strong> of the
+command outputs labels at the positions of the given atoms in the
+selection. 
+<p>
+The colour of the label characters is determined by the
+<a href="state.html#linecolour">linecolour</a> parameter. In the atom
+selection variant of the label command, the colours are taken from the
+<a href="state.html#atomcolour">atomcolour</a> parameter if the
+parameter <a href="state.html#colourparts">colourparts</a> is switched
+on.
+<p>
+The size of the label characters is determined by
+<a href="state.html#labelsize">labelsize</a>, which is 
+given in PostScript units. In other output formats, this size is
+converted into &Aring;ngstr&ouml;m using a reasonable conversion
+factor. However, the label size may require adjustment in such cases.
+<p>
+The parameter <a href="state.html#labelclip">labelclip</a> determines
+whether the strings will be hidden by other graphical objects, or will
+appear as if rendered on top of the rest of the image.
+<p>
+The position of the string can be fine-tuned by the
+<a href="state.html#labeloffset">labeloffset</a> parameter.  This
+vector is added to the position (explicit or that of the atoms) before
+the label is actually put into the image.
+<p>
+In the <a href="output.html#PostScript">PostScript output mode</a>,
+the <a href="state.html#depthcue">depthcue</a> parameter applies;
+labels farther away from the viewer will be smaller. Two other
+parameters are currently implemented only in the PostScript output
+mode: The 
+<a href="state.html#labelcentre">labelcentre</a> parameter defines
+which point in the string is put at the coordinate: If switched on,
+the middle of the string is used, otherwise the lower-left point of
+the string is used. The orientation of the string is controlled by the
+<a href="state.html#labelrotation">labelrotation</a> parameter. The
+<a href="state.html#labelbackground">labelbackground</a> parameter
+sets the extent of an area around the edge of the label characters
+that is filled with the
+<a href="header.html#background">background</a> colour. This makes
+labels more visible when in cluttered regions.
+<p> 
+The string itself is processed in several steps before output as the
+label. If the command with an atom selection is used, then special
+format codes in the string are replaced by data from each specified
+atom. The format codes are:
+<pre>
+   %r  name of the residue the atom is in (6 chars)
+   %t  type of the residue the atom is in (4 chars)
+   %c  one-letter code for res type, X if non-amino acid (1 char)
+   %a  atom name (4 chars)
+</pre>
+Each of these items can appear only once in the string. The character
+case of the items are taken as they are in the coordinate file (almost
+certainly uppercase). This, however, may be changed by the label mask,
+see below. Any characters that are not format codes in the string will
+be part of the finally output string, including any space
+characters. The percent character '%' cannot be output as such in
+labels generated by the atom selection variant of the label command.
+<p>
+The string thus produced by replacing format codes (if any) is passed
+through a step that uses a mask to determine whether to change the
+case of some characters or not, and if they are to be output as Greek
+characters. The mask is set by the
+<a href="state.html#labelmask">labelmask</a> parameter, and consists 
+of a string where a flag is set for each character position.
+<p>
+The available label mask flags are:
+<pre>
+   r  Roman characters (default)
+   g  Greek characters
+  ' ' (blank) no change of character case (default)
+   l  change character to lowercase
+   u  change character to uppercase
+</pre>
+The <strong>'r'</strong> and <strong>'g'</strong> flags are
+independent of the <strong>' '</strong>, <strong>'l'</strong> and
+<strong>'u'</strong> flags. When setting the
+<a href="state.html#labelmask">labelmask</a> parameter, note that a
+character flag has to be in exactly the correct position in the string
+for correct processing. Note that to get the Greek characters normally
+used for amino-acid residue atoms, the characters will have to be
+changed to lowercase as well.
+<p>
+The final processing step consists of squeezing out space characters
+that were part of the residue name or type, or the atom name, derived
+from format codes. <strong>Note</strong> the order of operations: The
+label mask is applied first, and only afterwards are blanks
+removed. Otherwise it would be impossible to predict the effect of the
+label mask. 
+<p>
+Two examples of string processing:
+<pre>
+  'LABEL'
+  'lABEL'   after applying mask 'l'
+
+  '%r.%a'        in an atom selection label command (dot means blank)
+  '123....CA..'  after replacing the format codes for an atom
+  '123....Ca..'  after applying mask '........l..'
+  '123.Ca'       after squeezing out of spaces from format code items
+</pre>
+<p>
+<b>Parameters:</b>
+<a href="state.html#atomcolour">atomcolour</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#depthcue">depthcue</a>,
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#labelbackground">labelbackground</a>,
+<a href="state.html#labelcentre">labelcentre</a>,
+<a href="state.html#labelclip">labelclip</a>,
+<a href="state.html#labelmask">labelmask</a>,
+<a href="state.html#labeloffset">labeloffset</a>,
+<a href="state.html#labelrotation">labelrotation</a>,
+<a href="state.html#labelsize">labelsize</a>.
+
+<p>
+<hr>
+<h2>
+<a name="line">line</a>
+<a href="values.html#vector"><i>vector</i></a>
+{ to <a href="values.html#vector"><i>vector</i></a> } ;
+</h2>
+
+Draw a connected line from the first vector to the following
+vectors. Any number of vectors may be given.
+<p>
+<strong>Note</strong> that the coordinates will not be transformed in
+any way; they are in the fixed coordinate space of MolScript. See
+<a href="#object">object</a> for a way of drawing lines that are
+affected by a given transformation.
+<p>
+In the <a href="output.html#PostScript">PostScript</a> output mode,
+the lines are recursively subdivided into pieces smaller than the
+value for the <a href="state.html#segmentsize">segmentsize</a>
+parameter. 
+<p>
+<b>Parameters:</b>
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#segmentsize">segmentsize</a>,
+<a href="state.html#transparency">transparency</a>.
+
+<p>
+<hr>
+<h2>
+<a name="object">object</a>
+<a href="values.html#string"><i>string</i></a> ;
+<br>
+object inline ;
+</h2>
+
+The object command is the interface for importing graphical objects
+into the MolScript image. The graphical objects are defined using
+<a href="object.html">a simple file format</a>.
+<p>
+<strong>The first form</strong> of the command is for objects
+specified in an external file, the name of which is given by the string.
+<p>
+<strong>The second form</strong> allows the objects to be specified in
+the MolScript input file itself. The format of this inline object
+specification is the same as for the external object file. Similarly
+as for the 'inline-PDB' form of the coordinate
+<a href="coordinates.html#read">read</a> command, the usual syntax
+rules of the MolScript input file are temporarily inhibited until the
+end of the inline part of the input file. <strong>Note</strong> that
+in this form of the command, the semi-colon ';' ending the command
+itself must appear <strong>before</strong> the object specifications
+are given. There is no semi-colon after the final piece of data in the
+object specification, which for the inline form must be a 'Q'
+character (see the <a href="object.html">object file format
+description</a>). 
+<p>
+The graphical objects that may be specified in the object file are:
+points, lines, triangles, and triangle strips. The format of the
+object file is <a href="object.html">described separately</a>.
+<p>
+The <strong>point and line</strong> objects are affected by the
+various line parameters: The
+<a href="state.html#linewidth">linewidth</a> parameter determines the
+size of the points and the width of the lines (if implemented for the
+output mode). The <a href="state.html#linedash">linedash</a> 
+parameter affects the lines. The
+<a href="state.html#linecolour">linecolour</a> parameter affects the
+points and lines, unless there are explicit colours specified in the
+object file. 
+<p>
+The <strong>triangle and triangle strip</strong> objects are
+double-sided surfaces (<i>i.e.</i> visible from both sides), which may
+have surface normals and vertex colours defined explicitly. If no
+explicit colours are defined, then the
+<a href="state.html#planecolour">planecolour</a> parameter is
+used. The usual <a href="lighting.html">lighting</a> parameters apply 
+to these objects, as does the
+<a href="state.html#transparency">transparency</a> parameter.
+<p>
+If the <a href="state.html#objecttransform">objecttransform</a>
+parameter is switched on, then the coordinates of the objects are
+transformed by the matrix specified in the latest
+<a href="coordinates.html#transform">transform</a> command. This
+is necessary for objects created in the coordinate system of the
+original atomic coordinates (<i>i.e.</i> almost all objects) to be
+displayed in a sensible way together with the graphics objects derived
+from the view-transformed molecule coordinates. For this to work, the
+view transformation applied to the molecule coordinates must be
+defined in one single 
+<a href="coordinates.html#transform">transform</a> command.
+<p>
+In the <a href="output.html#PostScript">PostScript</a> output mode,
+the lines and triangles are recursively subdivided into pieces smaller
+than the value for the
+<a href="state.html#segmentsize">segmentsize</a> parameter. 
+<p>
+<b>Parameters:</b>
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#objecttransform">objecttransform</a>,
+<a href="state.html#segmentsize">segmentsize</a>,
+<a href="state.html#transparency">transparency</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="viewpoint">viewpoint</a>
+<a href="values.html#string"><i>string</i></a>
+from <a href="values.html#vector"><i>vector</i></a>
+to <a href="values.html#vector"><i>vector</i></a>
+[ <a href="values.html#number"><i>number</i></a> ] ;
+<br>
+viewpoint
+<a href="values.html#string"><i>string</i></a>
+origin
+<a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#number"><i>number</i></a> ;
+</h2>
+
+The viewpoint command is useful only for the
+<a href="output.html#VRML">VRML 2.0 output mode</a>. It specifies a
+viewpoint, presented in some way by the VRML browser, that helps the
+user to navigate through the scene under guidance. The string in both
+forms of the command is a descriptive designation for the viewpoint,
+which is presented in some way by the VRML browser.
+<p>
+<strong>The first form</strong> of the command specifies the viewpoint
+in terms of the position where the user is located (the 'from'
+vector), and the position towards which the user looks (the 'to'
+vector). 
+<p>
+<strong>The second form</strong> of the command specifies a viewpoint
+where the origin of the fixed coordinate system is in the centre, and
+the position given by the vector is located between the position of
+the user and the origin. The viewpoint is located at the distance from
+the position given by the single number.
+<p>
+MolScript always defines a default viewpoint called "overall
+default". The view direction is along a vector anti-parallel to the z
+axis of the fixed coordinate system, looking towards the approximate
+center of the entire set of graphics objects. The position of the
+viewer is at such a distance so that almost all graphics objects are
+visible. 
+<p>
+<b>Parameters:</b> none
+
+<p>
+<hr>
+<h2>
+<a name="comment">comment</a>
+<a href="values.html#string"><i>string</i></a> ;
+</h2>
+
+Write the given string as a comment to the output file, using the
+syntax appropriate for that format. This may be helpful for navigating
+in the output file in cases when it needs post-editing of some
+kind. It has no effect on the image.
+<p>
+This is meaningful only for some output modes, currently only
+<a href="output.html#VRML">VRML 2.0</a> and 
+<a href="output.html#Raster3D">Raster3D</a>.
+
+<p>
+<b>Parameters:</b> none
+
+<p>
+<hr>
+<h2>
+<a name="debug">debug</a>
+<a href="values.html#string"><i>string</i></a> ;
+</h2>
+
+Output the given string as a run-time diagnostic message to
+<strong>stderr</strong>. This has no effect on the image.
+<p>
+<b>Parameters:</b> none
+
+<p>
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

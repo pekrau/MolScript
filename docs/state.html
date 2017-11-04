@@ -1,0 +1,1406 @@
+<html>
+<head>
+<title>MolScript v2.1: The graphics state</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>The graphics state</h1>
+
+The graphics state controls the appearance of the graphics
+objects. When a graphics object, such as a helix, is created, its
+appearance is determined by the graphics state at that point in the
+input file. If relevant parameters are changed at some point in
+the file, then this will affect only graphics objects created after
+that point in the input file. Objects created prior to the change are
+not affected. This allows a high degree of control for the user to
+fine-tune the image.
+
+<ul>
+<li>Commands:
+<ul>
+<li><a href="#set">set</a>
+<li><a href="#push-pop">push and pop</a>
+</ul>
+<p>
+<li>Parameters:
+
+<table cellpadding=5>
+<tr>
+
+<td>
+<ul>
+<li><a href="#atomcolour">atomcolour</a>
+<li><a href="#atomradius">atomradius</a>
+<li><a href="#bonddistance">bonddistance</a>
+<li><a href="#bondcross">bondcross</a>
+<li><a href="#coilradius">coilradius</a>
+<li><a href="#colourparts">colourparts</a>
+<li><a href="#colourramp">colourramp</a>
+<li><a href="#cylinderradius">cylinderradius</a>
+<li><a href="#depthcue">depthcue</a>
+<li><a href="#emissivecolour">emissivecolour</a>
+<li><a href="#helixthickness">helixthickness</a>
+<li><a href="#helixwidth">helixwidth</a>
+<li><a href="#hsbreverseramp">hsbreverseramp</a>
+<li><a href="#labelbackground">labelbackground</a>
+<li><a href="#labelcentre">labelcentre</a>
+<li><a href="#labelclip">labelclip</a>
+<li><a href="#labelmask">labelmask</a>
+<li><a href="#labeloffset">labeloffset</a>
+<li><a href="#labelrotation">labelrotation</a>
+<li><a href="#labelsize">labelsize</a>
+<li><a href="#lightambientintensity">lightambientintensity</a>
+<li><a href="#lightattenuation">lightattenuation</a>
+<li><a href="#lightcolour">lightcolour</a>
+</ul>
+</td>
+
+<td>
+<ul>
+<li><a href="#lightintensity">lightintensity</a>
+<li><a href="#lightradius">lightradius</a>
+<li><a href="#linecolour">linecolour</a>
+<li><a href="#linedash">linedash</a>
+<li><a href="#linewidth">linewidth</a>
+<li><a href="#objecttransform">objecttransform</a>
+<li><a href="#planecolour">planecolour</a>
+<li><a href="#plane2colour">plane2colour</a>
+<li><a href="#regularexpression">regularexpression</a>
+<li><a href="#residuecolour">residuecolour</a>
+<li><a href="#segments">segments</a>
+<li><a href="#segmentsize">segmentsize</a>
+<li><a href="#shading">shading</a>
+<li><a href="#shadingexponent">shadingexponent</a>
+<li><a href="#shininess">shininess</a>
+<li><a href="#smoothsteps">smoothsteps</a>
+<li><a href="#specularcolour">specularcolour</a>
+<li><a href="#splinefactor">splinefactor</a>
+<li><a href="#stickradius">stickradius</a>
+<li><a href="#sticktaper">sticktaper</a>
+<li><a href="#strandthickness">strandthickness</a>
+<li><a href="#strandwidth">strandwidth</a>
+<li><a href="#transparency">transparency</a>
+</ul>
+</td>
+
+</tr>
+</table>
+
+</ul>
+
+<p>
+<hr>
+<h2><a name="set">set command</a></h2>
+
+The <strong>set</strong> command changes the graphics state. The
+command is given with the parameter to change and its new value. More
+than one parameter may be changed in one single <code>set</code>
+command, using the comma ',' character as delimiter between the
+specifications. As usual, the command is ended with a semi-colon ';':
+
+<code><blockquote>
+set <i>parameter-specification</i> { , <i>parameter-specification</i> } ;
+</blockquote></code>
+<p>
+
+For example, to change the colour of lines to a reddish purple (using
+an <a href="values.html#colour">rgb specification</a>):
+
+<code><blockquote>
+set linecolour rgb 1 0 0.2;
+</blockquote></code>
+
+To set the residue colours for amino-acids according to the B-factor
+value (of the CA atom) from blue (low B-factor) to red (high), and
+switch on colouring per residue in the schematic representations:
+
+<code><blockquote>
+<pre>
+set residuecolour amino-acids b-factor 5 45 from blue to red,
+    colourparts on;
+</pre>
+</blockquote></code>
+
+<p>
+<hr>
+<h2><a name="push-pop">push and pop commands</a></h2>
+
+The graphics state can be saved and restored during the execution of
+the input file, using a stack-based mechanism. This is useful when a
+graphics object needs some unusual parameter values, which then need
+to be reset for the subsequent objects in the input file.
+<p>
+
+The <strong>push</strong> and <strong>pop</strong> commands have no
+parameters, and must (as usual) be ended with a semi-colon ';':
+
+<code><blockquote>
+push ;
+<br>
+pop ;
+</blockquote></code>
+<p>
+
+The <strong>push</strong> command creates a copy of the current
+graphics state, and pushes the copy onto the stack. Any number of
+state copies may be pushed onto the stack. The <strong>pop</strong>
+command removes the state copy off the top of the stack and sets it as
+the current state. 
+<p>
+The graphics state stack is initially empty. It is an error to attempt
+a <strong>pop</strong> when the stack is empty. The stack is
+automatically cleared when the plot is finished.
+<p>
+<strong>Note</strong>: The parameters
+<a href="#atomcolour">atomcolour</a>,
+<a href="#atomradius">atomradius</a> and
+<a href="#residuecolour">residuecolour</a> are currently
+<strong>not</strong> saved or restored by the <strong>push</strong>
+and <strong>pop</strong> commands.
+
+<p>
+<hr>
+<h3>
+<a name="atomcolour">atomcolour
+<a href="selection.html#atom"><i>atom-selection</i></a>
+<a href="values.html#colour"><i>colour-specification</i></a>
+<br>
+atomcolour
+<a href="selection.html#atom"><i>atom-selection</i></a>
+b-factor <a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#ramp"><i>colour-ramp</i></a>
+</h3>
+
+Change the colour for the selected atoms. Each atom can in principle
+be given a distinct colour different from all other atoms.
+<p>
+In the second form of the command, the colour for each atom is
+determined by a linear interpolation in the given colour ramp based on
+the B-factor for the atom. The two numbers are the low and high
+B-factor values that correspond to the end-points of the given colour
+ramp.
+<p>
+<b>Note:</b> This parameter is not saved or restored by the
+<a href="#push-pop">push and pop</a> commands. 
+<p>
+<b>Defaults:</b>
+atom C* grey 0.2, atom N* blue, atom O* red, atom H* white, atom
+S* yellow, atom P* purple, others grey 0.8
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>,
+<a href="atom_commands.html#bonds">bonds</a>.
+<br>
+<b>Used for:</b> all output modes
+<br>
+<b>See also:</b>
+<a href="#colourparts">colourparts</a>
+
+<hr>
+<h3>
+<a name="atomradius">atomradius
+<a href="selection.html#atom"><i>atom-selection</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change radius for the selected atoms. Each atom can in principle be
+given a distinct radius different from all other atoms. The radii are
+used directly for <a href="atom_commands.html#cpk">cpk</a> spheres, while
+the atom spheres in
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a> use the
+radii after dividing by 4. The unit is &Aring;ngstr&ouml;m.
+<p>
+The atom radius may be set to exactly 0.0; such atoms are never output
+when <a href="atom_commands.html#cpk">cpk</a> or 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a> are used.
+<p>
+<b>Note:</b> This parameter is not saved or restored by the
+<a href="#push-pop">push and pop</a> commands. 
+<p>
+<b>Defaults:</b>
+atom C* 1.7, atom N* 1.7, atom O* 1.35, atom H* 1.0, atom S*
+1.8, atom P* 1.8, others 1.7
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>.
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="bonddistance">bonddistance
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the maximum bond distance. Atoms that are closer than this
+distance will have <a href="atom_commands.html#bonds">bonds</a> or
+<a href="atom_commands.html#ball-and-stick">sticks</a>
+drawn between them, otherwise not, when selected in the respective
+command. The unit is &Aring;ngstr&ouml;m. 
+
+<br>
+<br><b>New (Oct 2015):</b> A value of 0.0 will detect bonds based
+on atom radii overlap. It will also prevent bonding between different
+alt locations and different models.
+
+<p>
+<b>Default:</b> 1.9
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#bonds">bonds</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>.
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="bondcross">bondcross
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the size of crosses drawn for non-bonded atoms selected in the
+<a href="atom_commands.html#bonds">bonds</a> command. The value is the
+length of the lines used in the cross. No crosses are drawn if the
+parameter value is 0.0.
+<p>
+<b>Default:</b> 0.4
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#bonds">bonds</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="coilradius">coilradius
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the radius of the <a href="residue_commands.html#coil">coils</a>,
+<a href="residue_commands.html#turn">turns</a> and
+<a href="residue_commands.html#double-helix">double-helices</a>. If the value
+is less than 0.01, then a line is drawn instead. The width of helices
+at the terminii is twice the value of this parameter. The unit is 
+&Aring;ngstr&ouml;m. 
+<p>
+<b>Default:</b> 0.2
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#turn">turn</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="colourparts">colourparts
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+When set to <strong>on</strong>, the residue graphics objects
+(<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a> and so on) are coloured by
+the <a href="#residuecolour">residuecolour</a> parameter, and 
+<a href="atom_commands.html#bonds">bonds</a> and the sticks in
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+objects are split in half and coloured according to the
+<a href="#atomcolour">atomcolour</a> parameter for the bonded
+atoms.
+<p>
+When this parameter is <strong>off</strong> the colours are taken
+from the <a href="#planecolour">planecolour</a>,
+<a href="#planecolour">plane2colour</a> and
+<a href="#linecolour">linecolour</a> parameters.
+<p>
+<b>Default:</b> <strong>off</strong>
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>,
+<a href="atom_commands.html#bonds">bonds</a>,
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>,
+<a href="residue_commands.html#trace">trace</a>,
+<a href="residue_commands.html#turn">turn</a>.
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="colourramp">colourramp &lt; hsb | rgb &gt;
+</h3>
+
+Determine in which colour space the
+<a href="values.html#ramp">colour ramp</a> interpolation is
+performed when setting <a href="#residuecolour">residuecolour</a> and 
+<a href="#atomcolour">atomcolour</a> using the B-factor mapping.
+<p>
+<b>Default:</b> <strong>hsb</strong>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="cylinderradius">cylinderradius
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the radius of the <a href="residue_commands.html#cylinder">cylinder</a>
+object. The unit is &Aring;ngstr&ouml;m. 
+<p>
+<b>Default:</b> 2.3
+<br>
+<b>Required:</b> &gt; 0.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#cylinder">cylinder</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="depthcue">depthcue
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the degree of depth-cue effects. Line widths (including
+lines drawn at edges of plane segments and spheres), label sizes and
+coil and turn radii will be reduced the farther away they are from the
+viewer. Coil and turn radii are affected only if 
+<a href="header.html#slab">slab</a> has been set explicitly. The
+number ranges from 0.0 (no effect) to 1.0 (full effect).
+<p>
+The default value is appropriate for line width and coil and turn
+radii, but probably too high for labels.
+<p>
+<b>Default:</b> 0.75
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#line">line</a>,
+<a href="atom_commands.html#bonds">bonds</a>,
+<a href="commands.html#label">label</a>,
+<a href="residue_commands.html#trace">trace</a>,
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="emissivecolour">emissivecolour
+<a href="values.html#colour"><i>colour-specification</i></a>
+</h3>
+
+Set the emissive colour for objects with surfaces. The emissive
+component of surface lighting is independent of any light sources in
+the scene. This parameter together with
+<a href="#shininess">shininess</a>,
+<a href="#specularcolour">specularcolour</a> and the
+inherent colour of the object
+(<a href="#planecolour">planecolour</a>,
+<a href="#atomcolour">atomcolour</a> and so on)
+determine the surface properties when lit.
+<p>
+<b>Default:</b> black (<i>i.e.</i> no emissive colour)
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="#lightcolour">lightcolour</a>,
+<a href="#specularcolour">specularcolour</a>,
+<a href="#shininess">shininess</a>,
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="helixthickness">helixthickness
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the thickness of the
+<a href="residue_commands.html#helix">helix</a> ribbon. The unit is
+&Aring;ngstr&ouml;m.
+<p>
+<b>Default:</b> 0.3
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#helix">helix</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a> only
+<hr>
+
+<h3>
+<a name="helixwidth">helixwidth
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the width of the helix ribbon. The unit is
+&Aring;ngstr&ouml;m. The width of the helix at the terminii is twice
+the value of the parameter coilradius.
+<p>
+<b>Default:</b> 2.4
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#helix">helix</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="hsbreverseramp">hsbreverseramp
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+Set the direction of the
+<a href="values.html#ramp">colour ramp</a> when the
+<strong>hsb</strong> colour ramp is used. If the value is
+<strong>off</strong> the ramp is in the positive direction.
+<p>
+<b>Default:</b> <strong>off</strong>
+<hr>
+
+<h3>
+<a name="labelbackground">labelbackground
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the amount of background for the labels. A non-zero value will
+create an area of the <a href="header.html#background">background
+colour</a> extending uniformly from the characters. This may be useful
+to distinguish labels agains dark objects.
+<p>
+<b>Default:</b> 0.0
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="labelcentre">labelcentre
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+When switched on, the labels are centered on the given coordinate or
+atom positions. Otherwise the left lower corner of the labels are
+positioned on the given coordinate or atom positions. 
+<p>
+<b>Default:</b> <strong>on</strong>
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="labelclip">labelclip
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+When switched on, labels are clipped against other graphics objects
+as usual. Otherwise they are rendered on top of the other graphics
+objects as if they were all in front of them. 
+<p>
+<b>Default:</b> <strong>off</strong>
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="labelmask">labelmask
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Set the mask to be applied to label strings before output. This is
+described in the <a href="commands.html#label">label</a> command.
+<p>
+<b>Default:</b> &quot;rrr...&quot; (Roman characters),
+&quot;   ...&quot; (no change of character case)
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b>
+character case: all output modes; Greek/Roman: 
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="labeloffset">labeloffset
+<a href="values.html#vector"><i>vector</i></a>
+</h3>
+
+Set the translation vector to be added to the position given for
+labels before placing them in the coordinate system. The unit is
+&Aring;ngstr&ouml;m.
+<p>
+<b>Default:</b> 0.0 0.0 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="labelrotation">labelrotation
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+When switched on, the labels are rotated by 90 degrees. This is
+intended for PostScript plots in landscape orientation.
+<p>
+<b>Default:</b> off
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="labelsize">labelsize
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the size, in PostScript units, of label characters. In the
+<a href="output.html#PostScript">PostScript</a> output mode, the
+actual character size of a label also depends on the
+<a href="#depthcue">depthcue</a> parameter.
+<p>
+For non-PostScript output modes, the size value is mapped into
+something sensible, but may require modifications, and may also depend
+on the <a href="header.html#window">window</a> size.
+<p>
+<b>Default:</b> 20.0
+<br>
+<b>Required:</b> &gt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#label">label</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="lightambientintensity">lightambientintensity
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the intensity for ambient-light contribution to a scene
+that a subsequently created light source provides.
+<p>
+<b>Default:</b> 0.0
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#directionllight">directionallight</a>, 
+<a href="commands.html#pointlight">pointlight</a>, 
+<a href="commands.html#spotlight">spotlight</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="lightattenuation">lightattenuation
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the attenuation function coefficients for a subsequently created
+positional light source
+(<a href="commands.html#pointlight">pointlight</a> or
+<a href="commands.html#spotlight">spotlight</a>). The attenuation
+function is used in the  calculation of how much a specific positional
+light source contributes to the lighting of a given surface, depending
+on the distance between them. It is given by: 
+<code><blockquote>
+attenuation = 1.0 / max (n1 + n2 * d + n3 * d<sup>2</sup>)
+</blockquote></code>
+where n1, n2 and n3 are the three numbers given for the parameter, and
+d is the distance (in &Aring;ngstr&ouml;m) between the light source
+and the surface.
+<p>
+<b>Default:</b> 1.0 0.0 0.0 (<i>i.e.</i> no attenuation)
+<br>
+<b>Required:</b> all components &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#pointlight">pointlight</a>, 
+<a href="commands.html#spotlight">spotlight</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="lightcolour">lightcolour
+<a href="values.html#colour"><i>colour-specification</i></a>
+</h3>
+
+Set the colour of a subsequently created light source.
+<p>
+For the <a href="output.html#OpenGL">OpenGL</a> output mode, both the
+specular and the diffuse component of the light source are set to the
+given colour. In the <a href="output.html#VRML">VRML 2.0</a> output
+mode, there is no distinction between these two.
+<p>
+<b>Default:</b> white
+<br>
+<b>Applies to:</b>
+<a href="commands.html#directionallight">directionallight</a>, 
+<a href="commands.html#pointlight">pointlight</a>, 
+<a href="commands.html#spotlight">spotlight</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="#emissivecolour">emissivecolour</a>,
+<a href="#specularcolour">specularcolour</a>,
+<a href="#shininess">shininess</a>,
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="lightintensity">lightintensity
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the intensity for a subsequently created light source.
+<p>
+<b>Default:</b> 1.0
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#directionallight">directionallight</a>, 
+<a href="commands.html#pointlight">pointlight</a>, 
+<a href="commands.html#spotlight">spotlight</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="lightradius">lightradius
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the radius within which a subsequently created point light
+source has an effect. The unit is &Aring;ngstr&ouml;m. 
+<p>
+<b>Default:</b> 100.0
+<br>
+<b>Required:</b> &gt; 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#pointlight">pointlight</a>, 
+<a href="commands.html#spotlight">spotlight</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#VRML">VRML 2.0</a>
+<br>
+<b>See also:</b>
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="linecolour">linecolour
+<a href="values.html#colour"><i>colour-specification</i></a>
+</h3>
+
+Change the colour of lines and labels.
+<p>
+In <a href="output.html#PostScript">PostScript</a> mode, the lines at
+the edges of planes (in several different kinds of output segments)
+and spheres are also affected. 
+<p>
+<b>Default:</b>
+black for
+<a href="output.html#PostScript">PostScript</a>,
+white for
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>Applies to:</b>
+<a href="commands.html#line">line</a>,
+<a href="atom_commands.html#bonds">bonds</a>,
+<a href="commands.html#label">label</a>,
+<a href="residue_commands.html#trace">trace</a>,
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="linedash">linedash
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the dash pattern applied to lines. A value of 0.0 gives solid
+lines, otherwise the value gives the length of each dash in PostScript
+units. A value of 6.0 gives reasonable results.
+<p>
+For non-PostScript output modes, the value is mapped into something
+sensible, but may require modifications, and may also depend on the
+<a href="header.html#window">window</a> size. 
+<p>
+<b>Default:</b> 0.0
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#line">line</a>,
+<a href="atom_commands.html#bonds">bonds</a>,
+<a href="residue_commands.html#trace">trace</a>,
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<hr>
+
+<h3>
+<a name="linewidth">linewidth
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the width of lines, in PostScript units. The lines at the edges
+of planes (in several different kinds of output segments) and spheres
+are also affected.
+<p>
+For non-PostScript output modes, the value is mapped into something
+sensible, but may require modifications, and may also depend on the
+<a href="header.html#window">window</a> size. 
+<p>
+<b>Default:</b> 1.0
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#line">line</a>,
+<a href="atom_commands.html#bonds">bonds</a>,
+<a href="residue_commands.html#trace">trace</a>,
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<hr>
+
+<h3>
+<a name="objecttransform">objecttransform
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+Determine whether the coordinates for the subsequently rendered
+<a href="commands.html#object">objects</a> are to be transformed by
+the matrix defined by the latest
+<a href="coordinates.html#transform">transform</a> command.
+<p>
+<b>Default:</b> <strong>on</strong>
+<br>
+<b>Applies to:</b>
+<a href="commands.html#object">object</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="planecolour">planecolour
+<a href="values.html#colour"><i>colour-specification</i></a>
+</h3>
+
+Change the colour of the main surfaces: these are the outer
+surface of
+<a href="residue_commands.html#helix">helices</a>, the main surfaces of
+<a href="residue_commands.html#strand">strands</a>, the surfaces of
+<a href="residue_commands.html#coil">coils</a> and
+<a href="residue_commands.html#turn">turns</a> and also the surface of sticks
+(in <a href="atom_commands.html#ball-and-stick">ball-and-stick</a>).
+<p>
+This parameter is used if the
+<a href="#colourparts">colourparts</a> parameter is switched off,
+otherwise the <a href="#residuecolour">residuecolour</a> and  
+<a href="#atomcolour">atomcolour</a> parameters are used.
+<p>
+<b>Default:</b> white
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>
+<br>
+<b>Used for:</b> all output modes
+<br>
+<b>See also:</b>
+<a href="#colourparts">colourparts</a>
+<hr>
+
+<h3>
+<a name="plane2colour">plane2colour
+<a href="values.html#colour"><i>colour-specification</i></a>
+</h3>
+
+Change the colour of the secondary surfaces: these are the inner
+surfaces of <a href="residue_commands.html#helix">helices</a> and the side
+surfaces of <a href="residue_commands.html#strand">strands</a>.
+<p>
+This parameter is used if the
+<a href="#colourparts">colourparts</a> parameter is switched off,
+otherwise the <a href="#residuecolour">residuecolour</a> and  
+<a href="#atomcolour">atomcolour</a> parameters are used.
+<p>
+<b>Default:</b> grey 0.5
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>
+<br>
+<b>Used for:</b> all output modes
+<br>
+<b>See also:</b>
+<a href="#colourparts">colourparts</a>
+<hr>
+
+<h3>
+<a name="regularexpression">regularexpression
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt;
+</h3>
+
+Determine which syntax is used to specify the regular expressions used
+in <a href="selection.html#name">name comparisons</a>. By default, the
+syntax is similar to that used in the X-PLOR program
+(<a href="references.html#Brunger-1992">Br&uuml;nger 1992</a>).
+When switched on, the syntax is similar to the one used in many common
+UNIX utilities. See 
+<a href="selection.html#name">name comparisons</a> for more information.
+<p>
+<b>Default:</b> <strong>off</strong>
+<br>
+<b>Used for:</b> all output modes
+<br>
+<b>See also:</b>
+<a href="selection.html#name">name comparisons</a>
+<hr>
+
+<h3>
+<a name="residuecolour">residuecolour
+<a href="selection.html#residue"><i>residue-selection</i></a>
+<a href="values.html#colour"><i>colour-specification</i></a>
+<br>
+residuecolour
+<a href="selection.html#residue"><i>residue-selection</i></a>
+b-factor <a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#ramp"><i>colour-ramp</i></a>
+<br>
+residuecolour
+<a href="selection.html#residue"><i>residue-selection</i></a>
+<a href="values.html#ramp"><i>colour-ramp</i></a>
+</h3>
+
+Change the colour for the selected residues. Each residue can in
+principle be given a distinct colour different from all other
+residues. The colours are used for the schematic residue
+representations, such as <a href="residue_commands.html#coil">coil</a> and 
+<a href="residue_commands.html#helix">helix</a>, when the
+<a href="#colourparts">colourparts</a> parameter is switched on. By
+default it is switched off, in which case the
+<a href="#planecolour">planecolour</a> and
+<a href="#plane2colour">plane2colour</a> parameters determine the
+colour of the schematic graphics objects.
+<p>
+In the second form of the command, the colour for each residue is
+determined by a linear interpolation in the given colour ramp based on
+the B-factor for the residue. If the residue is an amino-acid
+(according the the residue type), then its B-factor is taken to be
+the B-factor for the CA atom, otherwise an average of the B-factors
+for all atoms in the residue is used. The two numbers are the low and
+high B-factor values that correspond to the end-points of the given
+colour ramp.
+<p>
+In the third form of the command, the selected residues are coloured
+in linear fashion in the order they appeared in the coordinate file,
+along the given colour ramp.
+<p>
+<b>Note:</b> This parameter is not saved or restored by the
+<a href="#push-pop">push and pop</a> commands. 
+<p>
+<b>Default:</b> white
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>
+<br>
+<b>Used for:</b> all output modes
+<br>
+<b>See also:</b>
+<a href="#colourparts">colourparts</a>
+
+<hr>
+<h3>
+<a name="segments">segments
+<a href="values.html#number"><i>integer</i></a>
+</h3>
+
+Change the number of graphical segments to create between each CA atom
+point for the schematic residue objects.  More segments give smoother
+graphics objects, at the price of larger files or longer display times.
+For strands, the number of segments between each CA atom point is
+actually <nobr>(number / 2) + 1</nobr>, where the division is integer
+division.
+<p>
+The subdivision of the <a href="residue_commands.html#cylinder">cylinder</a>
+object is also controlled by this parameter.
+<p>
+In the <a href="output.html#OpenGL">OpenGL</a> output mode, this
+parameter controls the tesselation of spheres used by the 
+<a href="atom_commands.html#cpk">cpk</a> and 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a> commands.
+<p>
+<b>Default:</b>
+6 for
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a>, 
+3 for
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="segmentsize">segmentsize
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the maximum size of certain graphical segments for the
+<a href="output.html#PostScript">PostScript</a> output mode. If the 
+graphical segments (lines, triangles and cylinders, see below) are
+larger than this value, then they are recursively subdivided into
+smaller pieces. <strong>Note</strong> that very large numbers of
+graphical segments may be produced if a small value is used for this
+parameter. 
+<p>
+<b>Default:</b> 2.0
+<br>
+<b>Required:</b> &gt; 0.0
+<br>
+<b>Applies to:</b>
+<a href="commands.html#line">line</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>,
+<a href="commands.html#object">object</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="shading">shading
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the factor controlling the degree of shading to apply to
+surface colours. This is relevant only for the
+<a href="output.html#PostScript">PostScript</a> output mode.
+<p>
+A value of 0.0 disables shading, while a value of 1.0 makes plane
+segments whose normals are nearly parallel to the paper completely
+black. When plotting large proteins, it may be a good idea to switch
+off shading altogether; this reduces the apparent clutter of the image. 
+<p>
+<b>Default:</b> 0.5
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>
+<a href="residue_commands.html#double-helix">double-helix</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>,
+<a href="commands.html#object">object</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<br>
+<b>See also:</b> <a href="#shadingexponent">shadingexponent</a>
+<hr>
+
+<h3>
+<a name="shadingexponent">shadingexponent
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the exponent of the shading function relating the plane segment
+normal vector to the degree of shading. This is relevant only for the
+<a href="output.html#PostScript">PostScript</a> output mode.
+<p>
+A large exponent makes the shading strong already at a small angle
+between the viewer and plane segment normal vector, while a small
+exponent makes the shading appear only at a large angle. 
+<p>
+<b>Default:</b> 1.5
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>
+<a href="residue_commands.html#double-helix">double-helix</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>,
+<a href="commands.html#object">object</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<br>
+<b>See also:</b> <a href="#shading">shading</a>
+<hr>
+
+<h3>
+<a name="shininess">shininess
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the degree of shininess for the surfaces. This parameter interacts
+closely with the <a href="#specularcolour">specularcolour</a>
+parameter, which must be something other than black for the shininess
+parameter to have any effect. 
+<p>
+<b>Default:</b> 0.2
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>,
+<a href="commands.html#object">object</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a>, 
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="#emissivecolour">emissivecolour</a>,
+<a href="#lightcolour">lightcolour</a>,
+<a href="#specularcolour">specularcolour</a>,
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="smoothsteps">smoothsteps
+<a href="values.html#number"><i>integer</i></a>
+</h3>
+
+Change the number of Priestle smoothing steps 
+(<a href="references.html#Priestle-1988">Priestle 1988</a>) to apply
+to the coordinates of the CA atoms in the selected residues for the
+<a href="residue_commands.html#coil">coil</a> and 
+<a href="residue_commands.html#strand">strand</a> commands.
+<p>
+The higher the value is, the smoother is the path of the coil or
+strand. The <a href="residue_commands.html#coil">coil</a> command would be the
+same as the <a href="residue_commands.html#turn">turn</a> command if this
+parameter were to have the value 0.
+<p>
+<b>Default:</b> 2
+<br>
+<b>Required:</b> &gt;= 1
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#strand">strand</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="specularcolour">specularcolour
+<a href="values.html#colour"><i>colour-specification</i></a>
+</h3>
+
+Set the specular colour for objects with surfaces. The specular colour
+is the colour of reflected light from specific light sources.
+<p>
+This parameter together with <a href="#shininess">shininess</a>,
+<a href="#emissivecolour">emissivecolour</a>
+and the inherent colour of the object
+(<a href="#planecolour">planecolour</a>,
+<a href="#atomcolour">atomcolour</a> and so on)
+determine the surface properties when lit.
+<p>
+<b>Default:</b>
+black (<i>i.e.</i> no specular colour) for
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>,
+white for
+<a href="output.html#Raster3D">Raster3D</a>
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#cylinder">cylinder</a>,
+<a href="residue_commands.html#double-helix">double-helix</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#helix">helix</a>,
+<a href="residue_commands.html#strand">strand</a>, 
+<a href="atom_commands.html#cpk">cpk</a>, 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a>, 
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+<br>
+<b>See also:</b>
+<a href="#emissivecolour">emissivecolour</a>,
+<a href="#lightcolour">lightcolour</a>,
+<a href="#shininess">shininess</a>,
+<a href="lighting.html">lighting</a>
+<hr>
+
+<h3>
+<a name="splinefactor">splinefactor
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the vector length factor used for the Hermite spline curves
+in <a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a> and
+<a href="residue_commands.html#strand">strand</a>. A value close to 0.0 gives
+nearly straight lines between each control point, while larger values
+give progressively stronger curvature.
+<p>
+<b>Default:</b> 1.0
+<br>
+<b>Required:</b> &gt;= 0.01
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#coil">coil</a>,
+<a href="residue_commands.html#turn">turn</a>,
+<a href="residue_commands.html#strand">strand</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="stickradius">stickradius
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the radius of the sticks in the
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+representation. The unit is &Aring;ngstr&ouml;m.
+<p>
+<b>Default:</b> 0.2
+<br>
+<b>Required:</b> &gt; 0.0
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="sticktaper">sticktaper
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the degree of the tapering effect when a stick points away from
+the viewer. A too large value can give undesirable pseudo-depth cue
+effects. The value 0.0 is no effect, and 1.0 is full effect. This is
+used only for the <a href="output.html#PostScript">PostScript</a>
+output mode. 
+<p>
+<b>Default:</b> 0.75
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b>
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a> only
+<hr>
+
+<h3>
+<a name="strandthickness">strandthickness
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the thickness of
+<a href="residue_commands.html#strand">strands</a>. If this parameter is set
+to less than 0.01, then a strand is output as a single surface
+without any thickness. The unit is &Aring;ngstr&ouml;m.
+<p>
+<b>Default:</b> 0.6
+<br>
+<b>Required:</b> &gt;= 0.0
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#strand">strand</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="strandwidth">strandwidth
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Change the width of
+<a href="residue_commands.html#strand">strands</a>. The unit is
+&Aring;ngstr&ouml;m.
+<p>
+<b>Default:</b> 2.0
+<br>
+<b>Required:</b> &gt;= 0.02
+<br>
+<b>Applies to:</b>
+<a href="residue_commands.html#strand">strand</a>
+<br>
+<b>Used for:</b> all output modes
+<hr>
+
+<h3>
+<a name="transparency">transparency
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Set the transparency of surfaces. A value of 0.0 gives no transparency,
+while a value of 1.0 gives complete transparency.
+<p>
+The quality of the transparency rendering is strongly dependent on the
+output mode. For <a href="output.html#VRML">VRML 2.0</a> the quality
+depends strongly on the browser used to display the output file. This
+parameter is currently not implemented for
+<a href="output.html#PostScript">PostScript</a>.
+<p>
+<b>Default:</b> 0.0
+<br>
+<b>Required:</b> &gt;= 0.0, &lt;= 1.0
+<br>
+<b>Applies to:</b> all graphics objects
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a>, 
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

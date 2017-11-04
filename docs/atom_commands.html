@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>MolScript v2.1: Atom graphics commands</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Atom graphics commands</h1>
+
+<ul>
+<li><a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+<li><a href="atom_commands.html#bonds">bonds</a>
+<li><a href="atom_commands.html#cpk">cpk</a>
+</ul>
+
+<hr>
+<h2>
+<a name="ball-and-stick">ball-and-stick</a>
+<a href="selection.html#atom"><i>atom-selection</i></a>
+[<a href="selection.html#atom"><i>atom-selection</i></a>] ;
+</h2>
+
+<a href="../examples/ras_gdp_balls.in">
+<img src="images/ras_gdp_balls.jpg" alt="ras_gdp_balls"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Draw small spheres and sticks (cylinders) between the selected atoms
+if they are closer to each other than the value of the
+<a href="state.html#bonddistance">bonddistance</a> parameter. 
+<p>
+The atom spheres are rendered in the same way as in the
+<a href="#cpk">cpk</a> command, except that the radii are 1/4 of the
+atom radii.
+<p>
+If <strong>one atom selection</strong> is given, then all sticks
+between atoms within this selection are drawn.
+<p>
+If <strong>two atom selections</strong> are given, then only sticks
+connecting an atom in the first selection with an atom in the second
+selection are drawn, in the same way as for 
+<a href="#bonds">bonds</a>. No spheres are output for any atoms when
+two atom selections are given.
+<p>
+The <a href="state.html#stickradius">stickradius</a> parameter
+controls the radius of the sticks (cylinders). The colour of the
+sticks is taken from the  
+<a href="state.html#planecolour">planecolour</a> parameter if the
+<a href="state.html#colourparts">colourparts</a> parameter is
+<code>off</code>, otherwise the atom colours are used for each half of
+the sticks.
+<p>
+In the
+<a href="output.html#PostScript">PostScript output mode</a>, the 
+<a href="state.html#sticktaper">sticktaper</a> parameter controls the
+perspective effect applied to the stick.
+<p>
+<b>Parameters:</b>
+<a href="state.html#atomradius">atomradius</a>,
+<a href="state.html#atomcolour">atomcolour</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#stickradius">stickradius</a>,
+<a href="state.html#sticktaper">sticktaper</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="bonds">bonds</a>
+<a href="selection.html#atom"><i>atom-selection</i></a>
+[<a href="selection.html#atom"><i>atom-selection</i></a>] ;
+</h2>
+
+<a href="../examples/ras_gdp_bonds.in">
+<img src="images/ras_gdp_bonds.jpg" alt="ras_gdp_bonds"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Draw lines between the selected atoms if they are closer to each
+other than the value of the 
+<a href="state.html#bonddistance">bonddistance</a> parameter. The
+colour of the lines is given by the parameter
+<a href="state.html#linecolour">linecolour</a> if the parameter
+<a href="state.html#colourparts">colourparts</a> is <code>off</code>,
+otherwise the atom colours are used.
+<p>
+If <strong>one atom selection</strong> is given, then all bonds
+between atoms within this selection are drawn. For those selected
+atoms that have no bond connecting them to another atom, a cross is
+drawn instead if the value of the parameter
+<a href="state.html#bondcross">bondcross</a> is non-zero.
+<p>
+If <strong>two atom selections</strong> are given, then only bonds
+connecting an atom in the first selection with an atom in the
+second selection are drawn. This is useful when one single bond
+distance cutoff is insufficient to give the desired result (for
+example, the bonds to the Fe atom versus the cross-ring distances in
+the five-membered rings in heme groups).
+<p>
+<b>Parameters:</b>
+<a href="state.html#atomcolour">atomcolour</a>,
+<a href="state.html#bondcross">bondcross</a>,
+<a href="state.html#bonddistance">bonddistance</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#depthcue">depthcue</a>,
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#transparency">transparency</a>.
+
+<p>
+<hr>
+<h2>
+<a name="cpk">cpk</a>
+<a href="selection.html#atom"><i>atom-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_gdp_cpk.in">
+<img src="images/ras_gdp_cpk.jpg" alt="ras_gdp_cpk"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Draw spheres for the atoms in the selection. The colours and radii of
+the spheres are taken from the current values for each atom (see
+parameters <a href="state.html#atomcolour">atomcolour</a> and
+<a href="state.html#atomradius">atomradius</a>). 
+<p>
+For <a href="output.html#PostScript">PostScript</a> output, the circle
+around the sphere is affected by the different line parameters and by
+the depthcue parameter. The spheres are not actually spheres, but
+disks.  They will therefore not overlap entirely correctly.
+<p>
+For <a href="output.html#OpenGL">OpenGL</a> output, the quality of the
+sphere tesselation is affected by the
+<a href="state.html#segments">segments</a> parameter.
+<p>
+<b>Parameters:</b>
+<a href="state.html#atomradius">atomradius</a>,
+<a href="state.html#atomcolour">atomcolour</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="lighting.html">lighting</a>.
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

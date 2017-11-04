@@ -1,0 +1,298 @@
+<html>
+<head>
+<title>MolScript v2.1: What was new in version 2?</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>What was new in version 2?</h1>
+
+Version 2 of MolScript is a major new release. There are several new
+output formats and several new features. In fact, it is an entirely
+new program, with much expanded functionality compared to previous
+versions (v1.4 and older). It is almost completely
+backwards-compatible with the previous versions.
+<p>
+
+<table cellpadding=5>
+<tr>
+
+<td>
+<ul>
+<li><a href="#OpenGL">Interactive OpenGL</a>
+<li><a href="#VRML">VRML 2.0</a>
+<li><a href="#image">Image files</a>
+<li><a href="#Raster3D">Raster3D</a>
+<li><a href="#MolAuto">MolAuto</a>
+<li><a href="#object">External objects interface</a>
+</ul>
+</td>
+
+<td>
+<ul>
+<li><a href="#commands">Graphics commands</a>
+<li><a href="#state">Graphics state parameters</a>
+<li><a href="#options">Command-line options</a>
+<li><a href="#syntax">Relaxed command syntax</a>
+<li><a href="#C">Reimplementation in C</a>
+</ul>
+</td>
+
+</tr>
+</table>
+
+<hr>
+<h2><a name="OpenGL">Interactive OpenGL</a></h2>
+
+A new <a href="output.html#OpenGL">interactive OpenGL</a> mode is
+available on computer systems that support OpenGL. The implementation
+uses the <a href="links.html#GLUT">GLUT library</a> by Mark Kilgard
+for the window system interface.
+<p>
+The rendering is based on the same graphics objects as the other
+output formats. The 3D OpenGL image is rotatable and scalable using
+the mouse, and the current rotation matrix can be output for the user
+to cut-and-paste into the MolScript input file. This considerably
+simplifies the process of defining a good view of a molecule,
+previously a cumbersome iterative process.
+<p>
+When an error in the input file is encountered, the OpenGL output mode
+does not abort the program. Instead, the graphics objects created so
+far in the script are rendered, so that the user can correct the input
+file, and re-read it within the same running MolScript process. This
+speeds up debugging of input scripts, and also makes it easy to test 
+different modifications to the graphics state parameters.
+<p>
+
+<hr>
+<h2><a name="VRML">VRML 2.0</a></h2>
+
+The <a href="output.html#VRML">VRML 2.0 output mode</a> is entirely
+new. <a href="links.html#VRML">VRML 2.0</a> is a standard for
+distribution of 3D objects on the Web. It is a very good option for
+publishing protein 3D structural data in carefully crafted models with
+accompanying annotation. In the current version, there is support for
+all graphical objects, and for making anchors (Web links) from the
+graphical objects. 
+<p>
+The VRML 2.0 specification supports dynamic behaviour, and features
+based on this may be included in future versions of
+MolScript. Currently, investigations are being made to test support
+for dynamic behaviour in the models, such as molecular dynamics,
+illustrations of enzymatic reactions, or depiction of changes in
+quaternary structure.
+<p>
+
+<hr>
+<h2><a name="image">Image files</a></h2>
+
+It is now possible to create image files in the 
+<a href="output.html#JPEG">JPEG</a>,
+<a href="output.html#PNG">PNG</a>,
+<a href="output.html#EPS">Encapsulated PostScript (EPS)</a> and
+<a href="output.html#SGI">SGI (aka RGB)</a> formats directly from an
+input file. It is no longer necessary to use screen-capture programs
+or similar software to make JPEG files or other image files for use in
+Web sites. 
+<p>
+
+<hr>
+<h2><a name="Raster3D">Raster3D</a></h2>
+
+The Raster3D implementation has three major new features:
+<ul>
+<li><a href="commands.html#label">Labels</a> can now be output,
+provided that the 
+<a href="links.html#GLUT">GLUT library</a> has been
+<a href="installation.html#Makefiles">installed</a>.
+<li><a href="state.html#transparency">Transparency</a> has now been
+implemented.
+<li> MolScript now gives a much higher degree of control over the
+contents in the header section of the Raster3D input file. For
+example, the size of the image is now determined through the
+<a href="use.html#options">command-line option</a> -size.
+</ul>
+<p>
+
+<hr>
+<h2><a name="MolAuto">MolAuto</a></h2>
+
+The <a href="molauto.html">MolAuto program</a> is a stand-alone
+program which reads a coordinate file, and produces a MolScript input 
+file based on what is found there. Features such as secondary
+structure and ligands are identified and commands to render these are
+output. 
+<p>
+The MolAuto program considerably simplifies the process of creating 
+new MolScript images. The behaviour of MolAuto can be controlled to
+some degree by command-line options.
+<p>
+
+<hr>
+<h2><a name="object">External objects interface</a></h2>
+
+An interface to graphics objects created by external programs has
+been added to MolScript. The <a href="commands.html#object">object</a>
+command reads an object file containing the specification of the
+objects. The <a href="object.html">format of the object file</a> is
+straightforward, and allows points, lines, triangles and triangle
+strips to be specified. This can be used for <i>e.g.</i> molecular
+surfaces or electron density representations generated by other
+software. 
+<p>
+The appearance of the objects is determined by the same parameters as
+the ordinary graphical objects in MolScript. It is also possible to
+specify explicit colours in the object file. The object coordinates
+<a href="state.html#objecttransform">may be transformed</a> by the
+view matrix specified by the most recent
+<a href="coordinates.html#transform">transform</a> command. 
+<p>
+
+<hr>
+<h2><a name="commands">Graphics commands</a></h2>
+
+<ul>
+<li><a href="residue_commands.html#cylinder">cylinder</a>, a new
+representation for helices.
+<li><a href="residue_commands.html#double-helix">double-helix</a>, a
+schematic representation for nucleotide chains.
+<li><a href="commands.html#object">object</a>, importing graphical
+objects (lines, points, triangles) from external files.
+<li><a href="commands.html#anchor">anchor</a>, Web links for VRML.
+<li><a href="commands.html#viewpoint">viewpoint</a> for VRML.
+<li><a href="header.html">header commands</a>, for better control of
+global properties.
+<ul>
+<li><a href="header.html#frame">frame</a>
+<li><a href="header.html#headlight">headlight</a>
+<li><a href="header.html#shadows">shadows</a>
+<li><a href="header.html#fog">fog</a>
+</ul>
+
+<li>residue selections:
+<ul>
+<li><a href="selection.html#model">model</a>, for NMR protein structures.
+<li><a href="selection.html#ligands">ligands</a>
+<li><a href="selection.html#amino-acids">amino-acids</a> also select
+the residue types <code>ASX</code> and <code>GLX</code>. 
+</ul>
+</ul>
+
+<hr>
+<h2><a name="state">Graphics state parameters</a></h2>
+
+<ul>
+<li><a href="state.html#colourparts">colourparts</a>, the basis for
+residue-by-residue colouring of residue representations.
+<li><a href="state.html#bondcross">bondcross</a>, for displaying
+non-bonded atoms with the <a href="atom_commands.html#bonds">bonds</a>
+command. 
+<li><a href="state.html#colourramp">colourramp</a>, to set the colours
+of residues and atoms.
+<li><a href="state.html#hsbreverseramp">hsbreverseramp</a>
+<li><a href="state.html#emissivecolour">emissivecolour</a>
+<li><a href="state.html#specularcolour">specularcolour</a>
+<li><a href="state.html#transparency">transparency</a>
+</ul>
+
+<hr>
+<h2><a name="options">Command-line options</a></h2>
+
+<ul>
+<li>The options <code>-in</code>, <code>-out</code> and
+<code>-log</code> have been added for better control of input, output
+and message log files. 
+<li>The option <code>-raster3d</code>  as a synonym for
+<code>-r</code>, and <code>-silent</code> for <code>-s</code>, have
+been added, as more comprehensible synonyms.
+<li>The option <code>-e</code> for the
+<a href="output.html#EPS">Encapsulated PostScript (EPS)</a> output
+mode has been removed, and replaced by <code>-eps</code>. This
+reflects the completely new implementation of this format.
+</ul>
+
+<hr>
+<h2><a name="syntax">Relaxed command syntax</a></h2>
+
+<ul>
+<li>Input lines may now be any length. The previous versions had a
+limit of 80 characters, due to the limitations of standard Fortran 77
+i/o.
+<li>A single lexical item (loosely: word or string) may now be up to
+2047 characters long. 
+<li>The commands in the <a href="header.html">header</a> such as
+<a href="header.html#slab">slab</a> and 
+<a href="header.html#window">window</a> may now be given in any
+order. Previously, there was a strict and not completely logical
+ordering of these commands.
+<li><a href="values.html#number">Numerical floating-point values</a>
+(for example: 1.0) may now be given as integers also (now: 1). The
+decimal point is no longer necessary.
+<li>Double-quotes '&quot;' are not necessary for
+<a href="values.html#string">strings</a> which have no blank
+characters or special characters. This is useful for file names
+(coordinate files, object files,...) or identifiers (atom names,
+residue names, types, etc). 
+<li><a href="input.html#macros">Macros</a> may now be defined in the
+places in the input script file specified by the syntax. The previous
+version contained a bug in this respect. 
+<li> A warning is given if the last residue in a
+<a href="selection.html#residue">residue sequence
+selection</a> (<code>from... to...</code>) is not found in the
+coordinate data. 
+</ul>
+
+<hr>
+<h2><a name="C">Reimplementation in C</a></h2>
+
+The MolScript program has been completely rewritten in the C
+programming language. The MolScript C source code is strict ANSI C,
+and should therefore compile with any ANSI-C compliant compiler. The 
+previous versions (1.4 and older) were written in Fortran 77.
+<p>
+
+<h3>No static memory limits</h3>
+
+There were many static limits on the size of molecules and the
+complexity of graphical objects that could be handled in MolScript
+v1.4. The cause of these limits was the lack of a dynamic-memory
+mechanism in standard Fortran 77. The values of the limits could
+be changed only by modifying the source code and recompiling the
+program. 
+<p>
+In version 2, there are no such limits; all memory usage is dynamic,
+and the size of the application is now limited only by the physical or
+virtual memory of your computer. This means that there will be no need
+to recompile the program when the applications increase in size and
+complexity.
+<p>
+
+<h3>Increased computational efficiency</h3>
+
+The reimplementation has resulted in a considerably more efficient
+program. Tests on an SGI machine indicate that execution of equivalent
+input scripts are often more than 50 % faster with version 2 compared
+with v1.4. 
+<p>
+The memory footprint of the new version 2 is almost always much
+smaller than in v1.4, since memory is dynamically allocated
+only when it is actually needed by the program. In v1.4, memory
+allocation had to be statically determined at compile time, and
+therefore set to the maximum expected application size. This could
+pose a problem on certain computer systems.
+<p>
+
+<h3>Organisation of the source code</h2>
+
+The source code for version 2 has been organised to facilitate
+implementation of new output formats. The set of routines that need to
+be written for a new output format are well-defined. The routines that
+create the graphics objects have been made independent of the output
+routines. 
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

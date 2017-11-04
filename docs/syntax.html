@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>MolScript v2.1: Syntax summary</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Syntax summary</h1>
+
+This is a summary of the MolScript input file syntax. It is a
+simplification of the actual yacc grammar (file molscript.y), which
+describes the syntax in a condensed  form using a Backus-Naur Form
+(BNF) notation. Undocumented features are omitted. 
+<p>
+
+<hr>
+
+<pre>
+input_file: [<b>title</b> <i>string</i>] plot {plot} ;
+
+plot: {macro_def} <b>plot</b> {header_command} {body_command} <b>end_plot</b> ;
+
+macro_def: <b>macro</b> <i>macro_id</i> <i>commands</i> <b>end_macro</b> ;
+
+header_command: &lt; <b>noframe</b>
+                | <b>frame</b> &lt; <b>on</b> | <b>off</b> &gt; ';'
+                | <b>area</b> <i>number number number number</i> ';'
+                | <b>background</b> <i>colour</i> ';'
+                | <b>window</b> <i>number</i> ';'
+                | <b>slab</b> <i>number</i> ';'
+                | <b>headlight</b> &lt; <b>on</b> | <b>off</b> &gt; ';'
+                | <b>shadows</b> &lt; <b>on</b> | <b>off</b> &gt; ';'
+                | <b>fog</b> <i>number</i> ';'
+                &gt;
+
+body_command: &lt; <b>read</b> <i>mol_id</i> <i>filename</i> ';'
+              | <b>read</b> <i>mol_id</i> <b>inline-PDB</b> ';'
+              | <b>copy</b> <i>mol_id</i> atom_selection ';'
+              | <b>delete</b> <i>mol_id</i> ';'
+              | <b>comment</b> <i>string</i> ';'
+              | <b>debug</b> <i>string</i> ';'
+              | <b>transform</b> atom_selection {<b>by</b> xform} ';'
+              | <b>store-matrix</b> ';'
+              | macro_def ';' &gt;
+              | <b>set</b> <i>parameter_spec</i> {',' <i>parameter_spec</i>} ';'
+              | <b>ball-and-stick</b> atom_selection [atom_selection] ';'
+              | <b>bonds</b> atom_selection [atom_selection] ';'
+              | <b>coil</b> residue_selection ';'
+              | <b>cylinder</b> residue_selection ';'
+              | <b>cpk</b> atom_selection ';'
+              | <b>double-helix</b> residue_selection ';'
+              | <b>helix</b> residue_selection ';'
+              | <b>label</b> <i>vector</i> <i>string</i> ';'
+              | <b>label</b> atom_selection <i>string</i> ';'
+              | <b>line</b> <i>vector</i> <b>to</b> <i>vector</i> {<b>to</b> <i>vector</i>} ';'
+              | <b>object</b> <i>filename</i> ';'
+              | <b>object inline</b> ';'
+              | <b>strand</b> residue_selection ';'
+              | <b>turn</b> residue_selection ';'
+              | <b>viewpoint</b> <i>id</i> <b>origin</b> <i>vector</i> <i>number</i> ';'
+              | <b>directionallight</b> <i>vector</i> ';'
+              | <b>directionallight</b> <b>from</b> <i>vector</i> <b>to</b> <i>vector</i> ';'
+              | <b>pointlight</b> <i>vector</i> ';'
+              | <b>spotlight</b> <i>vector vector number</i> ';'
+              | <b>spotlight</b> <b>from</b> <i>vector</i> <b>to</b> <i>vector</i> <i>number</i> ';'
+              | <b>anchor</b> <i>id</i> [<b>description</b> <i>string</i>] {<b>parameter</b> <i>string</i>}
+                  '{' <i>basic_commands</i> '}' ';'
+              | <b>level-of-detail</b>
+                  { <i>number</i> '{' <i>basic_commands</i> '}' }
+                  '{' <i>basic_commands</i> '}' ';'
+              | <b>viewpoint</b> <i>id</i> <b>from</b> <i>vector</i> <b>to</b> <i>vector</i> [<i>number</i>] ';'
+              &gt;
+
+atom_selection: &lt; <b>not</b> atom_selection
+                | <b>require</b> atom_selection {',' atom_selection}
+                    <b>and</b> atom_selection
+                | <b>either</b> atom_selection {',' atom_selection}
+                    <b>or</b> atom_selection
+                | <b>atom</b> <i>atom_id</i>
+                | <b>res-atom</b> <i>residue_name</i> <i>atom_id</i>
+                | <b>occupancy</b> <i>number number</i>
+                | <b>b-factor</b> <i>number number</i>
+                | <b>in</b> residue_selection
+                | <b>sphere</b> <i>vector number</i>
+                | <b>close</b> atom_selection <i>number</i>
+                | <b>peptide</b>
+                | <b>backbone</b>
+                | <b>hydrogens</b>
+                &gt;
+
+residue_selection: &lt; <b>not</b> residue_selection
+                   | <b>require</b> residue_selection {',' residue_selection}
+                       <b>and</b> residue_selection
+                   | <b>either</b> residue_selection {',' residue_selection}
+                       <b>or</b> residue_selection
+                   | <b>molecule</b> <i>mol_id</i>
+                   | <b>model</b> <i>integer</i>
+                   | <b>from</b> <i>residue_name</i> <b>to</b> <i>residue_name</i>
+                   | <b>residue</b> <i>residue_name</i>
+                   | <b>type</b> <i>residue_type</i>
+                   | <b>chain</b> <i>chain_id</i>
+                   | <b>contains</b> atom_selection
+                   | <b>amino-acids</b>
+                   | <b>waters</b>
+                   | <b>nucleotides</b>
+                   | <b>ligands</b>
+                   | <b>segid</b> <i>segment_id</i>
+                   &gt;
+</pre>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

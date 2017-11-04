@@ -1,3 +1,6 @@
 papers
 *.o
+*.a
 *~
+molscript
+molauto

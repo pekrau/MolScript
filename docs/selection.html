@@ -1,0 +1,540 @@
+<html>
+<head>
+<title>MolScript v2.1: Atom and residue selection</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Atom and residue selection</h1>
+
+<table cellpadding=5>
+<tr>
+
+<td>
+<ul>
+<li><a href="#operators">Logical selection operators</>
+
+<ul>
+<li><a href="#require">require... and</a>
+<li><a href="#either">either... or</a>
+<li><a href="#not">not</a>
+</ul>
+
+<p>
+<li><a href="#atom">Atom selections</a>
+<ul>
+<li><a href="#atom-id">atom</a>
+<li><a href="#res-atom">res-atom</a>
+<li><a href="#occupancy">occupancy</a>
+<li><a href="#b-factor">b-factor</a>
+<li><a href="#in">in</a>
+<li><a href="#sphere">sphere</a>
+<li><a href="#close">close</a>
+<li><a href="#backbone">backbone</a>
+<li><a href="#peptide">peptide</a>
+<li><a href="#hydrogens">hydrogens</a>
+<li><a href="#element">element</a>
+</ul>
+</ul>
+
+</td>
+
+<td>
+<ul>
+<li><a href="#residue">Residue selections</a>
+
+<ul>
+<li><a href="#molecule">molecule</a>
+<li><a href="#model">model</a>
+<li><a href="#from">from... to</a>
+<li><a href="#residue-id">residue</a>
+<li><a href="#type">type</a>
+<li><a href="#chain">chain</a>
+<li><a href="#contains">contains</a>
+<li><a href="#amino-acids">amino-acids</a>
+<li><a href="#waters">waters</a>
+<li><a href="#nucleotides">nucleotides</a>
+<li><a href="#ligands">ligands</a>
+<li><a href="#segid">segid</a>
+</ul>
+<p>
+
+<li><a href="#name">name comparisons</a>
+<ul>
+<li><a href="#X-PLOR">X-PLOR type wildcards</a>
+<li><a href="#regular">regular expressions</a>
+</ul>
+
+</ul>
+</td>
+
+</tr>
+</table>
+
+The selection mechanism is a powerful mechanism for defining different
+sets of atoms and residues as arguments to the commands. The selection
+works as a logical expression: For each residue or atom that has been
+<a href="coordinates.html#read">read</a> into MolScript, the program
+tests whether that residue or atom matches the <strong>entire</strong>
+expression. All atoms or residues matching the expression are
+selected as argument for the command. This is very similar to how
+query statements work in the SQL language for relational databases.  
+<p>
+If an expression selects no atoms or residues, then there is generally
+no error; that command simply does not do anything. The exception to
+this is the <a href="values.html#vector">position</a> vector
+specification.
+
+<p>
+<hr>
+<h2><a name="operators">Logical operators</a></h2>
+
+The logical operations 'not', 'and' and 'or' can be used in a nested
+fashion to any depth. It is therefore possible to build quite complex
+statements, which select precisely the desired atoms or residues for a
+command. 
+<p>
+<strong>Note</strong> that atom selections and residue selections
+cannot be freely used in the 'and' and 'or' expressions. The selection
+expressions are strongly typed; all terms in one 'and' or 'or'
+expression must be of the same type; either atom or residue. However,
+there are operators that convert an atom selection into the
+corresponding residues  
+(<a href="#contains"><code>contains</code></a>) and vice versa
+(<a href="#in"><code>in</code></a>).
+
+<h3>
+<a name="require">
+require <i>exp1</i>, <i>exp2</i>, <i>exp3</i> ... and <i>expn</i>
+</a>
+</h3>
+
+The 'and' operator has the meaning that the expressions <code>exp1,
+exp2, exp3,..., expn</code> must <strong>all</strong> be true for an
+atom or residue to be selected. All the expressions must of one type;
+either atom or residue selection.
+<p>
+<strong>Note</strong> the comma ',' character: it is required
+<strong>between</strong> the expressions, <strong>except</strong>
+before the keyword <code>and</code>, where it may not occur.
+
+<h3>
+<a name="either">
+either <i>exp1</i>, <i>exp2</i>, <i>exp3</i>, ... or <i>expn</i>
+</a>
+</h3>
+
+The 'or' operator has the meaning that if <strong>any single
+one</strong> of expressions <code>exp1, exp2, exp3,..., expn</code> is
+true for an atom or residue, then that atom or residue is
+selected. All the expressions must of one type; either atom or residue
+selection. 
+<p>
+<strong>Note</strong> the comma ',' character: it is required
+<strong>between</strong> the expressions, <strong>except</strong>
+before the keyword <code>or</code>, where it may not occur.
+
+<h3>
+<a name="not">
+not <i>exp</i>
+</a>
+</h3>
+
+This operator simply converts the value <code>exp</code> for each atom
+or residue into its opposite value.
+
+<p>
+<hr>
+<h2><a name="atom">Atom selections</a></h2>
+
+<h3>
+<a name="atom-id">atom</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects all atoms with the given name. The name may contain
+<a href="#X-PLOR">X-PLOR type wildcards</a> or be a
+<a href="#regular">regular expression</a>.
+
+<h3>
+<a name="res-atom">res-atom</a>
+<a href="values.html#string"><i>string</i></a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects all atoms within residues of the given name (the first
+argument) and with the given atom name (the second argument). The
+names may contain <a href="#X-PLOR">X-PLOR type wildcards</a> or be 
+<a href="#regular">regular expressions</a>. This expression is
+actually just shorthand for
+<pre>
+  require in residue <i>first_argument</i> and atom <i>second_argument</i>
+</pre>
+<strong>Note</strong> that although the res-atom  expression is most
+often used to select one single atom, it will select all atoms that
+fit the arguments. 
+
+<h3>
+<a name="occupancy">occupancy</a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Selects all atoms with an occupancy value within the given range.
+
+<h3>
+<a name="b-factor">b-factor</a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Selects all atoms with a B-factor value within the given range.
+
+<h3>
+<a name="in">in</a>
+<a href="#residue"><i>residue-selection</i></a>
+</h3>
+
+Selects all atoms within the selected residue(s). This is an
+expression often used for the commands 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a> and
+<a href="atom_commands.html#cpk">cpk</a>, which need an atom selection
+as argument. 
+
+<h3>
+<a name="sphere">sphere</a>
+<a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Selects all atoms within a sphere with its centre at the given
+<a href="values.html#vector">vector</a> and with the given radius.
+
+<h3>
+<a name="close">close</a>
+<a href="#atom"><i>atom-selection</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Selects all atoms closer than the given distance to any of the given
+atoms.  The atoms given as argument are <strong>not</strong> part of
+the finally selected set. That is, this expression specifies only
+neighbours to certain atoms, excluding the atoms themselves. 
+
+<h3>
+<a name="backbone">backbone</a>
+</h3>
+
+This atom selection is shorthand for the following expression:
+<pre>
+   either
+     require in amino-acids
+         and either atom N, atom CA, atom C or atom O
+   or
+     require not in amino-acids
+         and either atom *', atom O%P or atom P
+</pre>
+That is, if a residue is an amino acid, then its N, CA, C and O atoms
+are selected. If it is not an amino acid, then the atoms with names
+appropriate for the nucleic acid residue phosphate and (deoxy)ribose
+groups are selected.  In the latter case an expression that selects
+all primed atoms is used.
+
+<h3>
+<a name="peptide">peptide</a>
+</h3>
+
+This atom selection is shorthand for the following expression:
+<pre>
+   require in amino-acids
+       and either atom N, atom C or atom O
+</pre>
+For all amino acid residues, the peptide atoms (N, C and O) are selected.
+
+<h3>
+<a name="hydrogens">hydrogens</a>
+</h3>
+
+This atom selection is shorthand for the following expression:
+<pre>
+   either atom H*, atom 1H*, atom 2H* or atom 3H*
+</pre>
+That is, all atoms having the names commonly given to hydrogen atoms
+in a PDB file are selected.
+<p>
+<strong>Note</strong> that this selection is currently
+<strong>not</strong> based on the element specified for the atom in
+the new (v2.0) PDB file format. It may in a future version.
+
+<h3>
+<a name="element">element</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects the atoms of the given element type. The element type string
+may contain one or two characters. The comparison is different from
+that usually used for strings: it is not case-sensitive, and no
+wildcards can be used.
+<p>
+The element type of the atoms are set when the
+<a href="coordinates.html#coordinates">coordinate file is read</a>.
+
+<p>
+<hr>
+<h2><a name="residue">Residue selections</a></h2>
+
+<h3>
+<a name="molecule">molecule</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects all residues within the given molecule. The molecule name 
+is that given when <a href="coordinates.html#read">the coordinate
+file was read</a>. The name may contain
+<a href="#X-PLOR">X-PLOR type wildcards</a> or be a
+<a href="#regular">regular expression</a>.
+
+<h3>
+<a name="model">model</a>
+<a href="values.html#number"><i>integer</i></a>
+</h3>
+
+Selects the model with the given number.
+<p>
+In the new (v2.0) PDB coordinate file format, the different coordinate
+sets from an NMR structure determination are given sequential model
+numbers, starting with 1. This is determined by the MODEL keyword in
+the <a href="coordinates.html#coordinates">PDB coordinate file</a>.
+<p>
+Molecules read from a coordinate file with no MODEL keywords
+(<i>e.g.</i> an X-ray diffraction structure) will have the model
+number 0. 
+
+<h3>
+<a name="from">from</a>
+<a href="values.html#string"><i>string</i></a>
+to <a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects the stretch of residues between and including the given
+residues. The names may contain <a href="#X-PLOR">X-PLOR type
+wildcards</a> or be a <a href="#regular">regular expression</a>.
+The two names may not denote the same residue.
+<p>
+If there is more than one stretch of residues that match,
+then all such stretches are selected. For example, if a coordinate
+file contains amino acids from 1 to 100, and waters also numbered 1 to
+57 (as may occur in PDB files), then a sequence specification
+<code>&quot;from 5 to 15&quot;</code> will pick both the stretch of
+amino-acid residues from 5 to 15, and the waters from 5 to 15. 
+<p>
+This is usually not a problem in connection with commands such as
+<a href="residue_commands.html#helix">helix</a> or
+<a href="residue_commands.html#coil">coil</a>, since any selected
+non-amino acid residues are simply ignored by these. The behaviour can
+be advantageous when dealing with symmetrical subunits. The name
+comparison feature can then be used to pick both strands (or whatever)
+in both chains with one single command.
+<p>
+As a special case, if the first residue in the coordinates that match
+the 'from' part is an amino-acid residue, then all other first
+residues (if any) must also be amino-acid residues. This solves a
+problem that occurs in some PDB files where some amino-acid residues
+and ligands (hetero groups) have the same name, and the ligands are
+interspersed between several chains of amino-acid residues.
+<p>
+If a stretch of residues is not finished when the last residue in the
+currently loaded coordinates is reached, then MolScript issues a
+warning, but does <strong>not</strong> produce an error. An error
+should arguably be the proper response, but there are PDB files where
+the residue names are such that it is difficult to avoid this.
+
+<h3>
+<a name="residue-id">residue</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects the residues with the given name (or number). The name may
+contain <a href="#X-PLOR">X-PLOR type wildcards</a> or be a
+<a href="#regular">regular expression</a>.
+<p>
+<strong>Note</strong> that the residue name is left-shifted and the
+blanks have been squeezed out when the coordinate file was 
+<a href="coordinates.html#read">read</a>. This means that the chain
+identifier and insertion code, if any, are part of the residue name,
+even if they were separate in the input coordinate file. 
+
+<h3>
+<a name="type">type</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects the residues with the given type. The type may contain 
+<a href="#X-PLOR">X-PLOR type wildcards</a> or be a
+<a href="#regular">regular expression</a>.
+
+<h3>
+<a name="chain">chain</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects the residues with the given chain identifier. Note that this
+identifier is just a single character, if it is at all present. The
+segment identifier in the new (v2.0) PDB format can now be used in the
+residue selection <a href="#segid">segid</a>.
+
+<h3>
+<a name="contains">contains</a>
+<a href="#atom"><i>atom-selection</i></a>
+</h3>
+
+Selects the residues that contain the given atoms.
+
+<h3>
+<a name="amino-acids">amino-acids</a>
+</h3>
+
+This residue selection is shorthand for the following selection
+expression: 
+<pre>
+   either type ALA, type SER, type THR, type GLY, type PRO,
+          type CPR, type ASN, type GLN, type ASP, type GLU,
+          type ASX, type GLX, type ARG, type LYS, type HIS,
+          type PHE, type TYR, type TRP, type TRY, type VAL,
+          type ILE, type LEU, type MET, type CYS, type CSH,
+          type CYH or type CSM
+</pre>
+All standard three-letter codes for amino acid residues are
+recognized, as well as some non-standard ones; CPR for cis-proline,
+ASX for undetermined ASN or ASP, GLX for undetermined GLN or GLU,
+TRY for tryptophan, and CSH, CYH and CSM for cysteine.
+
+<h3>
+<a name="waters">waters</a>
+</h3>
+
+This residue selection is shorthand for the following selection
+expression: 
+<pre>
+   either type H2O, type HHO, type OHH, type HOH,
+          type OH2, type SOL or type WAT
+</pre>
+At least some of the commonly occurring residue type designations for
+water molecules are covered by this expression.
+
+<h3>
+<a name="nucleotides">nucleotides</a>
+</h3>
+
+This residue selection is shorthand for the following selection
+expression: 
+<pre>
+  either residue A, residue +A, residue C, residue +C,
+         residue I, residue +I, residue G, residue +G,
+         residue T, residue +T, residue U or residue +U
+</pre>
+This covers the common nucleotide bases as well as modified variants
+of these bases designated according to the PDB conventions.
+
+<h3>
+<a name="ligands">ligands</a>
+</h3>
+
+This residue selection is shorthand for the following selection
+expression: 
+<pre>
+   not either amino-acids, waters or nucleotides
+</pre>
+All residues which are neither amino acids, waters nor nucleotides are
+selected by this expression. 
+
+<h3>
+<a name="segid">segid</a>
+<a href="values.html#string"><i>string</i></a>
+</h3>
+
+Selects the residues in the given segment (or chain). The segment
+identifier string must contain exactly four (4) characters. The
+comparison is different from that usually used for strings: no
+wildcards may be used. It is case sensitive.
+<p>
+This selection is useful only for molecules read from new (v2.0)
+<a href="coordinates.html#coordinates">PDB format files</a>.
+<p>
+
+<hr>
+<h2><a name="name">Name comparisons</a></h2>
+<p>
+
+Comparisons between the given atom names, residue types and names, and
+molecule names in the various selection expressions with those present
+in the coordinate data follow certain rules:
+<p>
+<ul>
+<li>The comparison is case-sensitive; <code>Tyr</code> is not equal to
+<code>TYR</code>. 
+<p>
+<li>All strings have been left shifted when read from the coordinate
+file. All blanks have been squeezed out of the strings.
+<p>
+<li>If the value of the parameter
+<a href="state.html#regularexpression">regularexpression</a> is
+<code>off</code>, then MolScript allows using X-PLOR
+(<a href="references.html#Brunger-1992">Br&uuml;nger 1992</a>) type
+wildcard characters in the given strings. If the value is
+<code>on</code>, then the given string is viewed as a proper regular
+expression. 
+</ul>
+
+<br>
+<h3><a name="X-PLOR">X-PLOR type wild cards</a></h3>
+
+It is possible to use wildcard characters in the comparison: '*' means
+any string (zero or more characters), '%' means any single character,
+'#' means any number (zero or more digits), and '+' means any single 
+digit. Some examples:
+<pre>
+   atom *    all atoms
+   atom N*   all nitrogen atoms (and sodium, neon, niobium,...)
+   atom %G*  all gamma (G) atoms; CG, OG, OG1, SG (and possibly others)
+   type T*   residue types THR, TRP and TYR (and possibly others)
+   type T%R  residue types THR and TYR
+</pre>
+If the coordinate file contains '*' in atom names (nucleic acids in
+PDB files) then these are converted into single-quotes ''' while
+reading the file. If your coordinate file contains '*' in residue
+names or types, or '%', '#' or '+' characters anywhere, then you must
+use a proper regular expression.
+<p>
+
+<br>
+<h3><a name="regular">regular expressions</a></h3>
+
+The regular expressions have the same syntax as in the UNIX utility 
+<code>regexp</code> (except not having the
+<code>&quot;r{m,n}&quot;</code> feature):
+
+<pre>
+      ^           beginning of line
+      $           end of line
+      .           any character
+      \<          beginning of word
+      \>          end of word
+      [str]       any character in str
+      [^str]      any character not in str
+      [x-y]       any character between x and y (ASCII order)
+      *           any number of the preceding expression
+      c           the character c, where c is not special
+      \(r\)       the regular expression r
+</pre>
+
+<strong>Caveat:</strong> The above description may contain errors,
+since the source code used for this feature was not very well
+documented. Also, it hasn't been tested properly.
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

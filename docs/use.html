@@ -1,0 +1,605 @@
+<html>
+<head>
+<title>MolScript v2.1: How to use MolScript</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>How to use MolScript</h1>
+
+<table>
+<tr>
+<td>
+<ul>
+<li><a href="#running">Running MolScript</a>
+<li><a href="#options">Command-line options</a>
+<li><a href="#environment">Environment variables</a>
+<li><a href="#minimal">A minimal input file</a>
+</ul>
+</td>
+<td>
+<ul>
+<li><a href="#tips">Some useful tips</a>
+<li><a href="#how">How do I...?</a>
+<li><a href="#problems">Common problems</a>
+</ul>
+</td>
+</tr>
+</table>
+
+<hr>
+<h2><a name="running">Running MolScript</a></h2>
+
+The MolScript executable (<strong>molscript</strong>) should be directly
+available as a command, that is, it should be located in your path. To
+test this, try the following command, which will just output all
+command-line options available:
+
+<blockquote><code>
+% molscript -h
+</code></blockquote>
+
+If the program does not seem available, ask your system administrator or
+whoever <a href="installation.html">installed</a> it.
+
+<p>
+To get a first input file, use the <a href="molauto.html">MolAuto
+program</a>. This takes a coordinate file as input, and produces a
+first-approximation input file for MolScript:
+
+<blockquote><code>
+% molauto pdb1crn.ent > input.file
+</code></blockquote>
+
+By default, MolScript reads the input file from the <strong>stdin</strong>
+(standard input) and writes the result to <strong>stdout</strong>
+(standard output), while execution messages and error messages are
+output to <strong>stdout</strong> (standard output). For example, to
+produce a <a href="output.html#PostScript">PostScript</a> file, give
+the command:
+
+<blockquote><code>
+% molscript -ps < input.file > output.ps
+</code></blockquote>
+
+<p>
+The <a href="output.html#OpenGL">interactive OpenGL</a> mode produces
+no output, so there is no need specify an output file: 
+
+<blockquote><code>
+% molscript -gl < input.file
+</code></blockquote>
+
+The best way to use the
+<a href="output.html#OpenGL">interactive OpenGL</a> mode is to use an
+explicitly named input file (using the <strong>-in</strong>
+<a href="#options">command-line option</a>). This allows re-reading
+the input file after the user has modified it with a text editor,
+which speeds up preparation of input files. See the documentation on
+<a href="output.html#OpenGL">the mouse button functions</a>. 
+
+<blockquote><code>
+% molscript -gl -in input.file
+</code></blockquote>
+
+<p>
+Using UNIX pipes, one can get quick visualizations of a coordinate
+file using <a href="molauto.html">MolAuto</a> and the
+<a href="output.html#OpenGL">interactive OpenGL</a> mode:
+
+<blockquote><code>
+% molauto protein.pdb | molscript -gl
+</code></blockquote>
+
+<p>
+Similarly, a VRML 2.0 file can be created quickly with MolAuto:
+
+<blockquote><code>
+% molauto protein.pdb | molscript -vrml
+</code></blockquote>
+
+<p>
+<hr>
+<h2><a name="options">Command-line options</a></h2>
+
+Only a single option controlling the output mode may be specified. An
+output or input file different from the default may be defined only
+once in the command line. The other options may be specified in any
+combination. If conflicting options are used, then the last one on the
+command line determines the result.  
+<p>
+Note that in previous versions of MolScript (v1.4 and older) it was
+possible to specify the output format by giving a keyword in the input
+file. This is <a href="new.html#output">no longer possible</a>. 
+<p>
+
+<table border cellpadding=5>
+
+<tr>
+<th>
+command-line option
+</th>
+<th>
+action
+</th>
+</tr>
+
+<tr>
+<td>
+<strong>-ps</strong>
+<br>
+<strong>-postscript</strong>
+</td>
+<td>
+Chooses the
+<a href="output.html#PostScript">PostScript</a> output mode. This is
+the default mode, so these options are actually rather useless.
+</td>
+</tr>
+
+<tr>
+<td nowrap>
+<strong>-r [<i>alias</i>]</strong>
+<br>
+<strong>-raster3d [<i>alias</i>]</strong>
+</td>
+<td>
+Choose the
+<a href="output.html#Raster3D">Raster3D</a> output mode. The optional
+aliasing parameter controls the aliasing scheme: 1 = no antialiasing,
+2 = compute 2x2 pixels for each pixel output, 3 = compute 3x3 pixels
+for 2x2 pixels output. The default value is 3. The file produced is
+suitable as input for the <strong>render</strong> program in the
+<a href="links.html#Raster3D">Raster3D package</a>. 
+</td>
+</tr>
+
+<tr>
+<td><strong>-vrml</strong></td>
+<td>
+Choose the
+<a href="output.html#VRML">VRML 2.0</a> output mode.
+</td>
+</tr>
+
+<tr>
+<td>
+<strong>-gl</strong>
+<br>
+<strong>-opengl</strong>
+</td>
+<td>
+Choose the
+<a href="output.html#OpenGL">interactive OpenGL</a> mode. This may or
+may not be available in your executable, depending on whether your
+<a href="installation.html">installation</a> includes the OpenGL
+implementation or not. 
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-eps [<i>scale</i>]</strong></td>
+<td>
+Choose the
+<a href="output.html#EPS">Encapsulated PostScript (EPS)</a>
+image file output mode. The optional scaling parameter value affects
+the conversion of the OpenGL rendering image size in pixels to to the
+PostScript default units. The default value is 1.0. Any positive,
+non-zero value is valid. This mode is available only if the OpenGL
+mode is.
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-epsbw [<i>scale</i>]</strong></td>
+<td>
+The same as the <strong>-eps</strong> option, except that a
+black-and-white image is produced, by interpreting the pixel colour
+values in the OpenGL rendering image as luminance values. This mode is
+available only if the OpenGL mode is. 
+</td>
+</tr>
+
+<tr>
+<td>
+<strong>-sgi</strong>
+<br>
+<strong>-rgb</strong>
+</td>
+<td>
+Choose the
+<a href="output.html#SGI">SGI (aka RGB)</a> image file output
+mode. This mode is available only if the OpenGL mode is.
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-jpeg [<i>quality</i>]</strong></td>
+<td>
+Choose the
+<a href="output.html#JPEG">JPEG</a> image file output mode. The
+optional quality parameter can be any integer in the range 1-100
+inclusive, and controls the degree of compression used for the image:
+lower values use more compression, giving lower image quality. The
+default value is 90. This mode is available only if the OpenGL mode
+is. 
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-png [<i>compress</i>]</strong></td>
+<td>
+Choose the
+<a href="output.html#PNG">PNG</a> image file output mode. The optional
+compress parameter can be one of the literal values
+<strong>default</strong>, <strong>speed</strong>, <strong>size</strong> or
+<strong>none</strong> and determines the algorithm used by the
+PNG library routines when creating the image file. The default value
+is <strong>default</strong>. This mode is available only if the OpenGL
+mode is. 
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-accum <i>number</i></strong></td>
+<td>
+Use the accumulation buffer for OpenGL rendering, i.e. for the
+<a href="output.html#OpenGL">interactive OpenGL</a> mode and all image
+file output modes. The image is rendered multiple times (with a slight
+shift each time), summed and averaged, thus producing an antialiased
+image. The quality improves with the number, but so does the execution
+time. The parameter value can be any positive, non-zero integer, but
+is actually always set to the immediately higher value in this list:
+2, 3, 4, 8, 15, 24 or 66 (maximum). 
+</td>
+</tr>
+
+<tr>
+<td><strong>-pretty</strong></td>
+<td>
+The output file is formatted (indented) to increase the
+readability. This is useful when the file is to be modified
+manually. Currently this affects only the 
+<a href="output.html#VRML">VRML 2.0</a> output mode.
+</td>
+</tr>
+
+<tr>
+<td><strong>-size <i>width</i> <i>height</i></strong></td>
+<td>
+Set the size of the image for the
+<a href="output.html#Raster3D">Raster3D</a>, 
+<a href="output.html#OpenGL">OpenGL</a>, 
+<a href="output.html#EPS">EPS</a>, 
+<a href="output.html#SGI">SGI</a>,
+<a href="output.html#JPEG">JPEG</a> and
+<a href="output.html#PNG">PNG</a> modes. The values are the width and
+height of the image, in pixels. The default value is 500
+by 500 pixels. The maximum value allowed is 4096 by 4096 pixels.
+</td>
+</tr>
+
+<tr>
+<td>
+<strong>-s</strong>
+<br>
+<strong>-silent</strong>
+</td>
+<td>
+Do <strong>not</strong> produce any run-time diagnostic messages.
+This may be useful when no output except the graphics is wanted, and
+the input file needs no debugging.
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-out <i>filename</i></strong></td>
+<td>
+The output from the program is written to a file with the given name,
+instead of to <strong>stdout</strong> (standard output). 
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-in <i>filename</i></strong></td>
+<td>
+The input file (script) is read from the file with the given name,
+instead of from <strong>stdin</strong> (standard input). This is
+particularly useful with the <a href="output.html#OpenGL">interactive
+OpenGL</a> mode.
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-log <i>filename</i></strong></td>
+<td>
+The run-time diagnostics are written to a file with the given name, 
+instead of to <strong>stderr</strong> (standard error output).
+</td>
+</tr>
+
+<tr>
+<td nowrap><strong>-tmp <i>filename</i></strong></td>
+<td>
+Use a temporary scratch file with the given name. The execution
+process must be allowed to create, write to, read from, and delete the
+file. The default is the file used by the ANSI C library standard
+<strong>tmpfile</strong> routine. Currently, this is relevant only for the
+<a href="output.html#Raster3D">Raster3D</a> output mode. 
+</td>
+</tr>
+
+<tr>
+<td><strong>-h</strong></td>
+<td>
+Output a listing of the available command-line options to
+<strong>stderr</strong> (standard error output). No other output is
+produced.
+</td>
+</tr>
+
+</table>
+
+<p>
+<hr>
+<h2><a name="environment">Environment variables</a></h2>
+
+The MolScript program can use one environment variable:
+MOL3D_PDB_DIR. If this is set to the name of the directory where the
+local copy of the PDB database distribution is located, it allows one
+to use just the PDB code in place of the complete file name in the
+<a href="coordinates.html#read">read</a> command. See this command for
+more information.
+
+<p>
+<hr>
+<h2><a name="minimal">A minimal input file</a></h2>
+
+Here is a minimal input file, which will show the trace of the
+amino-acid chain for the molecule in the coordinate set, after
+centering all atoms.
+<pre>
+   ! --- This is a minimal MolScript input file; this line is a comment.
+
+   plot
+     read mol "protein.pdb";      ! Read the coordinate file.
+     transform atom *             ! Xform all atoms so that the centre-
+       by centre position atom *; ! of-gravity is placed at the origin.
+     trace amino-acids;           ! Output a CA trace of the chain.
+   end_plot
+
+   ! --- Here the minimal input file ends.
+</pre>
+<p>
+
+<hr>
+<h2><a name="tips">Some useful tips</a></h2>
+
+The <a href="molauto.html">MolAuto</a> program is almost always the
+best starting point for making a good image of a molecule. The input
+file produced by the MolAuto program will contain commands to render
+both the secondary structure and the ligands. However, there will be
+no transformation to get a good view.
+<p>
+To prepare a good image of a molecule, the main problem is to find a
+good view. It is usually not a good idea to work on details such
+as label positions or colours unless at least an approximate view has
+been found. With the <a href="output.html#OpenGL">interactive OpenGL
+mode</a>, it is fairly easy to find a good view, which is output from
+the program, and then incorporated into the input file by the user. 
+<p>
+If you do not have the OpenGL implementation available, you must adopt
+an iterative method instead: Use a
+<a href="links.html#PostScript">PostScript display program</a> such
+as <strong>xpsview</strong> or <strong>ghostview</strong> to view the output
+from the MolScript program. Then edit the input file with an ordinary
+text file editor, changing the transformation by adding rotations
+and/or translations. Note that any number of rotations or translations
+may be used in the <a href="coordinates.html#transform">transform</a>
+command. Re-run MolScript, and view the results. Continue until a good
+view has been found. 
+<p>
+Jane Richardson has listed some general points on the design of
+schematic images of proteins
+(<a href="references.html#Richardson-1985">Richardson 1985</a>).
+These guidelines are still perfectly valid, although they were
+formulated for hand-drawn images. Look at her drawings for
+inspiration and guidance (Richardson 
+<a href="references.html#Richardson-1981">1981</a>,
+<a href="references.html#Richardson-1985">1985</a>).
+<p>
+An important point to make is that 90 degree views of a structure, if
+carefully selected, can be very instructive. In fact, such views can
+often bring home the message better than stereo plots. With MolScript,
+90 degree views are ridiculously easy to prepare.
+<a href="#stereo">Stereo plots</a>, however, are trickier to make.
+<p>
+When displaying superpositions of structures (for instance, sets of
+structures derived from NMR data), then the 
+<a href="coordinates.html#store-matrix">store-matrix</a>
+and <a href="coordinates.html#recall-matrix">recall-matrix</a>
+commands must be used, rather than the ordinary ways of getting a good
+view. The reason is that if the
+<a href="values.html#vector">position</a> command is used, this will
+give a slightly different transformation for different coordinate
+sets, thus destroying the least-squares fit that (almost certainly)
+has been done previously using some other program. In the display of
+superimposed NMR structures, this will give plots where it looks as if
+the structures superimpose better at the center of the plot than they
+actually do. By using the command 
+<a href="coordinates.html#store-matrix">store-matrix</a> after the
+first coordinate set has been transformed, and then
+<a href="coordinates.html#recall-matrix">recall-matrix</a> for the
+other coordinate sets, you ensure that the original least-squares fit
+is kept intact. 
+<p>
+
+<hr>
+<h2><a name="how">How do I...?</a></h2>
+
+<ul>
+<li><a href="#disulfide">Disulfide bonds</a>
+<li><a href="#per-residue">Per-residue colours</a>
+<li><a href="#rainbow">Rainbow residue colours</a>
+<li><a href="#close">Select residues close to a residue</a>
+<li><a href="#stereo">Stereo plots</a>
+</ul>
+
+<h3><a name="disulfide">Disulfide bonds</a></h3>
+Why are not disulfide bonds output by default?
+<p>
+The reason is that the sulfur atoms in disulfide bonds typically
+have a covalent bond distance of about 2.0-2.1 &Aring;ngstr&ouml;m,
+while the default value for the
+<a href="state.html#bonddistance">bonddistance</a> parameter is only
+1.9 &Aring;ngstr&ouml;m. So in order to get a bond between two sulfur
+atoms, this parameter has to be increased to, say,
+2.5. <strong>Note</strong> that this may cause spurious bonds in other
+parts of your structure, so reset the parameter back to its lower
+value once the disulfide bonds have been created.
+
+<pre>
+   bonds in amino-acids;
+   set bonddistance 2.5;
+   bonds atom SG;
+   set bonddistance 1.9;
+</pre>
+
+Why is the default value of the
+<a href="state.html#bonddistance">bonddistance</a> parameter so low?
+It is a compromise value intended to avoid problems of spurious bonds
+in <i>e.g.</i>the five-membered rings of heme groups, while giving
+reasonable results for other moieties.
+<p>
+
+<h3><a name="per-residue">Per-residue colours</a></h3>
+Per-residue colours were introduced in MolScript v2.0. By switching on
+the <a href="state.html#colourparts">colourparts</a> 
+parameter, all schematic residue-based graphics objects
+(for example
+<a href="residue_commands.html#helix"><strong>helix</strong></a> and 
+<a href="residue_commands.html#strand"><strong>strand</strong></a>) will
+be coloured according to the current residue colours. These are all
+white by default. They can be changed with the
+<a href="state.html#residuecolour">residuecolour</a>
+parameter.
+<p>
+
+<h3><a name="rainbow">Rainbow residue colours</a></h3>
+You want to colour the schematic residue graphics objects from blue at
+the N-terminus along the rainbow colours to red at the C-terminus.
+<p>
+Solution 1:
+<code><blockquote>
+set <a href="state.html#residuecolour">residuecolour</a>
+<a href="selection.html#amino-acids">amino-acids</a>
+<a href="values.html#ramp">rainbow</a>,
+<a href="state.html#colourparts">colourparts</a> on;
+<br>
+helix from 1 to 10; <i>! or whatever</i>
+</blockquote></code>
+<p>
+Solution 2:
+<blockquote>
+Use the <a href="molauto.html">MolAuto</a> program to create the
+commands for the schematic residue graphics objects. By default, these
+will be coloured in a rainbow fashion, but on an object-to-object
+basis, not residue-by-residue.
+</blockquote>
+
+<h3><a name="close">Select residues close to a residue</a></h3>
+If you want to display all residues close to another residue, then use
+the <a href="selection.html#close">close</a> selection
+expression. However, since this expression takes an atom selection as 
+argument, and produces an atom selection, the result must be converted
+to a residue selection using the 
+<a href="selection.html#contains">contains</a> expression.
+<p>
+As an example, to draw bonds for all atoms in all residues having an
+atom within 5.0 &Aring;ngstr&ouml;m of a residue of type RTL, use the
+following: 
+<pre>
+   bonds in contains close in type RTL 5.0;
+</pre>
+<p>
+
+<h3><a name="stereo">Stereo plots</a></h3>
+There is no specific command to make MolScript create stereo plots.
+Instead, a stereo plot can be made by creating two similar plots in
+two different output images, the only difference being a slight
+rotation of all coordinates (about 4-6 degrees) in one of them.
+<p>
+Alternatively, in <a href="output.html#PostScript">PostScript
+output</a> it is possible to make two plots on the same paper
+(position them with the <a href="header.html#area">area</a> command)
+and draw the  same objects in both, adding a small rotation to one of
+them. 
+<p>
+
+<hr>
+<h2><a name="problems">Common problems</a></h2>
+
+<h3><strong>&quot;Error: parse error&quot;</strong></h3>
+
+You may have forgotten the semi-colon ';' that must be present to
+finish the previous command, or you may have used an invalid or
+misspelled command, or you are trying to use a keyword or reserved
+word as an identifier without using quotation marks. Check the input
+file at or before the line and item indicated by the error message.
+<p>
+
+<h3>Weird helices or strands</h3>
+
+If you use a too generous definition of helices and strand, then most 
+likely there will be strange effects at the terminii. To reduce or
+remove the problem, just shorten the secondary structure elements by
+one or two residues. The secondary structure determined by the
+<strong>-ss_hb</strong> command-line option in the
+<a href="molauto.html">MolAuto</a> program is usually good, while the
+command-line option <strong>-ss_ca</strong> may occasionally be too
+generous.
+<p>
+The algorithm for helix graphical object generation assumes reasonably
+good  alpha-helical geometry, but can usually handle deviations like
+proline bends gracefully. Of course, it cannot take care of all kinds
+of irregularities.
+<p>
+Sometimes, a beta-strand may flip over on its back. This is most often
+due to prolines or cross-over in the strand, and is difficult to do
+anything about. Sometimes it may be best to split the strand up to
+handle the problem.
+<p>
+
+<h3>Difficulty to position label strings</h3>
+
+Since parameters such as
+<a href="state.html#labelcentre">labelcentre</a> and
+<a href="state.html#labeloffset">labeloffset</a> are part of the
+graphics state, and hence persistent, it is a common mistake to set an
+offset for a particular label, but forgetting that all labels after 
+that in the input file will also be affected. Just change these 
+parameters appropriately.
+<p>
+
+<h3>Coils/turns not connected to helices/strands</h3>
+
+This is most likely due to not giving the proper residue selection for
+the relevant commands. If residues 1-4 and 7-10 are strands, then the
+turn in between should be given as <nobr><code>&quot;from 4 to
+7&quot;</code></nobr>, <strong>not</strong> <nobr><code>&quot;from 5
+to 6&quot;</code></nobr>. The graphical objects begin and end at the
+given residues. 
+<p>
+
+<h3>Coil radius is not depth-cued</h3>
+
+In the <a href="output.html#PostScript">PostScript output mode</a>,
+the coil radius is depthcued only when
+<a href="header.html#slab">slab</a> is set explicitly in the input file. 
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

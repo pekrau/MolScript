@@ -1,0 +1,278 @@
+<html>
+<head>
+<title>MolScript v2.1: Explicit values</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Explicit values</h1>
+
+Explicit values such as numbers, colours and 3D vectors are used as
+part of commands or state changes. The specifications described here
+are therefore just syntax fragments, not complete commands.
+
+<ul>
+<li><a href="#logical">Logical specifications</a>
+<li><a href="#string">String specifications</a>
+<li><a href="#number">Number specifications</a>
+<li><a href="#vector">Vector specifications</a>
+<li><a href="#colour">Colour specifications</a>
+<ul>
+<li><a href="#grey">Greyscale colours</a>
+<li><a href="#rgb">RGB colours</a>
+<li><a href="#hsb">HSB colours</a>
+<li><a href="#colour_names">Colour names</a>
+</ul>
+<li><a href="#ramp">Colour ramp specifications</a>
+</ul>
+
+<hr>
+<h2><a name="logical">Logical specifications</a></h2>
+
+<h3>on off</h3>
+
+The logical (or boolean) explicit values are used to set some
+parameters and in a few commands.
+
+<p>
+<hr>
+<h2><a name="string">String specifications</a></h2>
+
+<h3>&quot; <i>string-contents</i> &quot;</h3>
+
+String values are used in the <a href="commands.html#label">label</a>
+command, the <a href="coordinates.html#read">read</a> command and a
+few others. A string value is enclosed by double-quote '&quot;'
+characters. It cannot contain the newline character (line breaks),
+which means that a string cannot be split into more than one line in
+the input file. The maximum length of a string is currently 2047
+characters. The double-quote character '&quot;' itself may be included
+in a string by escaping it with the backslash character: '\&quot;'.
+
+<h3><i>identifier</i></h3>
+
+As a special case, a string which contains no blank characters, such
+as tabs or spaces, may be used without the double-quotes. This
+kind of string is called an identifier. There are several restrictions
+on it: there must be no blank characters in it, it must not contain
+characters that are special in a MolScript input file (semi-colon ';',
+curly brackets '{' '}'), and it cannot be equal to a command
+keyword. Typically, file names are identifiers.
+
+<p>
+<hr>
+<h2><a name="number">Number specifications</a></h2>
+
+Any item that is a valid numerical value for the standard library
+routines in the C programming language is also a valid number in
+MolScript. Some examples: 
+
+<blockquote>
+<code>
+1.2
+<br>
+0.3e1
+<br>
+-1.44E1
+<br>
+-1000
+</code>
+</blockquote>
+
+Some <strong>invalid</strong> numbers:
+<blockquote>
+<code>
+.2
+<br>
+1E2
+</code>
+</blockquote>
+
+<strong>Note</strong> that in contrast to previous versions of
+MolScript (v1.4 and older), it is now allowed to give an integer value
+when a floating-point value is expected. The integer is automatically
+converted into a floating-point value. However, when an integer is
+expected, a floating point value is invalid.
+
+<p>
+<hr>
+<h2><a name="vector">Vector specifications</a></h2>
+
+A vector (or coordinate) can be specified either by an explicit
+triplet of numbers, or by the keyword <code>position</code> given with
+an atom selection.
+<p>
+<br>
+
+<h3>
+<a href="#number"><i>number</i></a>
+<a href="#number"><i>number</i></a>
+<a href="#number"><i>number</i></a>
+</h3>
+
+A vector specified by explicit x, y and z values, is given by three
+numbers <strong>without</strong> separating commas. The values in a
+vector must be valid <a href="#number">numbers</a>. For example, the 
+<a href="state.html#labeloffset">labeloffset</a> parameter is a vector
+parameter, so to change it give the following command:
+
+<blockquote>
+<code>
+set labeloffset 0 0.5 -0.8;
+</code>
+</blockquote>
+
+<h3>position <a href="selection.html#atom"><i>atom-selection</i></a></h3>
+
+A vector may be specified by giving an atom selection after the
+keyword <code>position</code>. This will compute the geometrical
+centre-of-gravity of the atoms as the vector value. All atoms in the
+selection have the same weight. <strong>Note</strong> that in the 
+<a href="coordinates.html#transform">transform</a> command, this
+computation is done <strong>before</strong> any of the transformations
+have been applied.
+<p>
+<strong>Note</strong> that the atom selection must contain at least
+one atom, or an error will result.
+
+<p>
+<hr>
+<h2><a name="colour">Colour specifications</a></h2>
+
+Colours can be specified by a name, by greyscale, by the
+RGB (red, green, blue) system, or by the HSB (hue, saturation,
+brightness) system.
+<p>
+The colour system within MolScript unfortunately cannot 
+guarantee that the appearance of a given colour specification will be
+the same in different output formats when displayed on different
+hardware.
+<p>
+
+<h3>
+<a name="grey">grey</a> <a href="#number"><i>number</i></a>
+<br>
+gray  <a href="#number"><i>number</i></a>
+</h3>
+
+The value in the greyscale specification ranges from 0.0 (black) to
+1.0 (white), inclusive.
+
+<h3>
+<a name="rgb">rgb</a>
+<a href="#number"><i>number</i></a>
+<a href="#number"><i>number</i></a>
+<a href="#number"><i>number</i></a>
+</h3>
+
+The values in the RGB specification denote the amount of red, green
+and blue, respectively, colour components to use in the colour. Each
+value ranges from 0.0 to 1.0, inclusive.
+
+<h3>
+<a name="hsb">hsb</a>
+<a href="#number"><i>number</i></a>
+<a href="#number"><i>number</i></a>
+<a href="#number"><i>number</i></a>
+</h3>
+
+The values in the HSB specification denote the hue, saturation and
+brightness values for a colour. These values must all be within the
+range from 0.0 to 1.0, inclusive.
+<ol>
+<li>The hue is defined in a circular fashion from
+0.0 = red, 0.2 = yellow, 0.333 = green, 0.667 = blue, 0.8 = violet,
+1.0 = red again.
+<li>The saturation can be described as the whiteness of
+the colour, where 0.0 is completely white and 1.0 is full colour.
+<li>The brightness (loosely, intensity) goes from 0.0 = black to 1.0 =
+full intensity. 
+</ol>
+
+<h3><a name="colour_names">Colour names</a></h3>
+There are a total of 164 colour names defined in MolScript. They are
+just symbolic constants for ordinary colour specifications in the 
+greyscale (white and black) or RGB systems (all others). 
+<p align=center>
+<strong>
+<a href="colour_names.html">An alphabetical list of defined colour
+names is given here
+</strong>
+</a>.
+</p>
+<p>
+<strong>Note</strong>: the colour purple is no longer the same as magenta.
+
+<p>
+<hr>
+<h2><a name="ramp">Colour ramp specifications</a></h2>
+
+A colour ramp defines a continuously changing scale of colours. Colour
+ramps are used for the 
+<a href="state.html#atomcolour">atomcolour</a> and
+<a href="state.html#residuecolour">residuecolour</a> parameters.
+<p>
+The ramp is defined by the two end-point colours. The actual result is
+crucially dependent on the colour space in which the ramp is
+defined. This is determined by the 
+<a href="state.html#colourramp">colourramp</a> parameter.
+The reason for this is that the ramp is computed by linear
+interpolation of each colour component in the end-point
+colours. When the interpolation is done using the red, green and blue 
+components (<a href="#rgb">RGB</a>), the result will be different
+compared to an interpolation using the hue, saturation, brightness
+components (<a href="#hsb">HSB</a>) even though the two end-point
+colours have the same visual appearance.
+<p>
+The <a href="#hsb">HSB</a> colour space is conceptually a
+colour-wheel. It is therefore possible to interpolate in two opposite
+directions in the HSB colour space. The
+<a href="state.html#hsbreverseramp">hsbreverseramp</a> parameter
+determines which direction is used. If the two end-point colours are
+<code>hsb 0 1 1</code> (red) and <code>hsb 0.667 1
+1</code> (blue), then interpolation with <code>hsbreverseramp
+off</code> (the default) will be in the forward direction, and will go
+through <code>hsb 0.333 1 1</code> (green). If the parameter is
+<code>on</code>, then the interpolation will instead go through
+<code>hsb 0.8 1 1</code> (purple).
+<p>
+<strong>Note</strong> that it does not matter which colour space is
+used in the specifications for the ramp end-point colours. The
+interpolation is determined by the 
+<a href="state.html#colourramp">colourramp</a> and 
+<a href="state.html#hsbreverseramp">hsbreverseramp</a> parameters,
+not by how the end-point colours are specified.
+
+<h3>
+from <a href="#colour"><i>colour-specification</i></a>
+to <a href="#colour"><i>colour-specification</i></a>
+</h3>
+
+Defines the colour ramp by two explicit end-point colour
+values. The lower end of the colour ramp is given by the first
+colour. The interpolation calculation is affected by the
+<a href="state.html#colourramp">colourramp</a> parameter, and if this
+parameter is <code>hsb</code>, then the
+<a href="state.html#hsbreverseramp">hsbreverseramp</a> parameter also
+comes into play.
+
+<h3>
+rainbow
+</h3>
+
+This defines a colour ramp in the HSB colour space from blue to red
+via cyan, green, and yellow, <i>i.e.</i> in the reverse direction.
+<p>
+<strong>Note</strong> that, currently, this colour ramp specification
+will automatically set the
+<a href="state.html#colourramp">colourramp</a> parameter to
+<code>hsb</code> and the
+<a href="state.html#hsbreverseramp">hsbreverseramp</a> parameter to
+<code>on</code>. This is really a <a href="bugs.html#known">bug</a>.
+
+<p>
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

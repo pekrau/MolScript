@@ -1,0 +1,452 @@
+<html>
+<head>
+<title>MolScript v2.1: Output formats</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Output formats</h1>
+
+<ul>
+<li><a href="#PostScript">PostScript file</a>
+<li><a href="#Raster3D">Raster3D input file</a>
+<li><a href="#VRML">VRML 2.0 file</a>
+<li><a href="#OpenGL">Interactive OpenGL</a>
+<li><a href="#image">Image files (based on OpenGL)</a>
+<ul>
+<li><a href="#SGI">SGI (aka RGB)</a>
+<li><a href="#EPS">Encapsulated PostScript (EPS)</a>
+<li><a href="#JPEG">JPEG</a>
+<li><a href="#PNG">PNG</a>
+<li><a href="#GIF">GIF</a>
+</ul>
+</ul>
+
+In the first version of MolScript there was only the 
+<a href="#PostScript">PostScript</a> output format. With the
+introduction of several other output formats, first with
+<a href="#Raster3D">Raster3D</a> in v1.4, and now with
+<a href="#VRML">VRML 2.0</a> and  
+<a href="#OpenGL">OpenGL</a> (and the <a href="#image">image file</a>
+formats based on OpenGL), there is now an issue of how to make output
+in different modes as similar as possible when the same input file is used.
+<p>
+The goal is obviously to make the output as similar as possible in
+different output modes. However, completely identical output is
+difficult to obtain. There are cases when the implementation of a
+particular command or state parameter is too difficult or would be
+very inefficient for a particular output format.
+<p>
+Sometimes a particular output format has special features which are
+quite useful. These features may be used by MolScript, even if there
+is no counterpart in the other output formats. One such example is the
+<a href="commands.html#anchor">anchor</a> command which is meaningful
+only in the <a href="#VRML">VRML 2.0</a> output format. 
+<p>
+
+<hr>
+<h2><a name="PostScript">PostScript file</a></h2>
+
+The PostScript output mode was the original output mode for
+MolScript. Much effort has gone into keeping the output for PostScript
+mode identical in appearance (but not necessarily in implementation)
+for this version compared with the previous versions.
+<p>
+The hidden-surface algorithm in the PostScript mode relies on the
+graphical segments being sufficiently small. The introduction of some
+new commands, <i>e.g.</i>
+<a href="residue_commands.html#cylinder">cylinder</a> and 
+<a href="commands.html#object">object</a>, have necessitated the
+addition of the <a href="state.html#segmentsize">segmentsize</a>
+parameter which controls the subdivision of certain graphical
+segments. Another addition is the
+<a href="state.html#labelbackground">labelbackground</a> parameter
+which is useful for labels in cluttered regions of the image.
+<p>
+Transparency and explicit light sources have not been implemented for
+PostScript in the current version of MolScript.
+<p>
+In previous versions of MolScript (v1.4 and older), the Encapsulated
+PostScript (EPS) format was exactly identical to the PostScript
+output, apart from a few lines of output code. However, this caused
+considerable confusion, since much software (desktop publishing and
+other office applications) apparently seems to assume the existence of
+a pixmap in an EPS file. In this version of MolScript, the
+<a href="#EPS">EPS implementation</a> is completely new and has now
+been decoupled from the PostScript implementation. This is a major
+departure from the <a href="new.html#policy">policy of backwards
+compatibility</a>, but since the EPS format in v1.4 (and older) was
+such a fiasco something had to be done.
+<p>
+
+<hr>
+<h2><a name="Raster3D">Raster3D input file</a></h2>
+
+MolScript can generate an input file for the
+<a href="links.html#Raster3D">Raster3D</a> package written by Ethan
+A. Merritt and others. The Raster3D package is a freely available
+ray-tracing program optimized for 3D molecular models. If you publish
+images made with MolScript and Raster3D, be sure to cite
+<strong>both</strong> programs
+(<a href="references.html#Merritt-1994">Merritt &amp; Murphy, 1994</a>).
+<p>
+MolScript produces an input file for the <strong>render</strong>
+program, which produces an image file in either SGI (aka RGB) format,
+or TIFF format, depending on how you compiled the Raster3D 
+package. <strong>Version 2.4b (or later) of Raster3D is required for
+use with MolScript v2.1</strong>. It is now also possible to compile a
+version of <strong>render</strong> which produces JPEG image files
+directly. 
+<p>
+It is now possible to output labels to the Raster3D file, provided
+that you have compiled MolScript with the
+<a href="links.html#GLUT">GLUT library</a>. 
+<p>
+MolScript now allows a larger degree of control over the values
+written to the header section of the Raster3D input file, mainly
+through the <a href="use.html#options">command-line options</a>. This 
+includes the size of the image (in pixels), the aliasing scheme 
+and the background colour.
+<p>
+However, it is still possible to use a manually edited header section,
+by having a file called <strong>header.r3d</strong> present in the
+directory where MolScript is executed. The content of this file must
+be valid for the <strong>render</strong> program of Raster3D;
+MolScript does not check the contents. If the file is present,
+MolScript will use it instead of generating the header itself.
+<p>
+<strong>Note:</strong> The header file feature was kept just for
+backwards compatibility, and may be removed in future versions. It is
+badly designed.
+<p>
+The control of the light source features is incomplete for the
+Raster3D format. This is largely due to the differences in the
+Raster3D lighting model compared to some other systems.
+<p>
+<strong>Warning:</strong> There may be changes in the implementation
+of the lighting parameters for the Raster3D output mode in future
+versions of MolScript. 
+<p>
+
+<hr>
+<h2><a name="VRML">VRML 2.0 file</a></h2>
+
+VRML 2.0 (Virtual Reality Modeling Language) is a file format for 
+specifying 3D objects with geometry, appearance, Web links and
+behaviours. The files are intended for transmission over the Internet
+in a fashion similar to HTML files. VRML 2.0 is specified in an
+<a href="links.html#VRML">international standard</a> (where it has 
+been officially renamed &quot;VRML 97&quot;) and is described in 
+<a href="references.html#Hartman-1996">Hartman &amp; Wernecke 
+1996</a> and <a href="references.html#Carey-1997">Carey &amp; Bell 
+1997</a>. A VRML file (or world) is viewed in a browser, which most
+often is a so-called plug-in for an ordinary Web browser (such as
+Netscape or Microsoft's Internet Explorer), and which can usually be
+obtained from some <a href="links.html#VRML">web site</a>.
+The ability to use Web links and behaviours in VRML opens the avenue
+for creating content-rich and informative 3D models of molecules,
+especially such complex entities as proteins.
+<p>
+The current version of MolScript contains support for the output of
+all graphical objects and also Web links
+(<a href="commands.html#anchor">anchors</a>). Experimental
+implementations of features to support dynamical behaviour in VRML
+have been made, and some are actually present in the current
+version. However, since these features are just experimental it is
+highly likely that they will change in design and implementation, and
+it was therefore decided to let these features remain undocumented, so
+as to avoid future confusion in the user community.
+<p>
+
+<hr>
+<h2><a name="OpenGL">Interactive OpenGL</a></h2>
+
+The <a href="links.html#OpenGL">OpenGL graphics</a> mode
+allows interactive rotation and scaling of the displayed objects, and
+has features that simplify the creation and fine-tuning of complex
+input files. The graphical objects created in this implementation
+utilise the features in the
+<a href="links.html#OpenGL">OpenGL</a> API
+(<a href="references.html#Neider-1993">Neider <i>et al</i> 1993</a>)
+for high-quality rendering. 
+<p>
+The <a href="links.html#GLUT">GLUT library</a> is used for the
+interaction between OpenGL and the computer windowing system. The
+copyright notice for the GLUT library is
+<a href="copyright.html#GLUT">given here</a>. 
+<p>
+The number of bits used for the various image buffers is output as a
+diagnostic message. These values are the maximum available on the
+system that is used.
+<p>
+The mouse buttons have different functions
+depending on whether the Shift key is pressed down when the mouse
+button is clicked:
+<p>
+
+<table border cellpadding=5>
+
+<tr>
+<th>
+Mouse button
+</th>
+<th>
+No key pressed
+</th>
+<th>
+Shift key pressed
+</th>
+</tr>
+
+<tr>
+<td>
+left
+</td>
+<td>
+rotate
+</td>
+<td>
+scale (up-down)
+</td>
+</tr>
+
+<tr>
+<td>
+middle
+</td>
+<td>
+pick atom
+</td>
+<td>
+change slab
+</td>
+</tr>
+
+<tr>
+<td>
+right
+</td>
+<td>
+menu choice
+</td>
+<td>
+menu choice
+</td>
+</tr>
+
+</table>
+
+<p>
+The menu choices available through the right mouse button are
+activated by holding down the button, moving the mouse over the menu
+option so that it becomes highlighted, and then releasing the
+button. The available menu items are: 
+<p>
+
+<table border cellpadding=5>
+
+<tr>
+<th>
+menu item
+</th>
+<th>
+action
+</th>
+</tr>
+
+<tr>
+<td>
+Full screen
+</td>
+<td>
+The window is enlarged to fill the entire screen, its borders are
+removed, and it is stacked on top of all other windows. The exact
+action depends on the window system of your computer. The menu option
+is changed to &quot;Normal window&quot; (see below). 
+</td>
+</tr>
+
+<tr>
+<td>
+Normal window
+</td>
+<td>
+The window is reduced back to the its original size, with normal
+borders. The menu option is changed back to &quot;Full screen&quot;
+(see above). 
+</td>
+</tr>
+
+<tr>
+<td>
+Output view
+</td>
+<td>
+Output to the <strong>stderr</strong> (standard error) the current
+values for the <a href="header.html#window">window</a> and 
+<a href="header.html#slab">slab</a> parameters, and the transformation
+matrix to be used in a
+<a href="coordinates.html#transform">transform</a> command applied to
+all atoms to give the current view of the molecule. This feature
+allows the user to find a good view in an interactive fashion. The
+output text can be cut-and-pasted into the input file.
+</td>
+</tr>
+
+<tr>
+<td>
+Reset view
+</td>
+<td>
+Reset the view parameters (see above) to the original values before
+the interactive changes made by the user.
+</td>
+</tr>
+
+<tr>
+<td>
+Re-read input file
+</td>
+<td>
+Read the input file again, as if the program had been started from
+scratch. This allows the user to modify the input file using a
+text editor, and then quickly view the effect of the changes. If an 
+error is encountered  the input file, then interpretation stops, but
+the graphics objects rendered so far should be visible. This item will
+appear only if the <a href="use.html#options">command-line option</a>
+<strong>-in</strong> has been used.
+</td>
+</tr>
+
+<tr>
+<td>
+Quit
+</td>
+<td>
+Quit the current session. The keyboard <strong>Esc</strong> key can
+also be used to quit the the current session.
+</td>
+</tr>
+
+</table>
+<p>
+
+<hr>
+<h2><a name="image">Image files (based on OpenGL)</a></h2>
+
+The image file output mode depends entirely on the
+<a href="#OpenGL">OpenGL implementation</a>. If your computer system
+does not allow an <a href="installation.html">installation</a> using
+the OpenGL implementation, then none of the image file output formats
+will be available. Also, the current version relies on the X window
+system extension GLX for OpenGL, which implies that a UNIX system is
+required. 
+<p>
+The image is created via the OpenGL rendering system in exactly the
+same way as the <a href="#OpenGL">interactive OpenGL</a> mode, 
+except that the image is rendered to a pixmap in memory instead of a
+window on the display. The pixmap is read off and written to a
+file having the requested format. The rendering is exactly identical
+for all image file formats.  
+<p>
+The number of bits used for the various image buffers is output as a
+diagnostic message. These values are the maximum available on the
+system, and may differ from those used by the
+<a href="#OpenGL">interactive OpenGL</a> mode.
+<p>
+<strong>Note</strong> that if the image file format includes
+compression of some kind (JPEG, GIF, optionally PNG), it no longer is
+identical to the OpenGL image, just a resonable approximation of it.
+<p>
+
+<h3><a name="SGI">SGI (aka RGB)</a></h3>
+
+The SGI image file format, also know as RGB format, is a loss-less
+run-length-encoded format for 2D images. It is very well suited for
+MolScript images.
+<p>
+The SGI image format is in principle specific to SGI IRIX machines, 
+but it is used in some software on other systems as well.
+<p>
+The implementation in MolScript relies on no third-party software,
+only on a package that is part of the MolScript distribution. This
+package is based on the
+<a href="links.html#SGI">published specification of the SGI image file
+format</a>.
+<p>
+
+<h3><a name="EPS">Encapsulated PostScript (EPS)</a></h3>
+
+The Encapsulated PostScript (EPS) format in MolScript v2.0 is a pixmap
+encoding of the image rendered by the OpenGL implementation. It can be
+included in PostScript documents by many kinds of office and
+desktop-publishing software.
+<p>
+<strong>Note</strong> that this EPS implementation is quite different
+from that in the previous versions of MolScript (v1.4 and older). This
+is a proper pixmap encoding, while the previous versions were
+basically just ordinary PostScript files with a few small differences.
+<p>
+
+<h3><a name="JPEG">JPEG</a></h3>
+
+The JPEG format is a compressed, lossy image file format in widespread
+use on the Web. It is a generally accepted, machine-independent
+standard. 
+<p>
+Unfortunately, JPEG was designed mainly with real-world pictures in
+mind, so the compression algorithm used is not optimal for the images
+rendered by MolScript. The main problem arises for large surfaces with
+homogenous colours. These may look blotchy, particularly if a low
+quality parameter is used.
+<p>
+The implementation relies on the publicly available 
+<a href="links.html#JPEG">JPEG library</a>. The copyright notice for
+the JPEG library is <a href="copyright.html#JPEG">given here</a>. 
+<p>
+
+<h3><a name="PNG">PNG</a></h3>
+
+The PNG format is a format that may be either compressed or not, and
+the compression may be loss-less. It is very well suited for MolScript
+images. 
+<p>
+The PNG image format is intended as a replacement for both the
+patent-afflicted GIF format and the JPEG format. New Web browsers are
+supposed to support PNG. The VRML 2.0 specification requires support
+for PNG images. 
+<p>
+The implementation relies on the publicly available
+<a href="links.html#PNG">PNG and zlib libraries</a>. The copyright
+notice for the PNG library is <a href="copyright.html#PNG">given
+here</a>, and for the zlib library <a href="copyright.html#zlib">here</a>.
+<p>
+
+<h3><a name="GIF">GIF</a></h3>
+
+The GIF image file format is very common on the Web. It is a
+compressed format using a colour map restricted to a maximum of only
+256 entries, so it is not very well suited for MolScript images. The
+current implementation in MolScript uses a so-called error diffusion
+algorithm (<a href="references.html#Foley-1990">Foley <i>et al</i>,
+1990</a>) to minimize the visual artifacts. 
+<p>
+The implementation relies on the publicly available
+<a href="links.html#GIF">gd 1.3 library</a> for creation of the GIF
+files. The copyright notice for the gd 1.3 library is 
+<a href="copyright.html#gd 1.3">given here</a>.
+<p>
+The GIF format usually uses LZW compression, which is patented
+by Unisys. This creates a legal problem for commercial software.
+The current implementation uses version 1.3 of the gd library, which
+does <strong>not</strong> use LZW compression, thus avoiding the
+patent issue. Unfortunately, the run-length encoding it uses instead
+is less efficient, so the GIF files produced by MolScript are much
+bigger (by about a factor of 2.5) than they ought to be. 
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

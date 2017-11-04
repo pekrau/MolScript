@@ -1,0 +1,389 @@
+<html>
+<head>
+<title>MolScript v2.1: Residue graphics commands</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Residue graphics commands</h1>
+
+<table cellpadding=5>
+<tr>
+<td>
+<ul>
+<li><a href="#coil">coil</a>
+<li><a href="#cylinder">cylinder</a>
+<li><a href="#double-helix">double-helix</a>
+<li><a href="#helix">helix</a>
+</ul>
+</td>
+<td>
+<ul>
+<li><a href="#strand">strand</a>
+<li><a href="#trace">trace</a>
+<li><a href="#turn">turn</a>
+</ul>
+</td>
+</tr>
+</table>
+
+In previous versions of MolScript (v1.4 and older), the
+schematic residue representations could be given only one single
+colour. In the current version, all residue graphics objects
+(except <a href="#cylinder">cylinder</a>) can be coloured on a
+residue-by-residue basis. The residue colour is set with the
+<a href="state.html#residuecolour">residuecolour</a> parameter.
+The per-residue colouring mode itself is switched on with the
+<a href="state.html#colourparts">colourparts</a> parameter.
+<p>
+All residue commands operate on chains of residues. All of them,
+except the <a href="#double-helix">double-helix</a> command, define a 
+chain of residues as:
+<ol>
+<li>Consisting of amino-acid residues (based on the residue type)
+<li>Each residue contains an atom named CA
+<li>Consecutive residues in a chain are less than 4.2
+&Aring;ngstr&ouml;m apart.
+</ol>
+If a selection of residues given to the residue commands contain
+breaks in the chain, according to the above criteria, then nothing is
+output for those chain breaks.
+<p>
+The <a href="#double-helix">double-helix</a> command operates on
+nucleotide residues, so the above criteria are different: The residues
+must be nucleotides, the required atom name is P, and the maximum
+distance is 10.0 &Aring;ngstr&ouml;m. Otherwise this command works in
+the same way. 
+<p>
+This feature simplifies the creation of residue representations when
+the coordinates contain chain breaks or missing residues. The output
+from the MolScript program will be sensible without requiring the user
+to locate each chain break in a coordinate set.
+
+<p>
+<hr>
+<h2>
+<a name="coil">coil</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_coil.in">
+<img src="images/ras_coil.jpg" alt="ras_coil"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Create a smooth coil based on the CA atom positions for the given
+amino-acid residues.
+<p>
+The coil goes through the exact CA positions only at the first and
+last residues. At least two consecutive CA atoms are needed. The CA
+coordinates are first copied and smoothed a number of iterations
+(parameter 
+<a href="state.html#smoothsteps">smoothsteps</a>) using Priestle's
+algorithm (<a href="references.html#Priestle-1988">Priestle
+1988</a>). Then a coil with an approximately cylindrical cross-section
+is created along a curve through the smoothed coordinates.
+See <a href="#turn">turn</a> for a variant of coil which does go
+through every CA position. 
+<p>
+The radius of the coil is determined by the parameter
+<a href="state.html#coilradius">coilradius</a>. If the value of the
+coilradius parameter is lower than 0.01, then a curved line is output,
+which is affected by the different line parameters. The curvature of
+the coil can be modulated with the 
+<a href="state.html#splinefactor">splinefactor</a> parameter.
+<p>
+In the <a href="output.html#PostScript">PostScript output mode</a>,
+the coil radius is affected by the
+<a href="state.html#depthcue">depthcue</a> parameter if the
+<a href="header.html#slab">slab</a> has been explicitly set.
+<p>
+The colour is taken from the
+<a href="state.html#planecolour">planecolour</a> parameter if the
+<a href="state.html#colourparts">colourparts</a> parameter is switched
+off, otherwise the
+<a href="state.html#residuecolour">residuecolour</a> is used.
+<p>
+<b>Parameters:</b>
+<a href="state.html#coilradius">coilradius</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#residuecolour">residuecolour</a>,
+<a href="state.html#segments">segments</a>,
+<a href="state.html#smoothsteps">smoothsteps</a>,
+<a href="state.html#splinefactor">splinefactor</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="cylinder">cylinder</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_cyl.in">
+<img src="images/ras_cyl.jpg" alt="ras_coil"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Create a cylinder representation for an alpha-helix.
+<p>
+The end-points of the cylinder are computed on the assumption that the
+selected amino-acid residues form a decent alpha-helix. At least three
+consecutive CA atoms are needed. No cylinder is created for shorter
+polypeptide chains.
+<p>
+The radius is controlled by the
+<a href="state.html#cylinderradius">cylinderradius</a> parameter.
+In the current version of MolScript (v2.1), it is not possible to
+colour the cylinder on a residue-by-residue basis. The colour is
+always taken from the <a href="state.html#planecolour">planecolour</a>
+parameter.
+<p>
+In the <a href="output.html#PostScript">PostScript output mode</a>,
+the subdivision of the cylinder into graphical segments is controlled
+by the <a href="state.html#segmentsize">segmentsize</a> parameter.
+<p>
+<b>Parameters:</b>
+<a href="state.html#cylinderradius">cylinderradius</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#segmentsize">segmentsize</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="double-helix">double-helix</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+Create a smooth coil that goes through the P atom positions for the
+given nucleotide residues.
+<p>
+At least two consecutive P atoms are needed. The same algorithm is
+used to create this representation as for the amino-acid residue
+<a href="#turn">turn</a>. No smoothing of the P atom positions is
+done. The coil created by this command therefore goes through the
+exact P positions. 
+<p>
+The radius of the turn is determined by the parameter
+<a href="state.html#coilradius">coilradius</a>. If the value of the
+coilradius parameter is lower than 0.01, then a curved line is output,
+which is affected by the different line parameters. The curvature of
+the turn can be modulated with the
+<a href="state.html#splinefactor">splinefactor</a> parameter.
+<p>
+The colour is taken from the
+<a href="state.html#planecolour">planecolour</a> parameter if the
+<a href="state.html#colourparts">colourparts</a> parameter is switched
+off, otherwise the
+<a href="state.html#residuecolour">residuecolour</a> is used.
+<p>
+<b>Parameters:</b>
+<a href="state.html#coilradius">coilradius</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#residuecolour">residuecolour</a>,
+<a href="state.html#segments">segments</a>,
+<a href="state.html#splinefactor">splinefactor</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="helix">helix</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_std.in">
+<img src="images/ras_std.jpg" alt="ras_coil"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Create a smooth helical ribbon through the CA atom positions of the
+given amino-acid residues.
+<p>
+At least three consecutive CA atoms are needed. No helix is created
+for shorter polypeptide chains. The helix creation algorithm is
+optimized for regular alpha-helix, but handles common irregularities
+like proline bends reasonably well. Only the CA atom coordinates are
+used to compute the helix. 
+<p>
+The <a href="state.html#helixwidth">helixwidth</a> determines the
+width of the ribbon, which tapers off at the helix terminii to fit the
+<a href="state.html#coilradius">coilradius</a> parameter. Since the
+helix passes through the CA atom positions, the helix radius cannot be
+changed. 
+<p>
+The colour of the outer surface of the helix is controlled by the
+<a href="state.html#planecolour">planecolour</a> parameter, while the
+inner surface uses the
+<a href="state.html#plane2colour">plane2colour</a> parameter. If the
+<a href="state.html#colourparts">colourparts</a> parameter is switched
+on, then the inner and outer surfaces of the helix ribbon are given
+the same colour for each residue, which is then determined by the
+<a href="state.html#residuecolour">residuecolour</a> parameter.
+<p>
+In the <a href="output.html#PostScript">PostScript output mode</a>,
+the shading of the helix ribbon is performed as if the axis of the
+helix had been rotated into the plane of the paper.
+<p>
+In the <a href="output.html#Raster3D">Raster3D output mode</a>, the
+helix has a thickness and a rounded edge controlled by the
+<a href="state.html#helixthickness">helixthickness</a> parameter.
+<p>
+<b>Parameters:</b>
+<a href="state.html#coilradius">coilradius</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#helixthickness">helixthickness</a>,
+<a href="state.html#helixwidth">helixwidth</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#plane2colour">planecolour</a>,
+<a href="state.html#residuecolour">residuecolour</a>,
+<a href="state.html#segments">segments</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="strand">strand</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_cyl.in">
+<img src="images/ras_cyl.jpg" alt="ras_coil"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Create a beta-strand arrow that goes through the smoothed CA positions
+of the selected amino-acid residues.
+<p>
+At least three consecutive CA atoms are needed. No strand is created
+for shorter polypeptide chains.
+<p>
+The smoothing of the CA positions is performed in the same way as for
+<a href="#coil">coil</a>, and the parameter
+<a href="state.html#smoothsteps">smoothsteps</a> applies. The strand
+will not go through the CA positions except at the ends. Only the CA 
+atom  coordinates are used for computing the strand position and
+normal vectors.
+<p>
+The <a href="state.html#segments">segments</a> parameter
+applies, but the actual number of segments created will be
+<nobr>(segments / 2) + 1</nobr>, where the division is integer
+division. The reason for this is that the curvature for strands is
+less than for helices, so fewer segments are needed. The
+<a href="state.html#strandthickness">strandthickness</a> and
+<a href="state.html#strandwidth">strandwidth</a> parameters determine
+the dimensions of the cross-section of the arrow. If the
+strandthickness is less than 0.01 &Aring;ngstr&ouml;m, then an arrow
+made out of a single surface with no thickness is produced.
+<p>
+The colour of the major strand surface is determined by the <a
+href="state.html#planecolour">planecolour</a> parameter, while the
+minor strand surface (the arrow side) is controlled by the 
+<a href="state.html#plane2colour">plane2colour</a> parameter.
+ If the
+<a href="state.html#colourparts">colourparts</a> parameter is switched
+on, then the major and minor strand surfaces are given the same
+colour for each residue.
+<p>
+<b>Parameters:</b>
+<a href="state.html#coilradius">coilradius</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#plane2colour">planecolour</a>,
+<a href="state.html#residuecolour">residuecolour</a>,
+<a href="state.html#segments">segments</a>,
+<a href="state.html#strandthickness">strandthickness</a>,
+<a href="state.html#strandwidth">strandwidth</a>,
+<a href="lighting.html">lighting</a>.
+
+<p>
+<hr>
+<h2>
+<a name="trace">trace</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_trace.in">
+<img src="images/ras_trace.jpg" alt="ras_trace"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Draw straight lines between consecutive CA atoms in the polypeptide
+chain.
+<p>
+The width of the lines is determined by
+<a href="state.html#linewidth">linewidth</a>. The colour is
+taken from the <a href="state.html#linecolour">linecolour</a>
+parameter if the <a href="state.html#colourparts">colourparts</a>
+parameter is switched off, otherwise from the
+<a href="state.html#residuecolour">residuecolour</a> parameter.
+<p>
+<b>Parameters:</b>
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#depthcue">depthcue</a>,
+<a href="state.html#residuecolour">residuecolour</a>,
+<a href="state.html#transparency">transparency</a>.
+<br clear=all>
+
+<p>
+<hr>
+<h2>
+<a name="turn">turn</a>
+<a href="selection.html#residue"><i>residue-selection</i></a> ;
+</h2>
+
+<a href="../examples/ras_turn.in">
+<img src="images/ras_turn.jpg" alt="ras_turn"
+     width=180 height=180 align=right hspace=4 vspace=4>
+</a>
+
+Create a smooth coil that goes through the CA atom positions for the
+given amino-acid residues.
+<p>
+The same algorithm is used to create this representation as for
+<a href="#coil">coil</a>, except that no smoothing of the CA positions
+is performed. The coil created by this command therefore goes through
+all the exact CA positions. At least two consecutive CA atoms are needed.
+<p>
+The radius of the turn is determined by the parameter
+<a href="state.html#coilradius">coilradius</a>. If the value of the
+coilradius parameter is lower than 0.01, then a curved line is output,
+which is affected by the different line parameters. The curvature of
+the turn can be modulated with the
+<a href="state.html#splinefactor">splinefactor</a> parameter.
+<p>
+The colour is taken from the
+<a href="state.html#planecolour">planecolour</a> parameter if the
+<a href="state.html#colourparts">colourparts</a> parameter is switched
+off, otherwise the
+<a href="state.html#residuecolour">residuecolour</a> is used.
+<p>
+<b>Parameters:</b>
+<a href="state.html#coilradius">coilradius</a>,
+<a href="state.html#colourparts">colourparts</a>,
+<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a>,
+<a href="state.html#linewidth">linewidth</a>,
+<a href="state.html#planecolour">planecolour</a>,
+<a href="state.html#residuecolour">residuecolour</a>,
+<a href="state.html#segments">segments</a>,
+<a href="state.html#splinefactor">splinefactor</a>,
+<a href="lighting.html">lighting</a>.
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

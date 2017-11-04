@@ -6,19 +6,24 @@ MolScript v2.1.2
 <table>
   <tr>
     <td>
-      <img src="doc/images/ras_std.jpg" title="ras_std">
+      <img src="docs/images/ras_std.jpg" title="ras_std">
     </td>
     <td>
-      <img src="doc/images/ras_cyl.jpg" title="ras_cyl">
+      <img src="docs/images/ras_cyl.jpg" title="ras_cyl">
     </td>
     <td>
-      <img src="doc/images/ras_gdp_balls.jpg" title="ras_gdp_balls">
+      <img src="docs/images/ras_gdp_balls.jpg" title="ras_gdp_balls">
     </td>
   </tr>
 </table>
 
 MolScript is a program for displaying molecular 3D structures, such as
 proteins, in both schematic and detailed representations.
+
+The documentation is at [http://pekrau.github.io/MolScript/](http://pekrau.github.io/MolScript/).
+
+Background
+----------
 
 MolScript has for a long time been a standard tool in the science of
 macromolecular structures. [The paper describing
@@ -78,9 +83,9 @@ Here are some possible items for a roadmap for future development of MolScript:
 
 * Write an implementation to produce
   [X3D](http://www.web3d.org/x3d/what-x3d), the successor to the VRML
-  format for 3D objects on the web..
+  format for 3D objects on the web.
 
-* Write a [WebGL](http://en.wikipedia.org/wiki/WebGL) implementation
+* Write a [WebGL](http://en.wikipedia.org/wiki/WebGL) implementation.
 
 * Set up a web service producing images from input scripts using MolScript.
 
@@ -93,8 +98,7 @@ Reference
     protein structures.
     J. Appl. Cryst. (1991) 24, 946-950
 
-Unfortunately, this paper is not Open Access, so I cannot include a
-PDF or a link to the text itself.
+This paper is now available under Open Access: [PDF](docs/kraulis_1991_molscript_j_appl_cryst.pdf)
 
 [DOI:10.1107/S0021889891004399](http://dx.doi.org/10.1107/S0021889891004399)
 

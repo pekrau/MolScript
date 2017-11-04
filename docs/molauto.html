@@ -1,0 +1,286 @@
+<html>
+<head>
+<title>MolScript v2.1: The MolAuto v1.1 program</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>The MolAuto v1.1 program</h1>
+
+<ul>
+<li><a href="#introduction">Introduction</a>
+<li><a href="#changes">Changes in version 1.1</a>
+<li><a href="#use">How to use MolAuto</a>
+<li><a href="#options">Command-line options</a>
+<li><a href="#bugs">Known bugs</a>
+<li><a href="#caveat">Caveat for version 1.1</a>
+</ul>
+
+<hr>
+<h2><a name="introduction">Introduction</a></h2>
+MolAuto is a program for producing good first-approximation MolScript
+input files (scripts) from a coordinate file. The program locates
+secondary structure in the protein 3D structure by one of several
+different criteria and outputs the appropriate schematic object
+commands. It also finds ligand residues present in the coordinate file
+and outputs commands to render these. There are some command-line
+options that fine-tune the type and appearance of the different objects.
+<p>
+The MolAuto program does <strong>not</strong> find transformations to
+produce good views of a molecule. This must be done manually by the
+user, most easily using the <a href="output.html#OpenGL">interactive
+OpenGL</a> mode of MolScript.
+<p>
+
+<hr>
+<h2><a name="changes">Changes in version 1.1</a></h2>
+
+<ul>
+
+<li> The default secondary structure is now that given in the PDB
+file. Previously, the DSSP-like algorithm in MolAuto (option -ss_hb)
+was the default.
+<p>
+
+<li> Double-quote characters in the string for the title command now
+use the <a href="values.html#string">character escape mechanism</a>
+added to MolScript v2.1.
+
+<p>
+<li> A bug involving single amino-acid residues among ligand residues
+has been fixed. The bug caused a coil of length 1 to be output, which
+is invalid in MolScript. The PDB data set 1HIV was an example of a 
+coordinate data set which had this problem.
+
+</ul>
+<p>
+
+<hr>
+<h2><a name="use">How to use MolAuto</a></h2>
+
+MolAuto is invoked with the coordinate file (in
+<a href="links.html#protein">PDB</a> format) as the single required
+argument on the command line. The program reads the coordinate file,
+analyses it, and outputs the MolScript input file to
+<code>stdout</code> (standard output): 
+
+<code>
+<blockquote>
+% molauto pdb1rbp.ent > 1rbp.in
+</blockquote>
+</code>
+
+MolAuto can be part of a UNIX pipe with MolScript, for example when
+producing a quick display of a PDB structure using the
+<a href="output.html#OpenGL">OpenGL implementation</a> in MolScript:
+
+<code>
+<blockquote>
+% molauto pdb1rbp.ent | molscript -opengl
+</blockquote>
+</code>
+
+A <a href="output.html#VRML">VRML 2.0</a> representation of a protein
+may be produced easily:
+
+<code>
+<blockquote>
+% molauto pdb1rbp.ent | molscript -vrml
+</blockquote>
+</code>
+
+<hr>
+<h2><a name="options">Command-line options</a></h2>
+
+Any combination of command-line options may be used, except for a few
+pathological combinations which may generate an error. If conflicting
+options are used, then the last one on the line determines the
+result. 
+<p>
+
+<table border cellpadding=5>
+
+<tr>
+<th>
+command-line option
+</th>
+<th>
+action
+</th>
+</tr>
+
+<tr>
+<td><code>-notitle</code></td>
+<td>
+Do <strong>not</strong> produce a
+<a href="input.html#title">title</a> item at the top of the
+MolScript input file. By default, a title item is produced if there
+is a <code>COMPND</code> record in the PDB file.
+</td>
+</tr>
+
+<tr>
+<td><code>-nocentre</code></td>
+<td>
+Do <strong>not</strong> produce a transformation command that centres
+the molecule in the coordinate system. The molecule is kept in its
+original position. By default, such a centering command is produced. 
+</td>
+</tr>
+
+<tr>
+<td><code>-cylinder</code></td>
+<td>
+Use the
+<a href="residue_commands.html#cylinder">cylinder</a>
+command to render helices, instead of the
+<a href="residue_commands.html#helix">helix</a> command
+(which is the default).
+</td>
+</tr>
+
+<tr>
+<td><code>-turns</code></td>
+<td>
+Produce
+<a href="residue_commands.html#turn">turn</a> commands
+when turns are specified in the secondary structure definitions in the
+PDB file (<code>TURN</code> records). The default is to convert all
+such turns into
+<a href="residue_commands.html#coil">coil</a> commands. 
+</td>
+</tr>
+
+<tr>
+<td><code>-nice</code></td>
+<td>
+Nice rendering: The schematic protein and nucleotide representations
+are coloured along the sequence on a residue-per-residue basis by a
+rainbow colour ramp. Also, more
+<a href="state.html#segments">segments</a> are used.
+</td>
+</tr>
+
+<tr>
+<td><code>-thin</code></td>
+<td>
+Use thin variants (zero thickness) of the schematic representations;
+strand arrows are rendered as flat surfaces and coils as lines.
+</td>
+</tr>
+
+<tr>
+<td><code>-noligand</code></td>
+<td>
+Do <strong>not</strong> produce commands that render ligands,
+i.e. residues that are not amino-acid residues or waters. By default,
+such residues are rendered.
+</td>
+</tr>
+
+<tr>
+<td><code>-bonds</code></td>
+<td>
+Render ligands using the
+<a href="atom_commands.html#bonds">bonds</a>
+command. This is the default.
+
+</td>
+</tr>
+
+<tr>
+<td><code>-stick</code></td>
+<td>
+Render ligands using the
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>
+command.
+</td>
+</tr>
+
+<tr>
+<td><code>-cpk</code></td>
+<td>
+Render ligands using the
+<a href="atom_commands.html#cpk">cpk</a> command.
+</td>
+</tr>
+
+<tr>
+<td><code>-nocolour</code></td>
+<td>
+Do <strong>not</strong> use colours for schematic representations. By
+default, the schematic residue graphics objects are given colours in a
+rainbow ramp on an object-by-object basis.
+</td>
+</tr>
+
+<tr>
+<td><code>-ss_pdb</code></td>
+<td>
+Use the secondary structure given in the PDB file for the schematic
+representation. This is the default.
+</td>
+</tr>
+
+<tr>
+<td><code>-ss_hb</code></td>
+<td>
+Use a DSSP-like algorithm
+(<a href="references.html#Kabsch-1983">Kabsch &amp; Sander 1983</a>)
+based on hydrogen-bonding patterns to determine the secondary
+structure used for the schematic representation.
+</td>
+</tr>
+
+<tr>
+<td><code>-ss_ca</code></td>
+<td>
+Use an algorithm based on CA-CA distance patterns to determine the
+secondary structure used for the schematic representation. This is
+less accurate than the DSSP-like algorithm, but requires only CA atoms
+coordinates.
+</td>
+</tr>
+
+<tr>
+<td><code>-h</code></td>
+<td>
+Output a listing of the available command-line options to
+<code>stderr</code> (standard error output). No other output is
+produced.
+</td>
+</tr>
+
+</table>
+<p>
+
+<hr>
+<h2><a name="bugs">Known bugs</a></h2>
+
+<ul>
+<li>The option <code>-nice</code> should really be two separate,
+functionally orthogonal options. 
+<p>
+<li>PDB files containing MODEL records (<i>i.e.</i> structures derived
+from NMR data) are not handled sensibly. Only the first coordinate set
+is analysed, and the output MolScript file contains commands that do
+not deal with the multiple coordinate sets in any way.
+<p>
+<li>The DSSP-like algorithm used for the <code>-ss_hb</code>
+command-line option hasn't been validated as well as it should
+be. It may contain bugs.
+</ul>
+
+<hr>
+<h2><a name="caveat">Caveat for version 1.1</a></h2>
+The command-line options in MolAuto v1.1 are not set in stone. It is
+conceivable that future versions of MolAuto may change the meaning of
+some options, or that some options may disappear. Experience with the
+program may prompt modifications.
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<html>
+<head>
+<title>MolScript v2.1: Object file format</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Object file format</h1>
+
+This is a description of the format of the file read by the
+<a href="commands.html#object">object</a> command. The file may
+contain data specifying points, lines, triangles and triangle strip 
+surfaces, with colours and normal vectors optionally specified.
+This feature is intended as an interface to external programs that
+produce objects such as surfaces. It should not be too difficult to
+create scripts or utility programs that convert the original output
+from such external programs into the file format described here. 
+<ul>
+<li><a href="#general">General format rules</a>
+<li><a href="#table">Object codes table</a>
+<li><a href="#codes">Object codes description</a>
+<li><a href="#examples">Examples</a>
+</ul>
+<p>
+
+<hr>
+<h2><a name="general">General format rules</a></h2>
+
+The basic layout of an entry in the object file is the following:
+<ol>
+<li> A code of 1-3 characters (see below) denoting the object type.
+<li> A positive integer value giving the number of vertices in the object. 
+<li> The x,y,z coordinates, and normals and/or RGB colour values (if 
+any) for each vertex.
+</ol>
+The file may contain any number and mixture of such entries. It is
+possible, for instance, to define within one single object file a
+surface consisting of triangle strips, and a number of points (dots)
+outside the surface.
+<p>
+The number given after the code denotes the <strong>number of
+vertices</strong> in the object, not the number of segments, or
+anything like that. For lines, the number must be at least 2. For
+triangles, the number must at least 3 and a multiple of 3. For
+triangle strips, it must be at least 3. The number of numerical values
+needed for the object also depends on whether RGB values and/or normal
+vectors are to be specified for the object. 
+<p>
+The file format is free, meaning that the different items (object
+codes and numerical values) must be separated by white-space
+characters (space, tab or newline) but otherwise the items may be
+placed anywhere on a line, or split up between lines. The object file
+cannot contain any comments. Note that this also the case for an
+inline object specification within a MolScript input file, which
+cannot contain the usual type of comment among the object data.
+<p>
+The x,y,z coordinates are in units of &Aring;ngstr&ouml;m. The RGB
+component values must be in the range 0.0 to 1.0 (inclusive). The
+normal vectors must be normalized (i.e. length 1.0).
+<p>
+
+<hr>
+<h2><a name="table">Object code table</a></h2>
+
+<table border cellpadding=5>
+
+<tr>
+<th rowspan=2>
+object
+</th>
+<th rowspan=2>
+code
+</th>
+<th rowspan=2>
+# vertices
+</th>
+<th colspan=3>
+data for each vertex
+</th>
+</tr>
+
+<tr>
+<th>
+coordinates
+</th>
+<th>
+normals
+</th>
+<th>
+RGB values
+</th>
+</tr>
+
+<tr>
+<td rowspan=2 align=center>
+points
+</td>
+<td align=center>
+<a href="#P">P</a>
+</td>
+<td align=center>
+&gt;= 1
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+-
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#PC">PC</a>
+</td>
+<td align=center>
+&gt;= 1
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+r,g,b
+</td>
+</tr>
+
+<tr>
+<td rowspan=2 align=center>
+polyline
+</td>
+<td align=center>
+<a href="#L">L</a>
+</td>
+<td align=center>
+&gt;= 2
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+-
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#LC">LC</a>
+</td>
+<td align=center>
+&gt;= 2
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+r,g,b
+</td>
+</tr>
+
+<tr>
+<td align=center rowspan=4>
+triangles
+</td>
+<td align=center>
+<a href="#T">T</a>
+</td>
+<td align=center>
+&gt;= 3*N
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+-
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#TC">TC</a>
+</td>
+<td align=center>
+&gt;= 3*N
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+r,g,b
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#TN">TN</a>
+</td>
+<td align=center>
+&gt;= 3*N
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+nx,ny,nz
+</td>
+<td align=center>
+-
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#TNC">TNC</a>
+</td>
+<td align=center>
+&gt;= 3*N
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+nx,ny,nz
+</td>
+<td align=center>
+r,g,b
+</td>
+</tr>
+
+<tr>
+<td align=center rowspan=4>
+triangle strip
+</td>
+<td align=center>
+<a href="#S">S</a>
+</td>
+<td align=center>
+&gt;= 3
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+-
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#SC">SC</a>
+</td>
+<td align=center>
+&gt;= 3
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+-
+</td>
+<td align=center>
+r,g,b
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#SN">SN</a>
+</td>
+<td align=center>
+&gt;= 3
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+nx,ny,nz
+</td>
+<td align=center>
+-
+</td>
+</tr>
+
+<tr>
+<td align=center>
+<a href="#SNC">SNC</a>
+</td>
+<td align=center>
+&gt;= 3
+</td>
+<td align=center>
+x,y,z
+</td>
+<td align=center>
+nx,ny,nz
+</td>
+<td align=center>
+r,g,b
+</td>
+</tr>
+
+</table>
+
+<p>
+<hr>
+<h2><a name="codes">Object codes description</a></h2>
+
+<h3>Points</h3>
+
+<ul>
+<li><strong><a name="P">code P</a></strong>: coordinates only
+<br>
+The data are the x,y,z (coordinates) for each point. There must be 
+3*number numerical values. 
+<p>
+<li><strong><a name="PC">code PC</a></strong>: with colours
+<br>
+The data are the x,y,z, r,g,b (coordinates and RGB values) for each
+point. There must be 6*number numerical values.
+</ul>
+<p>
+
+<h3>Lines</h3>
+
+A line object may contain more than two vertices, in which case it
+becomes a so-called polyline, where each vertex is connected by a line
+to the next. 
+<p>
+<ul>
+<li><strong><a name="L">code L</a></strong>: coordinates only
+<br>
+The data are the x,y,z (coordinates) for each vertex in the
+polyline. There must be 3*number numerical values.
+<p>
+<li><strong><a name="LC">code LC</a></strong>: with colours
+<br>
+The data are the x,y,z, r,g,b (coordinates and RGB values) for each
+vertex in the polyline. There must be 6*number numerical
+values. The colour changes continuously from one vertex to the
+next. In the current implementation, the colour is constant for each
+line segment for the 
+<a href="output.html#PostScript">PostScript</a> and 
+<a href="output.html#Raster3D">Raster3D</a> output modes.
+</ul>
+<p>
+
+<h3>Triangles</h3>
+
+A triangle object may contain 3*N vertices, in which case N triangles
+are created.
+<p>
+<ul>
+<li><strong><a name="T">code T</a></strong>: coordinates only
+<br>
+The data are the x,y,z (coordinates) for each vertex in the
+triangles. There must be 3*number numerical values.
+<p>
+<li><strong><a name="TC">code TC</a></strong>: with colours
+<br>
+The data are the x,y,z, r,g,b (coordinates and RGB values) for each
+vertex in the triangles. There must be 6*number numerical
+values. The colour changes continuously from one vertex to the
+next. In the current implementation, the colour is constant within
+each triangle for the 
+<a href="output.html#PostScript">PostScript output mode</a>.
+<p>
+<li><strong><a name="TN">code TN</a></strong>: with normals
+<br>
+The data are x,y,z, nx,ny,nz (coordinates and normal vector
+coordinates) for each vertex in the triangles. There must be 6*number
+numerical values. Gouraud shading is used, except for the 
+<a href="output.html#PostScript">PostScript output mode</a>.
+<p>
+<li><strong><a name="TNC">code TNC</a></strong>: with normals and colours
+<br>
+The data are x,y,z, nx,ny,nz, r,g,b (coordinates, normal vector
+coordinates and RGB values) for each vertex in the triangles. There
+must be 9*number numerical values. The colour changes continuously and
+Gouraud shading is used, except for the
+<a href="output.html#PostScript">PostScript output mode</a>.
+<p>
+</ul>
+<p>
+
+<h3>Triangle strips</h3>
+
+Triangle strips are a more compact way of specifying surfaces
+consisting of many triangles that share edges. A triangle strip is
+given by 3 or more vertices, where vertex 1, 2 and 3 form the first
+triangle, vertices 2, 3 and 4 the next, vertices 3, 4, and 5 the next,
+and so on.
+<p>
+<ul>
+<li><strong><a name="S">code S</a></strong>: coordinates only
+<br>
+The data are the x,y,z (coordinates) for each vertex in the
+triangles of the strip. There must be 3*number numerical values.
+<p>
+<li><strong><a name="SC">code SC</a></strong>: with colours
+<br>
+The data are the x,y,z, r,g,b (coordinates and RGB values) for each
+vertex in the triangles of the strip. There must be 6*number numerical
+values. The colour changes continuously from one vertex to the
+next. In the current implementation, the colour is constant within
+each triangle for the 
+<a href="output.html#PostScript">PostScript output mode</a>.
+<p>
+<li><strong><a name="SN">code SN</a></strong>: with normals
+<br>
+The data are x,y,z, nx,ny,nz (coordinates and normal vector
+coordinates) for each vertex in the triangles of the strip. There must
+be 6*number numerical values. Gouraud shading is used, except for the 
+<a href="output.html#PostScript">PostScript output mode</a>.
+<p>
+<li><strong><a name="SNC">code SNC</a></strong>: with normals and colours
+<br>
+The data are x,y,z, nx,ny,nz, r,g,b (coordinates, normal vector
+coordinates and RGB values) for each vertex in the triangles of the
+strip. There must be 9*number numerical values. The colour changes
+continuously and Gouraud shading is used, except for the
+<a href="output.html#PostScript">PostScript output mode</a>.
+</ul>
+<p>
+
+<h3><a name="Q">code Q</a>: End of data</h3>
+
+The end-of-data code denotes that there are no more objects in the
+file. There is no integer value after this code, in contrast to all
+other codes. MolScript stops reading the object file, closes it, and
+resumes reading the original MolScript input file. The Q code is
+necessary when the object file is inlined into the MolScript file. The
+Q code is not necessary when the object file is external; the ordinary
+end-of-file is then sufficient.
+<p>
+
+<hr>
+<h2><a name="examples">Examples</a></h2>
+
+Four points in a square around the origin:
+
+<blockquote>
+<pre>
+P 4
+1 0 0
+0 1 0
+-1 0 0
+0 -1 0
+Q
+</pre>
+</blockquote>
+
+A cube around the origin:
+<blockquote>
+<pre>
+L 10
+1 1 -1
+1 -1 -1
+-1 -1 -1
+-1 1 -1
+1 1 -1
+1 1 1
+1 -1 1
+-1 -1 1
+-1 1 1
+1 1 1
+L 2
+1 -1 -1
+1 -1 1
+L 2  -1 -1 -1  -1 -1 1
+L 2  -1 1 -1  -1 1 1
+Q
+</pre>
+</blockquote>
+
+A triangle with specified vertex colours:
+<blockquote>
+<pre>
+TC 3
+10 10 0  0.4 1.0 0.0
+10 -10 0 1.0 0.4 0.0
+-10 0 0  0.0 0.0 1.0
+Q
+</pre>
+</blockquote>
+
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

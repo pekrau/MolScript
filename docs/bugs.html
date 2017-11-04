@@ -1,0 +1,256 @@
+<html>
+<head>
+<title>MolScript v2.1: Bugs</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Bugs</h1>
+
+<ul>
+<li><a href="#caveat">Caveat for version 2.1</a>
+<li><a href="#known">Known bugs</a>
+<ul>
+<li><a href="#general">General</a>
+<li><a href="#PostScript">PostScript</a>
+<li><a href="#Raster3D">Raster3D</a>
+<li><a href="#VRML">VRML 2.0</a>
+<li><a href="#OpenGL">OpenGL</a>
+</ul>
+<li><a href="#reporting">Reporting bugs that you have discovered</a>
+</ul>
+
+<hr>
+<h2><a name="caveat">Caveat for version 2.1</a></h2>
+
+There may still be bugs in MolScript v2.1. Although the software is
+used by many people, not all problems may have been reported to
+me. Also, some new features and code modifications have been made
+since v2.0.2, so new bugs may have crept in. Hopefully, they are not
+too serious; many tests have been made during the development. Since
+MolScript has been <a href="about.html#implementation">reimplemented
+in the C programming language</a>, it is possible (even likely) that
+entirely new bugs, which did not exist in the previous versions, have
+been introduced.
+<p>
+If you have found a bug, then please <a href="#reporting">report it</a>.
+<p>
+
+<hr>
+<h2><a name="known">Known bugs</a></h2>
+
+<h3><a name="general">General bugs</a></h3>
+
+<ol>
+<li>
+Only the <a href="links.html#protein">PDB coordinate file format</a>
+is supported in the <a href="new.html#coordinates">current version</a>.
+<p>
+<p>
+<li>
+The graphics commands <a href="atom_commands.html#bonds">bonds</a> and
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a> are
+inefficient in execution time, especially when two atom selections
+are given and the first selection contains many atoms. For best
+performance, put the selection with fewest atoms as the first one.
+<p>
+<li>
+The <a href="values.html#rainbow">rainbow</a> colour ramp specification
+switches automatically the
+<a href="state.html#colourramp">colourramp</a> parameter to
+<strong>hsb</strong> and the
+<a href="state.html#hsbreverseramp">hsbreverseramp</a> parameter to
+<strong>on</strong>. This is not reasonable behaviour.
+<p>
+<li>
+The graphics state commands <a href="state.html#push-pop">push and
+pop</a> do not save and restore the
+<a href="state.html#atomcolour">atomcolour</a>,
+<a href="state.html#atomradius">atomradius</a> and
+<a href="state.html#residuecolour">residuecolour</a> parameters.
+<p>
+<li>
+The <a href="commands.html#level-of-detail">level-of-detail</a>
+command is not handled correctly in non-VRML output modes. Currently,
+all alternative representations are rendered. The most detailed
+representation should be used. 
+</ol>
+
+<h3><a name="PostScript">PostScript bugs</a></h3>
+
+<ol>
+<li>
+The <a href="header.html#slab">slab</a> command has not been
+implemented properly.
+<p>
+<li>
+The lighting parameters and commands are hardly implemented at all in
+the <a href="lighting.html#PostScript">PostScript output
+mode</a>.
+<p>
+<li>
+<a href="lighting.html#transparency">Transparency</a> has not been
+implemented. 
+<p>
+<li>
+The <a href="residue_commands.html#strand">strand</a>s sometimes show
+defects at twist points, and when viewed directly from the ends. If
+this is a real problem in your case, then either increase the
+<a href="state.html#segments">segment number</a> (for example from 6
+to 10) for that strand, or rotate the atoms slightly around the x or y
+axis. This should at least reduce the problem, if not remove it
+completely. 
+<p>
+<li>
+In general, the simple hidden-surface removal algorithm relies on
+segments being small, and not overlapping severely. If unreasonable 
+values for, say, the <a href="state.html#helixwidth">helixwidth</a> or
+<a href="state.html#atomradius">atomradius</a> parameters are used,
+then the  algorithm breaks down, and very strange results are
+obtained. The parameter
+<a href="state.html#segmentsize">segmentsize</a> can be used to reduce
+or eliminate the problem in a few cases.
+<p>
+<li>
+Lines at the edges of strands can sometimes appear jagged, especially
+when a thick <a href="state.html#linewidth">linewidth</a> is used, and
+when close to strand twist points. This bug is due to the simple
+hidden-surface removal algorithm in the PostScript output mode, and
+there is no simple way to eliminate this effect. 
+<p>
+<li>
+In the <a href="atom_commands.html#cpk">cpk</a> atom representation,
+the spheres do not overlap properly.  They are simply created as flat
+disks and then depth-sorted.
+<p>
+<li>
+When using a mixture of representations, such as
+<a href="residue_commands.html#helix">helix</a> and 
+<a href="atom_commands.html#ball-and-stick">ball-and-stick</a>, some
+graphical segments are occasionally clipped incorrectly. This is due
+to the simple hidden-surface removal algorithm. In a few cases, this
+can be remedied by changing the orientation slightly.
+</ol>
+
+<h3><a name="Raster3D">Raster3D bugs</a></h3>
+
+<ol>
+<li>
+The <a href="header.html#slab">slab</a> command has not been
+implemented properly.
+<p>
+<li>
+The implementation of
+<a href="commands.html#label">labels</a> in the Raster3D output mode
+relies on a file from the
+<a href="links.html#GLUT">GLUT library</a>, and may not therefore be
+available, or may change in future GLUT versions. A more solid
+solution should be implemented. No Greek characters can be output in
+the Raster3D mode. 
+<p>
+<li>
+The <a href="state.html#labelclip">labelclip</a> parameter has no effect.
+<p>
+<li>
+The lighting parameters and commands are not well implemented.
+<p>
+<li>
+The <a href="header.html#headlight">headlight</a> command does not
+give the expected result. The secondary light source is switched off,
+not the first. This is related to limitations in the
+<a href="links.html#Raster3D">Raster3D</a> input file format. 
+</ol>
+<p>
+
+<h3><a name="VRML">VRML 2.0 bugs</a></h3>
+
+<ol>
+<li>
+The implementation of
+<a href="commands.html#label">labels</a> is incomplete: no Greek
+characters can be output, and
+<a href="state.html#labelcentre">label centering</a> has not been
+implemented. 
+<p>
+<li>
+The <a href="state.html#labelclip">labelclip</a> parameter has no effect.
+</ol>
+<p>
+
+<h3><a name="OpenGL">OpenGL bugs</a></h3>
+
+<ol>
+<li>
+It is currently not possible to do translations of the objects to
+obtain a better view in the interactive window. This is silly.
+<p>
+<li>
+The input file re-read feature in the interactive menu is supposed
+to work reasonably even if there are serious errors in the input
+file. However, there are still pathological cases when MolScript will
+crash completely when some types of input file errors are encountered.
+<p>
+<li>
+The implementation of transparency relies on an approximation which is
+probably needed for interactive performance. In some cases, this will
+give rise to incorrect rendering.
+<p>
+<li>
+The implementation of labels is incomplete: there are no Greek
+characters, the parameters
+<a href="state.html#labelcentre">labelcentre</a> and
+<a href="state.html#labelclip">labelclip</a> have not been
+implemented, and the 
+<a href="state.html#labelsize">labelsize</a> parameter is implemented
+as just a few different sizes. Transparency for labels has not been
+implemented. 
+<p>
+<li>
+The implementation of the
+<a href="commands.html#object">object</a> command is in some parts
+inefficient in rendering time, although probably not noticeable in
+most cases. 
+<p>
+<li>
+The <a href="residue_commands.html#coil">coil</a> and
+<a href="residue_commands.html#turn">turn</a> graphical objects have a
+quadratic cross-section. Although the surface normals help give an
+illusion that the coil is a cylindrical object, this ought to be
+improved. 
+</ol>
+
+<hr>
+<h2><a name="reporting">Reporting bugs that you have discovered</a></h2>
+
+If you discover bugs which have not been documented previously
+(<a href="#known">see above</a>), then please report them by email to
+the author of MolScript: Per Kraulis
+(<a href="mailto:pjk@avatar.se">pjk@avatar.se</a>).
+<p>
+In order to be able to identify the exact programming problem giving
+rise to the observed bug, it is almost always necessary to have the
+original input file and coordinate file: <strong>Please send the input
+file and coordinate file along with the bug
+description</strong>. Sending just a description of the problem is
+usually not enough.
+<p>
+The author does <strong>not</strong> promise to be able to solve the
+bug within any finite period of time. However, he will do his best,
+since this is obviously in his own best interest.
+<p>
+It may happen that the coordinate file in question is not public (for
+various reasons). Therefore, the author of MolScript makes the
+following statement: 
+<blockquote>
+I, Per Kraulis, promise not to use any coordinate file sent to me for
+debugging purposes for any other purpose than sorting out the
+MolScript bug. The coordinate file will be destroyed once this has
+been done, and no copy of it will be saved.
+</blockquote>
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

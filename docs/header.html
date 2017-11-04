@@ -1,0 +1,246 @@
+<html>
+<head>
+<title>MolScript v2.1: Plot header commands</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Plot header commands</h1>
+
+The plot header consists of a set of commands which must be placed
+before any graphics commands in the input command file, if they are to
+be included at all. These commands control various global aspects of
+the rendered image. They may be given in any order within the header
+section. 
+
+<table cellpadding=5>
+<tr>
+<td>
+<ul>
+<li><a href="#noframe">noframe</a>
+<li><a href="#frame">frame</a>
+<li><a href="#area">area</a>
+<li><a href="#background">background</a>
+<li><a href="#window">window</a>
+</ul>
+</td>
+<td>
+<ul>
+<li><a href="#slab">slab</a>
+<li><a href="#headlight">headlight</a>
+<li><a href="#shadows">shadows</a>
+<li><a href="#fog">fog</a>
+</ul>
+</td>
+</tr>
+</table>
+
+<hr>
+<h2>
+<a name="noframe">noframe</a>
+</h2>
+
+Remove the frame that is drawn by default around the plot. There must
+be <strong>no semi-colon</strong> after this command!
+<p>
+This is a badly designed command that has been retained in v2 just for
+backwards compatibility. It may be removed in future versions. Use the
+<a href="#frame">frame</a> command instead. 
+<p>
+<b>Note:</b> There is no semi-colon ';' after this command!
+<br>
+<b>Used for:</b> <a href="output.html#PostScript">PostScript</a> only
+
+<p>
+<hr>
+<h2>
+<a name="frame">frame</a>
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt; ;
+</h2>
+
+Switch on or off drawing of the frame around the plot. The plot extent
+on the paper is given by the <a href="#area">area</a> command. 
+<p>
+<b>Default:</b> <code>on</code>
+<br>
+<b>Used for:</b> <a href="output.html#PostScript">PostScript</a> only
+
+<p>
+<hr>
+<h2>
+<a name="area">area</a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a> ;
+</h2>
+
+Determine where on the paper the plot will be placed. The values given
+are the x and y coordinates for the lower left corner, followed by the
+x and y coordinates for the upper right corner, in PostScript
+units. The default values are appropriate for A4 size (European
+standard) or Letter size (US standard) paper. A frame (a black
+rectangle) is drawn around the area, unless the 
+"<a href="#frame"><code>frame off;</code></a>" command is used. 
+<p>
+<b>Default:</b> <code>50.0 100.0 550.0 700.0</code>
+<br>
+<b>Used for:</b> <a href="output.html#PostScript">PostScript</a> only
+
+<p>
+<hr>
+<h2>
+<a name="background">background</a>
+<a href="values.html#colour"><i>colour-spec</i></a> ;
+</h2>
+
+Determines the colour of the background in the image.
+<p>
+<b>Default:</b> <code>white</code> for
+<a href="output.html#PostScript">PostScript</a>,
+<code>black</code> for
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+
+<p>
+<hr>
+<h2>
+<a name="window">window</a>
+<a href="values.html#number"><i>number</i></a> ;
+</h2>
+
+Set the length of the side of the coordinate system volume that is
+viewed.  Since the view is always towards the origin of the coordinate
+system (0, 0, 0), the coordinates at the edge of the viewed volume
+will be half the window value (if the <a href="#area">area</a> is
+quadratic): For example, at the right the coordinate will be
+(window/2, y, z), at the left (-window/2, y, z). The window will
+always be fitted into the plot area. If the plot area is non-square,
+the actual window will be larger in either x or y (depending on the
+aspect ratio) than the specified window value.
+<p>
+A large value for window means that a large volume is viewed, making
+the objects small. Conversely, a small value enlarges the objects and
+views a smaller part of the coordinate system space.
+<p>
+If no explicit window value is set, MolScript computes a value that 
+just encompasses the objects rendered. That value is then output as a
+message. This means that the scale of the image (the relation
+&Aring;ngstr&ouml;m : display units) will depend on what is drawn and
+may vary according to the transformation applied to the
+coordinates. To obtain a constant scale, set the window value
+explicitly. This is important when different views are shown of the
+same graphical objects, such as stereo plots.
+<p>
+In the <a href="output.html#PostScript">PostScript</a> output mode,
+the graphics segments outside the window are not written to the output
+file, in order to minimize the file size.
+<p>
+The window value is ignored for the
+<a href="output.html#VRML">VRML 2.0</a> output mode.
+<p>
+<b>Default:</b> A value that just fits the drawn graphics objects.
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#OpenGL">OpenGL</a>.
+
+<p>
+<hr>
+<h2>
+<a name="slab">slab</a>
+<a href="values.html#number"><i>number</i></a> ;
+</h2>
+
+Set the depth of the coordinate system volume box that is
+viewed.  Graphical segments that fall outside this volume are
+clipped. If a small value is given, then only a thin slice of the
+coordinate space is visible. Since the view is alway towards the
+origin of the coordinate system (0, 0, 0), the coordinates at the
+view volume front edge will be (x, y, slab/2) and at the volume back
+edge (x, y, -slab/2).
+<p>
+If no explicit slab value is given, MolScript computes a value that
+just encompasses the objects drawn in the plot. That value is then 
+output as a message. Certain depth cue effects (such as the effect on
+the <a href="state.html#coilradius">coil radius</a>) in the 
+<a href="output.html#PostScript">PostScript</a> output mode depend
+on an explicitly set slab value, otherwise they are not applied.
+<p>
+The slab value has no meaning for the
+<a href="output.html#VRML">VRML 2.0</a> output mode.
+<p>
+<b>Default:</b> A value that just fits the drawn graphics objects.
+<br>
+<b>Used for:</b>
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#OpenGL">OpenGL</a>.
+
+<hr>
+<h2>
+<a name="headlight">headlight</a>
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt; ;
+</h2>
+
+Switch on or off the <a href="lighting.html#headlight">headlight</a>,
+the default light source. If switched off, then some other light(s)
+should be defined in the input file, or the objects will not be
+illuminated. 
+<p>
+<b>Default:</b> <code>on</code>
+<br>
+<b>Used for:</b>
+<a href="output.html#Raster3D">Raster3D</a>,
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+
+<p>
+<hr>
+<h2>
+<a name="shadows">shadows</a>
+&lt; <a href="values.html#logical">on</a> |
+<a href="values.html#logical">off</a> &gt; ;
+</h2>
+
+Determine whether shadows for the graphics objects are to be computed
+in ray-tracing rendering.
+<p>
+<b>Default:</b> <code>off</code>
+<br>
+<b>Used for:</b> <a href="output.html#Raster3D">Raster3D</a> only
+
+<p>
+<hr>
+<h2>
+<a name="fog">fog</a>
+<a href="values.html#number"><i>number</i></a> ;
+</h2>
+
+Set the value of the global fog distance parameter. If the value is
+non-zero, the colour of every graphical segments is blended with the
+background colour according to the distance from the front slab plane
+(OpenGL) or viewer (VRML 2.0). The parameter is the distance where the
+background colour completely dominates. Beyond this distance, no
+objects will be visible. A simple linear fog equation is used. 
+<p>
+This is the replacement for the
+<a href="new.html#colourdepthcue">now defunct</a> colourdepthcue
+parameter. 
+<p>
+<b>Default:</b> 0.0
+<br>
+<b>Used for:</b>
+<a href="output.html#VRML">VRML 2.0</a>,
+<a href="output.html#OpenGL">OpenGL</a>
+
+<p>
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

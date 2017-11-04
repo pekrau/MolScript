@@ -1,0 +1,484 @@
+<html>
+<head>
+<title>MolScript v2.1: Copyright</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Copyright</h1>
+
+The MolScript v2.1 program, its source code and its documentation 
+files are all
+<p align=center>
+<strong>Copyright &copy; 1997-1998 Per Kraulis</strong>
+</p>
+unless otherwise noted. There is no copyright on the example files.
+<p>
+
+<hr>
+<h2>Source code written by other people</h2>
+
+MolScript uses some software written by other people, either directly
+as integrated parts of the source code, or as calls to external
+libraries. Here follows the copyright statements relating to these
+external codes:
+<ul>
+<li>Source code included in the distribution.
+<ul>
+<li><a href="#jitter.h">jitter.h</a>
+<li><a href="#glutstroke.h">glutstroke.h</a>
+the distribution. 
+<li><a href="#regex.c">regex.c</a>
+</ul>
+
+<br>
+<li>Source code libraries <strong>not</strong> included in the
+distribution.
+<ul>
+<li><a href="#GLUT">GLUT</a>
+<li><a href="#JPEG">JPEG</a>
+<li><a href="#PNG">PNG</a>
+<li><a href="#zlib">zlib</a>
+<li><a href="#gd 1.3">gd 1.3</a>
+</ul>
+</ul>
+
+<hr>
+<h3><a name="jitter.h">jitter.h</a></h3>
+
+The file jitter.h contains the jittering matrix data used by the
+accumulation aliasing option
+(<a href="use.html#options">-accum</a>)for the 
+<a href="output.html#OpenGL">OpenGL</a> rendering.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+/*
+ * (c) Copyright 1993, Silicon Graphics, Inc.
+ * ALL RIGHTS RESERVED 
+ * Permission to use, copy, modify, and distribute this software for 
+ * any purpose and without fee is hereby granted, provided that the above
+ * copyright notice appear in all copies and that both the copyright notice
+ * and this permission notice appear in supporting documentation, and that 
+ * the name of Silicon Graphics, Inc. not be used in advertising
+ * or publicity pertaining to distribution of the software without specific,
+ * written prior permission. 
+ *
+ * THE MATERIAL EMBODIED ON THIS SOFTWARE IS PROVIDED TO YOU "AS-IS"
+ * AND WITHOUT WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR OTHERWISE,
+ * INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY OR
+ * FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL SILICON
+ * GRAPHICS, INC.  BE LIABLE TO YOU OR ANYONE ELSE FOR ANY DIRECT,
+ * SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY
+ * KIND, OR ANY DAMAGES WHATSOEVER, INCLUDING WITHOUT LIMITATION,
+ * LOSS OF PROFIT, LOSS OF USE, SAVINGS OR REVENUE, OR THE CLAIMS OF
+ * THIRD PARTIES, WHETHER OR NOT SILICON GRAPHICS, INC.  HAS BEEN
+ * ADVISED OF THE POSSIBILITY OF SUCH LOSS, HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE
+ * POSSESSION, USE OR PERFORMANCE OF THIS SOFTWARE.
+ * 
+ * US Government Users Restricted Rights 
+ * Use, duplication, or disclosure by the Government is subject to
+ * restrictions set forth in FAR 52.227.19(c)(2) or subparagraph
+ * (c)(1)(ii) of the Rights in Technical Data and Computer Software
+ * clause at DFARS 252.227-7013 and/or in similar or successor
+ * clauses in the FAR or the DOD or NASA FAR Supplement.
+ * Unpublished-- rights reserved under the copyright laws of the
+ * United States.  Contractor/manufacturer is Silicon Graphics,
+ * Inc., 2011 N.  Shoreline Blvd., Mountain View, CA 94039-7311.
+ *
+ * OpenGL(TM) is a trademark of Silicon Graphics, Inc.
+ */
+/*
+</pre>
+<hr width="50%" size=2 noshade>
+
+<hr>
+<h3><a name="glutstroke.h">glutstroke.h</a></h3>
+
+The glutstroke.h file contains the character data structures for the
+GLUT library, which are needed for the
+<a href="output.html#Raster3D">Raster3D</a> character
+implementation. This source code file is included in the distribution
+for technical reasons.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+/* Copyright (c) Mark J. Kilgard, 1994. */
+
+/* This program is freely distributable without licensing fees 
+   and is provided without guarantee or warrantee expressed or 
+   implied. This program is -not- in the public domain. */
+</pre>
+<hr width="50%" size=2 noshade>
+
+<hr>
+<h3><a name="regex.c">regex.c</a></h3>
+
+The regex code contains the algorithm for regular expression
+evaluation used for the <a href="selection.html#name">name
+comparisons</a> in the <a href="selection.html">selection
+mechanism</a> in MolScript. 
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+/*
+ * regcomp, regexec and regerror
+ *
+ *	Copyright (c) 1986 by University of Toronto.
+ *	Written by Henry Spencer.  Not derived from licensed software.
+ *
+ *	Permission is granted to anyone to use this software for any
+ *	purpose on any computer system, and to redistribute it freely,
+ *	subject to the following restrictions:
+ *
+ *	1. The author is not responsible for the consequences of use of
+ *		this software, no matter how awful, even if they arise
+ *		from defects in it.
+ *
+ *	2. The origin of this software must not be misrepresented, either
+ *		by explicit claim or by omission.
+ *
+ *	3. Altered versions must be plainly marked as such, and must not
+ *		be misrepresented as being the original software.
+ *
+ * Beware that some of this code is subtly aware of the way operator
+ * precedence is structured in regular expressions.  Serious changes in
+ * regular-expression syntax might require a total rethink.
+ *
+ * Per Kraulis
+ *  29-Jan-1997  converted to ANSI C
+ *  18-Jun-1997  changed argument tests into assert's
+ *  17-Sep-1997  added function 'regcomp_pjk', which takes a MolScript-style
+ *               regular expression and compiles it into a 'regexp'
+ */
+</pre>
+<hr width="50%" size=2 noshade>
+
+<p>
+<hr>
+<h3><a name="GLUT">GLUT</a></h3>
+GLUT is the API used by MolScript to make the window system and OpenGL
+work together. It is used by the <a href="output.html#OpenGL">OpenGL
+implementation</a> and <a href="output.html#image">all image file
+formats</a>.
+<p>
+<strong>Note</strong> that this library is not included in the
+MolScript distribution: you will have to obtain it yourself from the
+<a href="links.html#GLUT">site given here</a>.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+NOTICE:  The OpenGL Utility Toolkit (GLUT) distribution contains source
+code published in a book titled "Programming OpenGL for the X Window
+System" (ISBN: 0-201-48359-9) published by Addison-Wesley.  The
+programs and associated files contained in the distribution were
+developed by Mark J. Kilgard and are Copyright 1994, 1995, 1996 by Mark
+J. Kilgard (unless otherwise noted).  The programs are not in the
+public domain, but they are freely distributable without licensing
+fees.  These programs are provided without guarantee or warrantee
+expressed or implied.
+</pre>
+<hr width="50%" size=2 noshade>
+
+<p>
+<hr>
+<h3><a name="JPEG">JPEG</a></h3>
+The JPEG library from the Independent JPEG Group is used for the
+<a href="output.html#JPEG">JPEG image file format</a>.
+<p>
+<strong>Note</strong> that this library is not included in the
+MolScript distribution: you will have to obtain it yourself from the
+<a href="links.html#JPEG">site given here</a>.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+LEGAL ISSUES
+============
+
+In plain English:
+
+1. We don't promise that this software works.  (But if you find any bugs,
+   please let us know!)
+2. You can use this software for whatever you want.  You don't have to pay us.
+3. You may not pretend that you wrote this software.  If you use it in a
+   program, you must acknowledge somewhere in your documentation that
+   you've used the IJG code.
+
+In legalese:
+
+The authors make NO WARRANTY or representation, either express or implied,
+with respect to this software, its quality, accuracy, merchantability, or
+fitness for a particular purpose.  This software is provided "AS IS", and you,
+its user, assume the entire risk as to its quality and accuracy.
+
+This software is copyright (C) 1991-1996, Thomas G. Lane.
+All Rights Reserved except as specified below.
+
+Permission is hereby granted to use, copy, modify, and distribute this
+software (or portions thereof) for any purpose, without fee, subject to these
+conditions:
+(1) If any part of the source code for this software is distributed, then this
+README file must be included, with this copyright and no-warranty notice
+unaltered; and any additions, deletions, or changes to the original files
+must be clearly indicated in accompanying documentation.
+(2) If only executable code is distributed, then the accompanying
+documentation must state that "this software is based in part on the work of
+the Independent JPEG Group".
+(3) Permission for use of this software is granted only if the user accepts
+full responsibility for any undesirable consequences; the authors accept
+NO LIABILITY for damages of any kind.
+
+These conditions apply to any software derived from or based on the IJG code,
+not just to the unmodified library.  If you use our work, you ought to
+acknowledge us.
+
+Permission is NOT granted for the use of any IJG author's name or company name
+in advertising or publicity relating to this software or products derived from
+it.  This software may be referred to only as "the Independent JPEG Group's
+software".
+
+We specifically permit and encourage the use of this software as the basis of
+commercial products, provided that all warranty or liability claims are
+assumed by the product vendor.
+
+
+ansi2knr.c is included in this distribution by permission of L. Peter Deutsch,
+sole proprietor of its copyright holder, Aladdin Enterprises of Menlo Park, CA.
+ansi2knr.c is NOT covered by the above copyright and conditions, but instead
+by the usual distribution terms of the Free Software Foundation; principally,
+that you must include source code if you redistribute it.  (See the file
+ansi2knr.c for full details.)  However, since ansi2knr.c is not needed as part
+of any program generated from the IJG code, this does not limit you more than
+the foregoing paragraphs do.
+
+The configuration script "configure" was produced with GNU Autoconf.  It
+is copyright by the Free Software Foundation but is freely distributable.
+
+It appears that the arithmetic coding option of the JPEG spec is covered by
+patents owned by IBM, AT&T, and Mitsubishi.  Hence arithmetic coding cannot
+legally be used without obtaining one or more licenses.  For this reason,
+support for arithmetic coding has been removed from the free JPEG software.
+(Since arithmetic coding provides only a marginal gain over the unpatented
+Huffman mode, it is unlikely that very many implementations will support it.)
+So far as we are aware, there are no patent restrictions on the remaining
+code.
+
+WARNING: Unisys has begun to enforce their patent on LZW compression against
+GIF encoders and decoders.  You will need a license from Unisys to use the
+included rdgif.c or wrgif.c files in a commercial or shareware application.
+At this time, Unisys is not enforcing their patent against freeware, so
+distribution of this package remains legal.  However, we intend to remove
+GIF support from the IJG package as soon as a suitable replacement format
+becomes reasonably popular.
+
+We are required to state that
+    "The Graphics Interchange Format(c) is the Copyright property of
+    CompuServe Incorporated.  GIF(sm) is a Service Mark property of
+    CompuServe Incorporated."
+</pre>
+<hr width="50%" size=2 noshade>
+
+<p>
+<hr>
+<h3><a name="PNG">PNG</a></h3>
+The PNG reference library (libpng) is used for the
+<a href="output.html#PNG">PNG image file format</a>.
+<p>
+<strong>Note</strong> that this library is not included in the
+MolScript distribution: you will have to obtain it yourself from the
+<a href="links.html#PNG">site given here</a>.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+/* png.h - header file for PNG reference library
+
+   libpng 1.0 beta 6 - version 0.96
+   For conditions of distribution and use, see copyright notice in png.h
+   Copyright (c) 1995, 1996 Guy Eric Schalnat, Group 42, Inc.
+   Copyright (c) 1996, 1997 Andreas Dilger
+   May 12, 1997
+
+   BETA NOTICE:
+      This is a beta version.  It reads and writes valid files on the
+      platforms I have, and has had a wide testing program.  You may
+      have to modify the includes below to get it to work on your
+      system, and you may have to supply the correct compiler flags in
+      the makefile if you can't find a makefile suitable for your
+      operating system/compiler combination.  Read libpng.txt for more
+      information, including how to contact the authors if you have any
+      problems, or if you want your compiler/platform to be supported in
+      the next official libpng release.
+
+   See libpng.txt for more information.
+
+   Contributing Authors:
+      John Bowler
+      Sam Bushell
+      Kevin Bracey
+      Andreas Dilger
+      Magnus Holmgren
+      Dave Martindale
+      Greg Roelofs
+      Guy Eric Schalnat
+      Paul Schmidt
+      Tom Tanner
+      Tim Wegner
+
+   The contributing authors would like to thank all those who helped
+   with testing, bug fixes, and patience.  This wouldn't have been
+   possible without all of you.
+
+   Thanks to Frank J. T. Wojcik for helping with the documentation.
+
+   The PNG Reference Library is supplied "AS IS".  The Contributing Authors
+   and Group 42, Inc. disclaim all warranties, expressed or implied,
+   including, without limitation, the warranties of merchantability and of
+   fitness for any purpose.  The Contributing Authors and Group 42, Inc.
+   assume no liability for direct, indirect, incidental, special, exemplary,
+   or consequential damages, which may result from the use of the PNG
+   Reference Library, even if advised of the possibility of such damage.
+
+   Permission is hereby granted to use, copy, modify, and distribute this
+   source code, or portions hereof, for any purpose, without fee, subject
+   to the following restrictions:
+   1. The origin of this source code must not be misrepresented.
+   2. Altered versions must be plainly marked as such and must not be
+      misrepresented as being the original source.
+   3. This Copyright notice may not be removed or altered from any source or
+      altered source distribution.
+
+   The Contributing Authors and Group 42, Inc. specifically permit, without
+   fee, and encourage the use of this source code as a component to
+   supporting the PNG file format in commercial products.  If you use this
+   source code in a product, acknowledgment is not required but would be
+   appreciated.
+*/
+</pre>
+<hr width="50%" size=2 noshade>
+
+<p>
+<hr>
+<h3><a name="zlib">zlib</a></h3>
+
+The zlib library contains general purpose compression routines used by
+the PNG library for the <a href="output.html#PNG">PNG</a> image file
+format. 
+<p>
+<strong>Note</strong> that this library is not included in the
+MolScript distribution: you will have to obtain it yourself from the
+<a href="links.html#PNG">site given here</a>.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+Acknowledgments:
+
+  The deflate format used by zlib was defined by Phil Katz. The deflate
+  and zlib specifications were written by Peter Deutsch. Thanks to all the
+  people who reported problems and suggested various improvements in zlib;
+  they are too numerous to cite here.
+
+Copyright notice:
+
+ (C) 1995-1996 Jean-loup Gailly and Mark Adler
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+  Jean-loup Gailly        Mark Adler
+  gzip@prep.ai.mit.edu    madler@alumni.caltech.edu
+
+If you use the zlib library in a product, we would appreciate *not*
+receiving lengthy legal documents to sign. The sources are provided
+for free but without warranty of any kind.  The library has been
+entirely written by Jean-loup Gailly and Mark Adler; it does not
+include third-party code.
+
+If you redistribute modified sources, we would appreciate that you include
+in the file ChangeLog history information documenting your changes.
+</pre>
+<hr width="50%" size=2 noshade>
+
+<p>
+<hr>
+<h3><a name="gd 1.3">gd 1.3</a></h3>
+
+The gd 1.3 library is a C library used for the
+<a href="output.html#GIF">GIF image file format</a>.
+<p>
+<strong>Note</strong> that this library is not included in the
+MolScript distribution: you will have to obtain it yourself from the
+<a href="links.html#GIF">site given here</a>.
+<p>
+<hr width="50%" size=2 noshade>
+<pre>
+COPYRIGHT STATEMENT FOLLOWS THIS LINE
+
+     Portions copyright 1994, 1995, 1996, 1997, 1998, by Cold Spring
+     Harbor Laboratory. Funded under Grant P41-RR02188 by the National
+     Institutes of Health.
+     
+     Portions copyright 1996, 1997, 1998, by Boutell.Com, Inc.
+     
+     GIF decompression code copyright 1990, 1991, 1993, by David Koblas
+     (koblas@netcom.com).
+     
+     Non-LZW-based GIF compression code copyright 1998, by Hutchison
+     Avenue Software Corporation (http://www.hasc.com/, info@hasc.com).
+     
+     Permission has been granted to copy and distribute gd in any
+     context, including a commercial application, provided that this
+     notice is present in user-accessible supporting documentation.
+     
+     This does not affect your ownership of the derived work itself, and
+     the intent is to assure proper credit for the authors of gd, not to
+     interfere with your productive use of gd. If you have questions,
+     ask. "Derived works" includes all programs that utilize the
+     library. Credit must be given in user-accessible documentation.
+     
+     Permission to use, copy, modify, and distribute this software and
+     its documentation for any purpose and without fee is hereby
+     granted, provided that the above copyright notice appear in all
+     copies and that both that copyright notice and this permission
+     notice appear in supporting documentation. This software is
+     provided "as is" without express or implied warranty.
+     
+END OF COPYRIGHT STATEMENT
+
+   Version 1.3 features the following changes:
+   
+   Non-LZW-based GIF compression code
+          Version 1.3 contains GIF compression code that uses simple Run
+          Length Encoding instead of LZW compression, while still
+          retaining compatibility with normal LZW-based GIF decoders
+          (your browser will still like your GIFs). LZW compression is
+          patented by Unisys. This is why there have been no new versions
+          of gd for a long time. THANKS to Hutchison Avenue Software
+          Corporation for contributing this code. THE NEW CODE PRODUCES
+          LARGER GIFS AND IS NOT WELL SUITED TO PHOTOGRAPHIC IMAGES. THIS
+          IS A LEGAL ISSUE. IT IS NOT A QUESTION OF TECHNICAL SKILL.
+          PLEASE DON'T COMPLAIN ABOUT THE SIZE OF GIF OUTPUT. THANKS!
+
+   ...          
+</pre>
+<hr width="50%" size=2 noshade>
+
+<p>
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

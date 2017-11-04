@@ -1,0 +1,358 @@
+<html>
+<head>
+<title>MolScript v2.1: Molecule coordinate commands</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Molecule coordinate commands</h1>
+
+<ul>
+<li><a href="#system">The MolScript coordinate system</a>
+<li><a href="#coordinates">Molecule coordinate data</a>
+<li><a href="#read">read</a>
+<li><a href="#transform">transform</a>
+<ul>
+<li><a href="#centre">centre</a>
+<li><a href="#translation">translation</a>
+<li><a href="#rotation-xyz">rotation &lt;x|y|z&gt;</a>
+<li><a href="#rotation-axis">rotation axis</a>
+<li><a href="#rotation">rotation matrix</a>
+<li><a href="#recall-matrix">recall-matrix</a>
+</ul>
+<li><a href="#store-matrix">store-matrix</a>
+<li><a href="#copy">copy</a>
+<li><a href="#delete">delete</a>
+</ul>
+
+<hr>
+<h2><a name="system">The MolScript coordinate system</a></h2>
+
+<img src="images/coordsys.gif" width=216 height=210 hspace=10
+     vspace=10 align=left>
+
+There is one single fixed coordinate system in MolScript: The viewer
+looks down from the positive z axis towards the origin. The x-y plane
+is perpendicular to the view direction. The coordinate system is
+right-handed; x increases from left to right, and y increases from the
+bottom upwards. The distance unit is &Aring;ngstr&ouml;m. 
+<p>
+The viewpoint cannot be changed (however, see the 
+<a href="commands.html#viewpoint">viewpoint</a> command). To view the
+molecule from another angle, the atomic coordinates have to be
+<a href="#transform">transformed</a> (i.e. rotated and/or translated)
+within the coordinate system. 
+<p>
+The <a href="#copy">copy</a> and <a href="#delete">delete</a> commands
+allow manipulation of the coordinates read into MolScript in powerful
+ways. For instance, one may have available the transformation matrices
+that define a symmetrical oligomer of a protein structure. In MolScript,
+it is easy to create the constituent subunits from the original
+coordinates using the <a href="#copy">copy</a> and
+<a href="#transform">transform</a> commands.
+
+<p>
+<hr>
+<h2><a name="coordinates">Molecule coordinate data</a></h2>
+
+The molecule coordinates are read using the <a href="#read">read</a>
+command, and are then stored internally. The various atom and
+residue <a href="selection.html">selection expressions</a> operate on
+the molecule data and yield selections for the
+<a href="commands.html">graphics commands</a> to render.
+<a href="bugs.html#general">Currently</a>, MolScript reads only
+<a href="links.html#protein">PDB format coordinate files</a>.
+
+<h3>Name and type strings</h3>
+
+When the coordinate data has been read, some processing is done on the
+strings in it: the strings for the residue names (=numbers), residue
+types, and atom names are left-shifted, and blanks are squeezed out,
+to facilitate  <a href="selection.html#name">name comparisons</a>
+involving these items. As a special case, any '*' (star) characters in
+atom names are changed to ''' (single-quote) to avoid a clash with the
+<a href="selection.html#X-PLOR">X-PLOR type wildcard character</a>
+used in MolScript.  This is relevant for nucleic acids in PDB format;
+there, primes are represented by '*' characters. 
+
+<h3>Atomic radii and colours</h3>
+
+Default atomic radii and colours (see parameters 
+<a href="state.html#atomcolour">atomcolour</a> and 
+<a href="state.html#atomradius">atomradius</a>) as well as
+residue colours (parameter 
+<a href="state.html#residuecolour">residuecolour</a>) are
+automatically set by MolScript after the coordinate file has been read. 
+
+<h3>Segment identifiers</h3>
+
+The current version of MolScript handles the segment identifier
+(segid) in the new (v2.0) PDB format. The segid was introduced as the
+chain identifier in X-PLOR
+(<a href="references.html#Brunger-1992">Br&uuml;nger 1992</a>).
+If present, it can be accessed in the residue selection
+<a href="selection.html#segid">segid</a>.
+
+<h3>Atomic elements</h3>
+
+The current version of MolScript interprets the atomic element as
+given in the new (v2.0) PDB format. If the PDB file is of the older
+format, then a reasonable guess as to the element type based on the
+atom name is made. This value is accessible as the atom selection
+<a href="selection.html#element">element</a>.
+
+<h3>MODEL</h3>
+PDB coordinate files in the new format (v2.0 and higher) may contain a 
+keyword MODEL indicating that the file has several coordinate sets for
+the same molecule. This is for NMR protein structures, which are most
+often determined as sets of 3D structures. The models are stored
+in MolScript as separate molecules, having the same molecule name, but
+different model numbers, which can be used in the residue selection
+<a href="selection.html#model">model</a>. Molecules read from files
+containing no MODEL records (<i>e.g.</i> an X-ray diffraction
+structure) will have the model number 0. 
+
+<p>
+<hr>
+<h2>
+<a name="read">read</a>
+<i>molname</i> <a href="values.html#string"><i>PDB-code-string</i></a> ;
+<br>
+read <i>molname</i> <a href="values.html#string"><i>filename-string</i></a> ;
+<br>
+read <i>molname</i> inline-PDB ;
+</h2>
+
+The read command has three forms, all of which need two
+arguments. The first argument is the molecule name to assign to the
+coordinate data. It may be any valid identifier. The molecule name can
+be used in the residue selection
+<a href="selection.html#molecule">molecule</a>.
+
+<h3>PDB code</h3>
+
+The first form of the read command is used if the second argument is a
+valid PDB data set code, having four characters where the first
+character is a digit. The full PDB file name is constructed from
+the environment variable MOL3D_PDB_DIR, which must be defined. Three
+different directory and file name conventions are tested
+consecutively, and the first that works is used:
+
+<ol>
+<li>PDB standard hierarchical organisation and file name:
+<br>for code 1XYZ the file is $MOL3D_PDB_DIR/distr/xy/pdb1xyz.ent
+<li>PDB flat directory, standard file name:
+<br>for code 1XYZ the file is $MOL3D_PDB_DIR/pdb1xyz.ent
+<li>PDB flat directory, simplified file name:
+<br>for code 1XYZ the file is $MOL3D_PDB_DIR/1xyz.pdb
+</ol>
+
+The given PDB code is changed to lower case characters, and the other
+strings used to construct the file name are all in lower case, except
+the environment variable value which is used as is. 
+
+<h3>file name</h3>
+
+The second form of the read command is used when the second argument
+is not a valid PDB data set code. The second argument (optionally
+enclosed by double-quotes '&quot;') is then interpreted as a complete
+coordinate file name. In the current version of MolScript, only PDB
+files are supported.  
+
+<h3>inline PDB</h3>
+
+The keyword <strong>inline-PDB</strong> (no double-quotes!) as the
+second argument in the command instructs MolScript to read the
+subsequent lines of the input file (after the semi-colon ';') as a PDB
+file, until a PDB record with the keyword <code>END</code> appears.  
+<p>
+This inline PDB part of the input file is unusual in that it is not
+free-format, but must follow the PDB format rules exactly. The usual
+MolScript interpretation of the input file is resumed after the line
+containing the PDB END record. If there is no END record in the PDB
+data, then an error will (most likely) occur as MolScript tries to
+interpret the rest of the MolScript input file as a PDB format file. 
+<p>
+This feature allows the creation of entirely self-contained MolScript
+input files, which contain both coordinate data as well as
+transformation and graphics commands. It is intended mainly as a format
+that other programs (such as molecule display or analysis programs)
+could generate.
+
+<p>
+<hr>
+<h2>
+<a name="transform">transform</a>
+<a href="selection.html#atom"><i>atom-selection</i></a>
+{ by <i>operation</i> } ;
+</h2>
+
+The coordinates of the selected atoms are transformed by a matrix.
+The matrix is defined by a set of one or more operations, each
+preceded by the <code>by</code> keyword. The operations are
+conceptually applied to the atom coordinates in the specified order,
+one operation after the other. 
+<p>
+Any number of operations may be specified. This means that it is not
+necessary for the user to modify any previous operations if a
+modification of the transformation is needed; one can just add the
+operations needed to achieve the desired transformation. The available
+operations are listed below.
+<p>
+Each operation generates a 4x4 transformation matrix. These matrices 
+are sequentially concatenated into one single matrix before the
+transformation is actually applied.
+<p>
+<strong>Note</strong> that it is valid to transform a selection
+containing no atoms. This may be useful when a current transformation
+matrix needs to be established for the
+<a href="commands.html#object">object</a> command, without changing
+the coordinates of any atoms. 
+
+<h3>
+<a name="centre">centre</a>
+<a href="values.html#vector"><i>vector</i></a>
+</h3>
+
+Transform the atom coordinates so that the point specified by the
+given vector is moved to the origin.
+<p>
+This is most often used with the
+<a href="values.html#vector">position</a> command, which produces the
+geometrical centre-of-gravity of its atom
+selection. <strong>Note</strong> that this will refer to the atom
+coordinates as they are <strong>before</strong> the operations of
+this particular transform command have been applied. Therefore, this
+particular operation should be used as the first one in a transform
+command. 
+
+<h3>
+<a name="translation">translation</a>
+<a href="values.html#vector"><i>vector</i></a>
+</h3>
+
+Translate the atom coordinates by the specified vector.
+
+<h3>
+<a name="rotation-xyz">rotation</a> x
+<a href="values.html#number"><i>number</i></a>
+<br>
+rotation y
+<a href="values.html#number"><i>number</i></a>
+<br>
+rotation z
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Rotate the atom coordinates around the specified x-, y- or z-axis of
+the fixed coordinate system. The value is given as an angle in units
+of degrees, where a positive value rotates counter-clockwise around
+the given axis when viewed from the positive axis down towards the
+origin of the fixed coordinate system.
+
+<h3>
+<a name="rotation-axis">rotation</a> axis
+<a href="values.html#vector"><i>vector</i></a>
+<a href="values.html#number"><i>number</i></a>
+</h3>
+
+Rotate the atom coordinates around the axis specified by the given
+vector. The value is given as an angle in units of degrees, where a
+positive value rotates counter-<wbr>clockwise around the given axis
+when viewed from the positive axis down towards the origin of the
+fixed coordinate system. 
+
+<h3>
+<a name="rotation">rotation</a> 
+<br>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<br>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<br>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+<a href="values.html#number"><i>number</i></a>
+</blockquote>
+</h3>
+
+Rotate the atom coordinates by the explicit specified 3x3 rotation 
+matrix. The validity of this matrix is not checked by MolScript. If it
+is incorrect, the coordinates will be corrupted. 
+<p>
+This feature is used most often together with the
+<a href="output.html#OpenGL">interactive OpenGL</a> mode, which
+allows interactive rotation of the graphics objects, and can output
+the value of the rotation matrix needed to achieve the current
+view. This matrix can then simply be cut-and-pasted into the
+appropriate transform command in the input file.
+
+<h3>
+<a name="recall-matrix">recall-matrix</a>
+</h3>
+
+Use the matrix stored by the most recent
+<a href="#store-matrix">store-matrix</a> command. If no such command
+has been given, then this operation has no effect.
+
+<p>
+<hr>
+<h2>
+<a name="store-matrix">store-matrix</a> ;
+</h2>
+
+Store the transformation matrix defined by the most recent
+<a href="#transform">transform</a> command. The stored matrix can then
+be used in a subsequent <a href="#transform">transform</a> command by
+the <a href="#recall-matrix">recall-matrix</a> operation. Only one
+matrix can be stored.
+<p>
+The stored matrix is not affected when the current
+<a href="input.html#plot">plot</a> is finished. This means that for
+the output formats in which more than one plot can be specified in one
+single input file (currently only
+<a href="output.html#PostScript">PostScript</a>), it is possible to
+defined a transformation in one plot and carry it over into another plot.
+<p>
+This feature is used for example in cases where the exactly same view
+is needed for different coordinate data sets. One such application is
+the display of multiple structures determined from NMR data, where the
+proper least-square fit has already been determined using some
+analysis software, and it is essential that the relative orientations
+of the coordinates are not disturbed by MolScript.
+
+<p>
+<hr>
+<h2>
+<a name="copy">copy</a>
+<i>molname</i>
+<a href="selection.html#atom"><i>atom-selection</i></a> ;
+</h2>
+
+The copy command operates on an atom selection. A new molecule with
+the given name is created, and all atoms selected, and all residues
+which these atoms are part of, are copied to the new molecule. The new
+molecule is a completely self-contained entity which in no way is
+dependent on the atoms it was copied from. Since an atom selection is
+used as the argument in the command, it is possible to create a new
+molecule containing any subset of atoms and residues from another.
+
+<p>
+<hr>
+<h2>
+<a name="delete">delete</a> <i>molname</i> ;
+</h2>
+
+Delete the entire molecule defined by the given molecule name. The
+molecule name is freed for use in a subsequent
+<a href="#read">read</a> or <a href="#copy">copy</a> command. 
+
+<p>
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

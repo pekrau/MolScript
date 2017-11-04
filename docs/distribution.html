@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>MolScript v2.1: Distribution</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Distribution</h1>
+
+The MolScript program is distributed as source code (ANSI C) together
+with Makefiles, documentation and example input files. You will have
+to compile the program yourself.
+<p>
+See the
+<a href="http://www.avatar.se/molscript/">MolScript Official Web
+Site</a> for current information on how to obtain the program.
+<p>
+Although <a href="links.html#GNU">GNU's</a> <strong>bison</strong>
+(GNU's equivalent of <strong>yacc</strong>) was used to develop the
+program, it is not required to compile the program, since the C source
+code files produced by <strong>bison</strong> from the 
+<strong>molscript.y</strong> file are included in the distribution. 
+<p>
+MolScript will compile with just the code that is included in the
+distribution. This gives the basic implementation which can output
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a> and 
+<a href="output.html#VRML">VRML 2.0</a> files.
+<p>
+If your computer systems supports
+<a href="links.html#OpenGL">OpenGL</a> rendering, then an
+implementation allowing an interactive graphics window can be
+compiled. This also requires the 
+<a href="links.html#GLUT">GLUT library</a> by Mark Kilgard. The
+OpenGL implementation allows several different image file output
+formats to be produced. Encapsulated PostScript Files (EPS) and SGI
+(aka RGB) image files are supported without any additional
+software. The <a href="links.html#JPEG">JPEG</a>,
+<a href="links.html#PNG">PNG</a> and
+<a href="links.html#GIF">GIF</a> image file formats require the 
+corresponding libraries. None of these additional libraries are
+included in the MolScript distribution. You must
+<a href="links.html">fetch them</a> and install them yourself. 
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

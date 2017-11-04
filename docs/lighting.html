@@ -1,0 +1,226 @@
+<html>
+<head>
+<title>MolScript v2.1: Lighting and appearance</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Lighting and appearance</h1>
+
+Explicit lighting is a new feature in v2 of MolScript. This is a
+short overview of the parameters that affect lighting. Some other
+topics involving the appearance of graphics objects are also
+discussed. 
+
+<ul>
+<li><a href="#lighting">Lighting</a>
+<ul>
+<li><a href="#sources">Light sources</a>
+<li><a href="#headlight">Headlight</a>
+</ul>
+<p>
+<li><a href="#material">Material properties</a>
+<ul>
+<li><a href="#diffuse">Diffuse colour</a>
+<li><a href="#specular">Specular colour</a>
+<li><a href="#emissive">Emissive colour</a>
+<li><a href="#transparency">Transparency</a>
+</ul>
+
+<p>
+<li><a href="#implementation">Implementation differences</a>
+<ul>
+<li><a href="#PostScript">PostScript</a>
+<li><a href="#Raster3D">Raster3D</a>
+</ul>
+</ul>
+
+<hr>
+<h2><a name="lighting">Lighting</a></h2>
+
+The lighting features in MolScript have been designed such that the
+default values should give a reasonable appearance for all graphics
+objects, similar to the image produced by previous versions (v1.4 and
+older) of MolScript. 
+<p>
+The light sources in MolScript are global: A light source created at
+some point in the input file will illuminate objects which have been
+created in the same file, no matter where.
+<p>
+There is often a limit to the number of light sources that can
+be defined in a scene, depending on which output format is used, and
+which computer system is used to view the resulting scene. For the
+<a href="output.html#OpenGL">OpenGL output mode</a> there is a maximum
+of 8 light sources (including the headlight).
+<p>
+It should be noted that the lighting features apply to graphics
+objects with surfaces, not to those consisting only of lines, labels
+or points.
+
+<h3><a name="sources">Light sources</a></h3>
+
+There are three different kinds of light sources:
+<ul>
+<li><a href="commands.html#directionallight">directionallight</a>
+<li><a href="commands.html#pointlight">pointlight</a>
+<li><a href="commands.html#spotlight">spotlight</a>
+</ul>
+Some graphics parameters affect all of these, while others affect only
+one kind of light source. See the descriptions for each kind of light
+source. 
+<p>
+The interplay between the different light source parameters and the
+surface properties are quite complex, and is not be described
+here. See the descriptions in the OpenGL Programming Guide
+(<a href="references.html#Neider-1993">Neider <i>et al</i> 1993</a>) or
+the Annotated VRML 2.0 Reference Manual
+(<a href="references.html#Carey-1997">Carey &amp; Bell 1997</a>) for
+exhaustive descriptions. 
+
+<h3><a name="headlight">Headlight</a></h3>
+
+A default light called the headlight is defined and switched on, by
+default. This is a white, directional light source, conceptually
+located at the position of the viewer, and shining towards the
+origin. In the current version of MolScript, its properties cannot be
+changed in any way except being
+<a href="header.html#headlight">switched on and off</a>.  
+
+<p>
+<hr>
+<h2><a name="material">Material properties</a></h2>
+
+<h3><a name="diffuse">Diffuse colour</a></h3>
+
+The inherent colour of a surface is usually equated with the diffuse
+colour used in lighting calculations.
+<p>
+In MolScript, the diffuse colour is taken from different parameters
+depending on whether the
+<a href="state.html#colourparts">colourparts</a> parameter is switched
+on or off.
+<p>
+If <a href="state.html#colourparts">colourparts</a> is
+<strong>off</strong> (the default), then the diffuse colour is
+determined by the <a href="state.html#planecolour">planecolour</a>, 
+the <a href="state.html#plane2colour">plane2colour</a> and
+<a href="state.html#atomcolour">atomcolour</a> parameters (depending
+on the graphics object).
+<p>
+If <a href="state.html#colourparts">colourparts</a> is switched
+<strong>on</strong>, then the diffuse colour is determined by the
+<a href="state.html#residuecolour">residuecolour</a> or 
+<a href="state.html#atomcolour">atomcolour</a> parameters (depending
+on the graphics object).
+
+<h3><a name="specular">Specular colour</a></h3>
+
+The specular colour is the surface property that modulates the colour
+of light that has conceptually been directly reflected (as in a
+mirror) by the surface. This is used to model shiny surfaces, such as
+metals.
+<p>
+The <a href="state.html#specularcolour">specularcolour</a>
+determines the specular reflection of a surface regardless of
+its diffuse colour. It is set to <strong>black</strong> (that is, no
+specular colour) by default. 
+
+<h3><a name="emissive">Emissive colour</a></h3>
+
+The emissive colour is a colour which is independent of any light
+sources in the scene. It is used to model glowing objects, or objects
+whose colour should be independent of any light sources in the
+scene.
+<p>
+The <a href="state.html#emissivecolour">emissivecolour</a>
+parameter determines the emissive colour of a surface regardless
+of its diffuse colour. It is set to <strong>black</strong> (that is,
+no emissive colour) by default. 
+<p>
+<strong>Note</strong> that using an emissive colour for an object does
+not turn it into a light source illuminating other objects in the
+scene. If you want an atom or another object to actually behave as a 
+light source, then you must create a light source at that position.
+
+<h3><a name="transparency">Transparency</a></h3>
+
+Transparent surfaces allow objects which are hidden behind the
+transparent object to be at least partly visible. This effect can be
+very useful in many cases. It should be noted that a true transparency
+calculation is usually rather demanding, so some output formats
+(<a href="output.html#VRML">VRML 2.0</a> and
+<a href="output.html#OpenGL">OpenGL</a>) rely on approximations which
+may or may not be adequate.
+<p>
+The <a href="state.html#transparency">transparency</a> parameter
+affects all graphics objects, including lines, labels and points. The
+value is by default set to 0.0, which means no transparency.
+<p>
+It has been noted that the <a href="output.html#VRML">VRML 2.0</a>
+files display incorrectly in some browsers when partial transparency
+has been applied. A surface specified with transparency 0.9 is almost
+completely opaque, when it should be very nearly translucent. This
+seems to be a bug in some commonly used browsers, and is, as far as is
+possible to ascertain, not due to MolScript. A value of 0.5 seems to
+give correct results.
+
+<p>
+<hr>
+<h2><a name="implementation">Implementation differences</a></h2>
+
+The implementation of lighting in MolScript v2.1 is unfortunately
+neither complete nor identical in all output formats. The PostScript
+and Raster3D output modes are the most defective. 
+<p>
+The implementations for 
+the <a href="output.html#OpenGL">OpenGL output</a> and
+<a href="output.html#VRML">VRML 2.0 output</a> modes are very similar
+and should be correct.
+
+<h3><a name="PostScript">PostScript</a></h3>
+
+The <a href="output.html#PostScript">PostScript output mode</a> has
+the largest differences from the ideal, which in part relates to its
+inherent limitations, and in part to the difficulty of implementation
+of some of the appearance effects that are easy to produce in the
+other output modes.
+<p>
+The PostScript output mode has no implementation of light sources or
+material surface properties. The closest it comes to lighting are the
+<a href="state.html#shading">shading</a> and
+<a href="state.html#shadingexponent">shadingexponent</a> parameters
+which determine the shading of surfaces as a function of the angle
+between the surface normal and the view direction. This is in effect a
+simple calculation of the effects of a headlight.
+<p>
+Another important difference exists compared to the other modes: In
+PostScript, all graphical objects are delimited by lines drawn around 
+the surfaces. This is very important to create the proper visual
+effects for the various graphics objects in this output mode. Therefore
+all graphics state parameters that affect lines
+(<a href="state.html#linecolour">linecolour</a>,
+<a href="state.html#linedash">linedash</a> and
+<a href="state.html#linewidth">linewidth</a>) also affect the
+appearance of most other graphical objects. This is not the case for
+the other output formats.
+<p>
+A related difference is the <a href="state.html#depthcue">depthcue</a>
+parameter, which affects many different objects in the PostScript
+output mode. It does not affect any other output modes. The basic idea
+is that the distance from the object to the viewer affects various
+appearance details, such as the size of labels or the width of lines.
+<p>
+
+<h3><a name="Raster3D">Raster3D</a></h3>
+
+The implementation of lighting in the
+<a href="output.html#Raster3D">Raster3D output mode</a> is very
+limited and partly incorrect. This is to a large extent due to the
+inherent limitations in the Rasted3D file format.
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

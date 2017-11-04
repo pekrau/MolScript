@@ -1,0 +1,530 @@
+<html>
+<head>
+<title>MolScript v2.1: Installation</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>Installation</h1>
+
+The installation procedure for v2.1 has been simplified compared to
+v2.0. The directory structure of the distribution has changed.
+<p>
+Now, only one single <strong>make</strong> command is needed to create
+the executables. It is, however, still necessary to choose which
+Makefile to use, and possibly to edit the Makefile. This is because
+some output modes require external software. However, the basic
+implementation of MolScript (with the 
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a> and
+<a href="output.html#VRML">VRML 2.0</a> output modes) needs no
+external software, and is straightforward to compile.
+<p>
+This description assumes that you have a UNIX computer system. The
+installation procedure has been tested (so far) only on an SGI IRIX
+6.3 system, but should work on other UNIX systems as well.
+<p>
+Information on other computer systems is currently not available, but
+it shouldn't be too difficult to install MolScript if you know how to
+compile programs on your computer system. If you port MolScript to
+another system, you would help others by sending a description of your
+porting procedure to
+<a href="mailto:pjk@avatar.se">pjk@avatar.se</a>. The description will
+be incorporated into this documentation.
+
+<ul>
+<li><a href="#distribution">The distribution</a>
+<li><a href="#save">Save previous MolScript versions</a>
+<li><a href="#unpacking">Unpacking the distribution file</a>
+<li><a href="#directory">Directory structure of the distribution</a>
+<li><a href="#external">External software libraries</a>
+<li><a href="#Makefiles">The Makefiles</a>
+<li><a href="#compiling">Compiling the software</a>
+<li><a href="#examples">Rendering the example files</a>
+</ul>
+
+<hr>
+<h2><a name="distribution">The distribution</a></h2>
+
+You will have obtained the MolScript distribution by downloading via
+Netscape's &quot; Shift + left-mouse-button&quot; function.
+It comes in two possible forms:
+<dl>
+<dt><strong>molscript.tar.Z</strong>
+<dd>compressed using the standard UNIX <strong>compress</strong>
+utility program. 
+<p>
+<dt><strong>molscript.tar.gz</strong>
+<dd>compressed using GNU's <strong>gzip</strong> program.
+</dl>
+The file is a compressed tar file, that is, the directories in the
+distribution have been bundled together using the standard UNIX
+<strong>tar</strong> utility program, and the resulting tar file was
+subsequently compressed with either <strong>compress</strong> or
+<strong>gzip</strong>. 
+
+<p>
+<hr>
+<h2><a name="save">Save previous MolScript versions</a></h2>
+
+The previous versions of MolScript must <strong>not</strong> be mixed
+with the current distribution.
+<p>
+Before unpacking the current distribution, move your previous
+MolScript distribution (if you have one) to some safe location. This
+applies to the <strong>molscript</strong> directory, as well as the
+previous <strong>molscript</strong> and <strong>molauto</strong>
+executable files. 
+<p>
+
+<hr>
+<h2><a name="unpacking">Unpacking the distribution file</a></h2>
+
+First, uncompress the distribution tar file using one of
+the following commands: 
+
+<code><blockquote>
+% gunzip molscript.tar.gz
+</blockquote></code>
+or
+<code><blockquote>
+% uncompress molscript.tar.Z
+</blockquote></code>
+
+This produces a <strong>molscript.tar</strong> file. This file should
+be moved to the directory where you wish to have the
+<strong>molscript</strong> source directory located. For example, the
+<strong>/usr/local</strong> directory is often used for software of
+this kind. You probably need <strong>root</strong> privileges (or the
+equivalent) to write anything in the <strong>/usr/local</strong>
+directory. 
+
+<code><blockquote>
+% mv molscript.tar /usr/local<br>
+% cd /usr/local<br>
+</blockquote></code>
+
+Then use the <strong>tar</strong> program to unpack the distribution: 
+<code><blockquote>
+% tar xvof molscript.tar
+</blockquote></code>
+
+This creates the <strong>molscript</strong> directory and its
+subdirectories. 
+
+<p>
+<hr>
+<h2><a name="directory">Directory structure of the distribution</a></h2>
+
+The MolScript distribution contains the following directories:
+
+<dl>
+
+<dt><strong>molscript</strong>
+<dd>
+The top directory, containing the C source code for the MolScript and
+MolAuto programs. Two different Makefiles are provided to build the
+programs. 
+<p>
+<dt><strong>molscript/clib</strong>
+<dd>
+The C source code for general-purpose routines and data structures
+used in the MolScript source code. 
+<p>
+<dt><strong>molscript/other</strong>
+<dd>
+Source code written by other people, and used directly in the 
+MolScript source code. The copyright statements covering this software
+is given <a href="copyright.html">here</a>.
+<p>
+<dt><strong>molscript/doc</strong>
+<dd>
+This documentation in HTML format. 
+<p>
+<dt><strong>molscript/doc/images</strong>
+<dd>
+The image files for this documentation.
+<p>
+<dt><strong>molscript/examples</strong>
+<dd>
+A set of example input files, with the PDB coordinate file these input
+files use, and a Makefile. 
+</dl>
+
+<p>
+<hr>
+<h2><a name="external">External software libraries</a></h2>
+
+It is possible to compile a basic implementation of MolScript, which
+needs nothing more than the source code that is included in the
+distribution. However, this will only enable a subset of the available
+output modes.
+<p>
+The complete implementation of MolScript requires some additional
+external software and system libraries. You must
+<a href="links.html#libraries">fetch and install these libraries</a>
+yourself.
+<p>
+It is possible to compile partial implementations, if only some of the
+external software libraries are available. For instance, it is
+possible to compile MolScript to produce GIF image files, without
+having the PNG image file capability.
+<p>
+<strong>Note</strong>: Although GNU's <strong>bison</strong> program
+is needed to convert the <strong>molscript.y</strong> file into C
+source code, it is not necessary for compiling the programs; the C
+source code files are included in the distribution.
+<p>
+
+<table border cellpadding=4 cellspacing=4>
+
+<a name="requirements">
+<caption align=top>
+<strong>
+The software requirements for the different output modes.
+</strong>
+</caption>
+</a>
+
+<tr>
+<td>
+<strong>
+Output mode
+</strong>
+</td>
+<td>
+<strong>
+Required system libraries
+</strong>
+</td>
+<td>
+<strong>
+Required external software
+</strong>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#PostScript">PostScript</a>
+</td>
+<td>
+none
+</td>
+<td>
+none
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#Raster3D">Raster3D</a>
+</td>
+<td>
+none
+</td>
+<td>
+none
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#VRML">VRML 2.0</a>
+</td>
+<td>
+none
+</td>
+<td>
+none
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#OpenGL">Interactive OpenGL</a>
+</td>
+<td>
+<a href="links.html#OpenGL">OpenGL</a>
+(or <a href="links.html#OpenGL">Mesa</a>)
+</td>
+<td>
+<a href="links.html#GLUT">GLUT library</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#SGI">SGI (aka RGB) image file</a>
+</td>
+<td>
+<a href="links.html#OpenGL">OpenGL</a>
+(or <a href="links.html#OpenGL">Mesa</a>) and
+<br>
+X windows (implies UNIX)
+</td>
+<td>
+<a href="links.html#GLUT">GLUT library</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#EPS">Encapsulated PostScript
+<br>
+(EPS) image file</a>
+</td>
+<td>
+<a href="links.html#OpenGL">OpenGL</a>
+(or <a href="links.html#OpenGL">Mesa</a>) and
+<br>
+X windows (implies UNIX)
+</td>
+<td>
+<a href="links.html#GLUT">GLUT library</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#JPEG">JPEG image file</a>
+</td>
+<td>
+<a href="links.html#OpenGL">OpenGL</a>
+(or <a href="links.html#OpenGL">Mesa</a>) and
+<br>
+X windows (implies UNIX)
+</td>
+<td>
+<a href="links.html#GLUT">GLUT library</a> and
+<br>
+<a href="links.html#JPEG">JPEG library</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#PNG">PNG image file</a>
+</td>
+<td>
+<a href="links.html#OpenGL">OpenGL</a>
+(or <a href="links.html#OpenGL">Mesa</a>) and
+<br>
+X windows (implies UNIX)
+</td>
+<td>
+<a href="links.html#GLUT">GLUT library</a> and
+<br>
+<a href="links.html#PNG">PNG and zlib libraries</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="output.html#GIF">GIF image file</a>
+</td>
+<td>
+<a href="links.html#OpenGL">OpenGL</a>
+(or <a href="links.html#OpenGL">Mesa</a>) and
+<br>
+X windows (implies UNIX)
+</td>
+<td>
+<a href="links.html#GLUT">GLUT library</a> and
+<br>
+<a href="links.html#GIF">gd 1.3 library</a>
+</td>
+</tr>
+
+</table>
+
+<h3>Notes</h3>
+<ol>
+<li><a href="links.html#OpenGL">Mesa</a> is a free, non-official,
+software-only implementation of the OpenGLlibrary, which may be used
+if a native OpenGL library is not available in your system.
+</ol>
+
+<p>
+<hr>
+<h2><a name="Makefiles">The Makefiles</a></h2>
+
+There are two different <strong>Makefile</strong>s in the
+<strong>molscript</strong> directory. Both have been tested on an SGI
+IRIX 6.3 system. They should work (possibly with minor changes) on
+other UNIX systems.
+<p>
+
+<dl>
+<dt><strong>Makefile.basic</strong>
+<dd>
+This will build the basic implementation of MolScript, which will
+produce only the <a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a>, and
+<a href="output.html#VRML">VRML 2.0</a> output files. No external
+software libraries are needed. As distributed, the Makefile will use
+GNU's <strong>gcc</strong> compiler. 
+<p>
+
+<dt><strong>Makefile.complete</strong>
+<dd>
+This will build the complete implementation of MolScript, including
+support for the <a href="output.html#OpenGL">interactive OpenGL</a>
+graphics mode, and all <a href="output.html#image">image file</a>
+output formats. As distributed, the Makefile will use SGI IRIX's
+native <strong>cc</strong> compiler.
+<p>
+Several external libraries are required for the complete
+implementation; see the <a href="#requirements">table above</a>.
+You must make sure that the various symbols in the
+<strong>Makefile.complete</strong> file are set correctly. If you do
+not wish to include a certain image file format implementation, then
+you must comment out all symbol definitions in the
+<strong>Makefile.complete</strong> which relate to that format. 
+</dl>
+<p>
+
+You must choose which of these <strong>Makefile</strong>s to
+use. You can <strong>either</strong> make a symbolic link to the
+appropriate <strong>Makefile</strong> variant (the basic one in this
+example): 
+<code><blockquote>
+% ln -s Makefile.basic Makefile
+</code></blockquote>
+
+<strong>or</strong> you can make a proper copy of the chosen
+<code>Makefile</code> variant:
+<code><blockquote>
+% cp Makefile.basic Makefile
+</code></blockquote>
+<p>
+
+The <strong>Makefile</strong>s contain various symbols which may need
+to be modified for your system. For instance, the location of the
+external libraries must be defined, and the optimization flags for the
+C compiler you are using must be set correctly.
+<p>
+<strong>Note</strong> that for the SGI IRIX <strong>cc</strong>
+compiler, it is necessary to choose the type of object file by
+specifying one of the following flags: <strong>-32</strong>,
+<strong>-64</strong> or <strong>-n32</strong>. It is not possible to
+mix object files compiled using different flags. The external
+libraries (if used) must also have been compiled with the same flag. 
+
+<p>
+<h3>Notes</h3>
+<ol>
+<li>It should be possible to compile the OpenGL implementation on a
+Windows 95 or a Windows NT system, since the
+<a href="links.html#GLUT">GLUT</a> library has been implemented for
+these systems. However, this has not yet been tested.
+<p>
+<li><strong>All</strong>
+<a href="output.html#image">image output</a> formats require the
+OpenGL implementation. Currently, they <strong>also</strong> require
+the X window system having the GLX extension required for OpenGL. This
+implies that the computer system must be a UNIX machine. Currently,
+the image output formats cannot be compiled on Win95 or WinNT. If you
+do not have the OpenGL libraries, or your system does not have the X
+window system with the GLX extension, then it is not possible to
+compile any of the image file format output implementations.
+<p>
+<li> The <a href="output.html#SGI">SGI</a> and
+<a href="output.html#EPS">EPS</a> image formats require OpenGL and the
+X window system, but no other external libraries.
+<p>
+<li>The <strong>Makefile.complete</strong> file is written under the
+assumption that the external libraries are all in object archive 
+format (<strong>*.a</strong> files). Your copy of the library may not
+have been installed in this form. Either modify the
+<strong>Makefile.complete</strong> file, or create the
+<strong>*.a</strong> files according to the instructions for each
+library. 
+</ol>
+<p>
+
+<hr>
+<h2><a name="compiling">Compiling the software</a></h2>
+
+If you made a copy of, or linked to
+(<a href="#Makefiles">see above</a>) the appropriate
+<strong>Makefile</strong> variant and modified it (if needed) and
+installed the various external libraries (if any), then you should be
+ready to compile the MolScript program. 
+<p>
+Go to the <strong>molscript</strong> directory and give the following
+command:
+
+<code><blockquote>
+% cd /usr/local/molscript<br>
+% make
+</blockquote></code>
+
+This will compile the source code in the <strong>molscript</strong>
+and <strong>molscript/clib</strong> directories, and link together the
+<strong>molscript</strong> and <strong>molauto</strong> executable
+files in the <strong>molscript</strong> directory. 
+<p>
+The <strong>clib.a</strong> object code archive is compiled
+automatically by this command, in contrast to the previous v2.0
+distribution, where this was a separate command. Indeed, it is not
+possible to use the <strong>Makefile</strong> in the
+<strong>molscript/clib</strong> directory on its own: it must be
+called indirectly from the <strong>Makefile</strong> in the main
+<strong>molscript</strong> directory. 
+<p>
+You may wish to copy the executables to an appropriate directory on
+your system (such as <strong>/usr/local/bin</strong>):
+
+<code><blockquote>
+% cp molscript molauto /usr/local/bin
+</blockquote></code>
+
+or make links from that directory to the executables:
+
+<code><blockquote>
+% cd /usr/local/bin<br>
+% ln -s /usr/local/molscript/molscript molscript<br>
+% ln -s /usr/local/molscript/molauto molauto
+</blockquote></code>
+
+You and any other users need to have this directory in their
+path if the executable is to be invoked simply by giving the program
+name as a command. Check that the <strong>PATH</strong> environment
+variable contains the <strong>/usr/local/bin</strong> value: 
+<code><blockquote>
+% echo $PATH
+</blockquote></code>
+
+<p>
+<hr>
+<h2><a name="examples">Rendering the example files</a></h2>
+
+There is a <strong>Makefile</strong> in the
+<strong>molscript/examples</strong> directory, which can be used to
+render all example input files. The <strong>Makefile</strong> contains
+a few symbols that may have to be changed; it should be fairly clear
+in the file which these are.
+<p>
+If the complete implementation has been compiled (all output modes
+present), then give the command:
+<code><blockquote>
+% make complete
+</blockquote></code>
+This will run MolScript and any other programs to create the example
+files referred to in the documentation.
+<p>
+If the basic implementation has been compiled, then give the command:
+<code><blockquote>
+% make basic
+</blockquote></code>
+This will create only the
+<a href="output.html#PostScript">PostScript</a>,
+<a href="output.html#Raster3D">Raster3D</a> and
+<a href="output.html#VRML">VRML 2.0</a> files.
+<p>
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>

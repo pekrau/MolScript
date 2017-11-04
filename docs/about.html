@@ -1,0 +1,209 @@
+<html>
+<head>
+<title>MolScript v2.1: About the program</title>
+<link href="style.css" type="text/css" rel="stylesheet"></link>
+</head>
+
+<body>
+
+<h1 align=center>About the MolScript program</h1>
+
+<ul>
+<li><a href="#reference">Publication reference</a>
+<li><a href="#year2000">Year 2000 compliance</a>
+<li><a href="#features">Notes on some features</a>
+<li><a href="#background">Background</a>
+<li><a href="#implementation">Implementation</a>
+<li><a href="#undocumented">Undocumented features</a>
+<li><a href="#acknowledgements">Acknowledgements</a>
+</ul>
+
+<hr>
+<h2><a name="reference">Publication reference</a></h2>
+
+The MolScript program is described in the following publication:
+<blockquote>
+<strong>
+Per J. Kraulis
+</strong>
+<br>
+MOLSCRIPT: A Program to Produce Both Detailed and
+Schematic Plots of Protein Structures.
+<br>
+<strong>
+Journal of Applied Crystallography (1991) vol 24, pp 946-950. 
+</strong>
+</blockquote>
+This citation must be given in all publications using images
+produced with MolScript.
+<p>
+
+<hr>
+<h2><a name="year2000">Year 2000 compliance</a></h2>
+
+The current versions of the MolScript and MolAuto programs do not deal
+in any way with date or time values. No calls to system features
+involving date or time are made. The programs are therefore inherently
+&quot;Year 2000 compliant&quot;.
+<p>
+
+<hr>
+<h2><a name="features">Notes on some features</a></h2>
+
+<h3>Hermite splines</h3>
+The spline function used to create segment coordinates for various
+objects (coil, turn, strand, helix) is the Hermite spline
+(<a href="references.html#Foley-1990">Foley <i>et al</i> 1990</a>).
+This is based on two control points, which the curve passes through,
+and directional vectors at these points. The advantage of this spline
+is that it passes through all its control points. However, it requires
+direction vectors of defined lengths. In MolScript, such vectors are
+computed in different ways depending on the graphical object. 
+
+<h3>Irregular secondary structure</h3>
+A feature of MolScript is that irregularities in helices and strands
+are still visible to some degree in the schematic drawings. Especially
+the helices manage to convey bends and other irregularities without
+turning ugly. Since only CA-coordinates are used for creating the
+schematic drawings, even poorly refined structures can give
+reasonable-looking schematic objects. This may or may not be
+advantage, depending on one's point of view...
+
+<h3>Selection mechanism</h3>
+The atom and residue selection mechanism was inspired by a similar
+facility in the structure refinement program X-PLOR
+(<a href="references.html#Brunger-1992">Br&uuml;nger 1992</a>).
+
+<h3>Orthographic projection</h3>
+An orthographic projection is used in all output modes except 
+<a href="output.html#VRML">VRML 2.0</a> output mode. The projection
+used in VRML cannot be specified by MolScript; it is entirely
+dependent on the VRML browser used to display the VRML file. 
+<p>
+
+<hr>
+<h2><a name="background">Background</a></h2>
+
+The MolScript program was conceived in the tradition of molecular
+graphics of 
+<a href="references.html#Richardson-1981">Jane Richardson</a>,
+<a href="references.html#Lesk-1982">Arthur Lesk & Karl Hardman</a>,
+and <a href="references.html#Priestle-1988">John Priestle</a>. The aim
+was a program that could produce nice schematic drawings of proteins
+as well as detailed views of specific residues. The graphical objects
+helix, strand and coil were designed to look as much like
+<a href="references.html#Richardson-1985">Jane  Richardson's
+drawings</a> as possible.
+<p>
+The success of the MolScript program (more than 2,000 academic
+licenses, and more than 30 commercial licenses issued by October 1997)
+shows that there was a great need for such a program. In the years
+since MolScript was first released (1991), several other similar
+programs have appeared, which either are designed solely for producing
+high-quality images of biological macromolecules, or have such output
+procedures as integral features. For MolScript to remain useful in
+such competition, novel features and improvements in the software in
+the light of experience had to be implemented.
+<p>
+The emergence of the
+<a href="links.html#VRML">VRML 2.0</a> standard in 1996-1997 for 3D
+Web applications was an inspiration for creating a new version of
+MolScript, since it was obvious that the features in MolScript were
+a very good basis for creating informative and useful VRML
+representations of molecular structures. The Web has from its start
+been employed by the molecular biologists and geneticists for sharing
+data and knowledge, thereby helping to create the new field called
+bioinformatics. There is a huge potential for the biological
+structural sciences to use the Web for sharing not only the
+structural data itself, but also structural knowledge. The VRML 2.0
+standard is a good basis for this.
+<p>
+The appearance of the <a href="links.html#OpenGL">OpenGL</a> standard
+library and API for high-quality 3D graphics applications in 1993 made
+it possible to write an interactive-graphics implementation for
+MolScript which potentially could run on a broad range of computer
+systems. Also, the off-screen rendering capabilities of many OpenGL
+implementations made it possible to produce image files directly
+through MolScript. Since such image files are now a staple of the Web,
+such a feature would clearly be quite useful.
+<p>
+
+<hr>
+<h2><a name="implementation">Implementation</a></h2>
+
+The internal program structure of the previous version of MolScript
+(v1.4) did not make it easy to introduce new output formats. When an
+attempt was made to create a VRML 2.0 interface in a modified version
+of  MolScript, it became clear that a redesign was necessary.
+<p>
+The previous versions of MolScript were written in Fortran 77. One
+major problem with this was the lack of a standard dynamic-memory
+feature in Fortran 77. This and other problems were reasons for
+choosing another programming language.
+<p>
+Considering the various available programming languages, the final
+decision was to use ANSI C: it is a small, simple language, with
+almost universal and standardized support on all relevant computer
+systems. For this application, this outweighs the drawbacks: no
+object-oriented features, possible memory leaks using the primitive
+memory allocation system, and the danger of name-space
+collisions. Another consideration was the availability of many useful
+software library packages and utilities in the C language or targeted
+towards C, which could be useful. For example, the
+<strong>bison</strong> utility from the  
+<a href="links.html#GNU"> GNU project</a> and the
+<a href="links.html#JPEG">JPEG library</a> from the Independent JPEG
+Group. 
+<p>
+As part of the reimplementation, the routines that create the
+graphical objects were clearly separated from the routines that output
+the objects in a given format. This separation should facilitate
+future implementation of novel output formats. Also, it makes it
+easier to ensure that the appearance of the graphical objects is as
+similar as possible in the different output formats.
+<p>
+
+<hr>
+<h2><a name="undocumented">Undocumented features</a></h2>
+
+There may be some undocumented commands in the current version of
+MolScript. These are highly experimental in nature. They may change
+drastically, or be removed, in the next version. It is a waste of time
+to try to figure out what they are and what they do. 
+<p>
+
+<hr>
+<h2><a name="acknowledgements">Acknowledgements</a></h2>
+
+Ethan Merritt, Mats Dahlberg and Jonas Uppenberg have contributed to
+the bug fixes and modifications in v2.0.1, v2.0.2 and v2.1.
+<p>
+For input and support during the work on version 2.0 of MolScript, I
+wish to thank Anders Lillienau, Mats Dahlberg, Bj&ouml;rn O. Nilsson,
+Johan K&ouml;rdel, Michael &Aring;sman, Mats Kihl&eacute;n, Henrik
+Frid&eacute;n, Derek Ogg, Jonas Uppenberg and others at the Structural
+Chemistry department and other departments of Discovery Research at
+Pharmacia &amp; Upjohn Inc., Sweden. Robert Esnouf provided input for
+the separate residue colour feature through his BobScript, a modified
+version of MolScript.
+<p>
+For input and support during the work on versions 1.0 to 1.4 of
+MolScript, I thank T. Alwyn Jones, Mats Kihl&eacute;n, Ylva Lindqvist,
+Erling Wikman, Hans Eklund, Carl-Ivar Br&auml;nd&eacute;n and others
+at the Department of Molecular Biology, BMC, Uppsala University. This
+work was supported in part by Nordisk Industrifond and The Swedish
+Natural Science Research Council (NFR).
+<p>
+Eric Fauman, Michael Sutcliffe, Paul McLaughlin, Leo Caves and Arne
+Elofsson have contributed bug discoveries, fixes and other suggestions
+for versions 1.1 - 1.4 of the program.
+<p>
+Ethan A. Merritt wrote the interface to Raster3D in version 1.4 of
+MolScript.
+
+<p>
+
+<hr>
+<a href="molscript.html">Top page</a>
+</body>
+</html>
