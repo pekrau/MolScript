@@ -300,11 +300,7 @@ set_bonddistance (void)
 {
   assert (dstack_size == 1);
 
-  if (dstack[0] <= 0.0) {
-    yyerror ("invalid bonddistance value");
-  } else {
-    current_state->bonddistance = dstack[0];
-  }
+  current_state->bonddistance = dstack[0];
   clear_dstack();
 }
 
