@@ -308,6 +308,46 @@ depthcue (double depth, state *st)
 
 
 /*------------------------------------------------------------*/
+static boolean
+test_bonded (const at3d * at1, const at3d * at2, double bonddistance)
+{
+  double dist = v3_distance (&(at1->xyz), &(at2->xyz));
+
+  // identical position
+  if (dist < 0.001)
+    return FALSE;
+
+  // use bonddistance parameter if not zero
+  if (bonddistance > 0.001)
+    return dist < bonddistance;
+
+  // no bonds between different alt locations
+  if (at1->altloc > ' ' &&
+      at2->altloc > ' ' &&
+      at1->altloc != at2->altloc)
+    return FALSE;
+
+  // no bonds between different models
+  if (at1->res->mol->model != at2->res->mol->model)
+    return FALSE;
+
+  // take radii into account
+  dist -= (at1->radius + at2->radius) / 2.0;
+
+  // hydrogen cutoff
+  if (at1->element == 1 || at2->element == 1)
+    return dist < 0.15;
+
+  // sulfur cutoff
+  if (at1->element == 16 || at2->element == 16)
+    return dist < 0.55;
+
+  // generic cutoff
+  return dist < 0.35;
+}
+
+
+/*------------------------------------------------------------*/
 void
 ball_and_stick (int single_selection)
 {
@@ -378,8 +418,7 @@ ball_and_stick (int single_selection)
 
 	v2 = &(atoms2[slot2]->xyz);
 
-	dist = v3_distance (v1, v2);
-	if ((dist > current_state->bonddistance) || (dist < 0.001)) continue;
+	if (!test_bonded (atoms1[slot1], atoms2[slot2], current_state->bonddistance)) continue;
 
 	if (colour_unequal (&(atoms1[slot1]->colour),
 			    &(atoms2[slot2]->colour))) {
@@ -415,8 +454,7 @@ ball_and_stick (int single_selection)
 
 	v2 = &(atoms2[slot2]->xyz);
 
-	dist = v3_distance (v1, v2);
-	if ((dist > current_state->bonddistance) || (dist < 0.001)) continue;
+	if (!test_bonded (atoms1[slot1], atoms2[slot2], current_state->bonddistance)) continue;
 
 	output_stick (v1, v2,
 		      0.25 * atoms1[slot1]->radius,
@@ -507,8 +545,7 @@ bonds (int single_selection)
 	v2 = &(atoms2[slot2]->xyz);
 	if (v2 == v1) continue;
 
-	dist = v3_distance (v1, v2);
-	if ((dist > current_state->bonddistance) || (dist < 0.001)) continue;
+	if (!test_bonded (atoms1[slot1], atoms2[slot2], current_state->bonddistance)) continue;
 
 	if (colour_unequal (col1, &(atoms2[slot2]->colour))) {
 	  v3_middle (&middle, v1, v2);
@@ -556,8 +593,7 @@ bonds (int single_selection)
 	v2 = &(atoms2[slot2]->xyz);
 	if (v2 == v1) continue;
 
-	dist = v3_distance (v1, v2);
-	if ((dist > current_state->bonddistance) || (dist < 0.001)) continue;
+	if (!test_bonded (atoms1[slot1], atoms2[slot2], current_state->bonddistance)) continue;
 
 	ls = line_segment_next();
 	ls->p = *v1;
